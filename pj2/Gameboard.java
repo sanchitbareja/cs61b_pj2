@@ -2,10 +2,14 @@
 
 public class Gameboard {
 
-    public int[][] board;
-    public int whiteChips;
-    public int blackChips;
-    public final totalPieces;
+    protected int[][] board;
+
+    public static final int WHITE = 1; //represents a white piece
+    public static final int BLACK = 2; //represents a black piece 
+    public static final int TOTAL = 10; //represents total allotted pieces per player
+
+    protected int whiteCount;
+    protected int blackCount;
     
     /**
      * Gameboard constructor takes no parameters, and constructs
@@ -15,31 +19,64 @@ public class Gameboard {
     }
 
     /**
-     * getWhiteChips() returns the number of white chips remaining.
+     * getWhiteCount() takes no parameters returns the number of white pieces remaining.
+     *
+     * @return number of white pieces
      */
 
-    public int getWhiteChips() {
+    public int getWhiteCount() {
+        return whitePieces;
     }
 
     /**
-     * getBlackChips() returns the number of black chips remaining.
+     * getBlackCount() returns the number of black pieces remaining.
+     *
+     * @return number of black pieces
      */
 
-    public int getBlackChips() {
+    public int getBlackCount() {
+        return blackPieces;
     }
 
     /**
-     * neighbors() takes in a coordinate, (int X, int Y), as parameters
+     * neighbors() takes in a coordinate (int x, int y), as parameters
      * and returns a 3 x 3 2-D array of integers representing pieces
-     * around it.
+     * around a specified square on "this" Gameboard.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a 3 x 3 two-dimensional array of integers representing pieces
+     * orthogonally and diagonally adjacent to the square (x,y)
      */
 
     public int[][] neighbors(int x, int y) {
     }
 
     /**
+     * verify() takes in a coordinate (int x, int y), as parameters
+     * and returns whether or not the coordinate is a valid square on "this"
+     * Gameboard.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if the square is a valid square on the network gameboard described
+     * in the README file; false otherwise.
+     */
+
+    public boolean verify(int x, int y) {
+       return true;
+    }
+
+    /**
      * cellContent() returns the an integer that indicates the piece
      * at the coordinate specified by parameters (int X, int Y).
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * 
+     * @return an integer representing the blac
      */
 
     public int cellContent(int x, int y) {
@@ -47,23 +84,35 @@ public class Gameboard {
 
     /**
      * isEmpty() checks whether or not the indicated coordinate
-     * specified by parameters (int X, int Y) is empty.
+     * specified by parameters (int x, int y) is empty.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if the square on "this" Gameboard is empty, false otherwise.
      */
 
     public boolean isEmpty(int x, int y) {
+        return true;
     }
 
     /**
-     * addPiece() puts a piece at the indicated coordinate specified
-     * by parameters (int X, int Y).
+     * addPiece() puts a piece at the indicated square on "this" Gameboard specified
+     * by parameters (int x, int y).
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
      */
 
-    public int addPiece(int x, int y) {
+    public void addPiece(int x, int y) {
     }
 
     /**
-     * removePiece() removes a piece at the indicated coordinate
-     * specified by parameters (int X, int Y).
+     * removePiece() removes a piece at the indicated square on "this" Gameboard
+     * specified by parameters (int x, int y).
+     * 
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
      */
 
     private void removePiece(int x, int y) {
@@ -71,17 +120,31 @@ public class Gameboard {
 
     /**
      * switchPiece() moves a piece from one coordinate to another.
-     * More specifically, it takes parameters (X1, Y1, X2, Y2) and
-     * moves a piece from (X1, Y1) to (X2, Y2).
+     * More specifically, it takes parameters (x1, y1, x2, y2) and
+     * moves a piece on "this" Gameboard from (x1, y1) to (x2, y2).
+     *
+     * Unusual conditions: 
+     * if the piece specified at coordinate (x1, y1) does not exist,
+     * nothing is done.
+     *
+     * @param x1 the x-coordinate of the square containing the piece
+     * @param y1 the y-coordinate of the square containing the piece
+     * @param x2 the x-coordinate of the square the piece is to be moved to
+     * @param y2 the y-coordinate of the square the piece is to be moved to 
      */
 
     public void switchPiece(int x1, int y1, int x2, int y2) {
     }
 
     /**
-     * getRow() returns an integer array of pieces in the same row
-     * as the piece at the indicated coordinate specified by parameters
-     * (int X, int Y).
+     * getRow() returns an integer array of square contents  in the same row
+     * as the square, inclusive  at the indicated coordinate specified by parameters
+     * (int x, int y).
+     *
+     * @param x1 the x-coordinate of the square
+     * @param y1 the y-coordinate of the square
+     *
+     * @return an int[], containing  
      */
 
     public int[] getRow(int x, int y) {
@@ -90,7 +153,7 @@ public class Gameboard {
     /**
      * getColumn() returns an integer array of pieces in the same column
      * as the piece at the indicated coordinate specified by parameters
-     * (int X, int Y).
+     * (int x, int y).
      */
 
     public int[] getColumn(int x, int y) {
