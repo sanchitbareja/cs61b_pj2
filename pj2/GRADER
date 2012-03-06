@@ -19,7 +19,7 @@ code together, you may not change partners without the permission of the
 instructor.
 ===============================================================================
 Does your program compile without errors?
-Absolutely not.
+
 
 Have you tested your program on the machines in the Soda CS 61B lab?
 
@@ -82,6 +82,17 @@ making the move is allowed to add more pieces using methods of the
 Square and Gameboard classes. Methods:
 	a. public boolean isValidMove(Move m) //Gameboard class
 
+    /**
+     * isValidMove() checks if "move" can be legally made based on the game rules.
+     * 
+     * @param m is the move in question.
+     *
+     * @return true if the move can be legally made, false otherwise.
+     */
+
+    public boolean isvalidMove(Move m) {
+    }
+
 2. Generating a list of all valid moves (Implemented by Noah)
 A method in the Gameboard class called listMoves will take in an int
 representing the color of the player to list the moves for, and will
@@ -91,14 +102,85 @@ module to check whether a move is valid while iterating through a list
 of all positions on the board.
 	a. public Move[] listMoves(int player) //Gameboard class
 
+    /**
+     * listMoves() takes one parameter, the type of the current player, and 
+     * returns an array of all possible moves.
+     *
+     * @param player is the type of the player in consideration
+     *
+     * @return a Move[] containing all the possible moves possible for "player"
+     * "this" Gameboard.
+     */
+
+    public Move[] listMoves(int player) {
+    }
+
+
 3. Finding chips that form connections with a chip
 (Implemented by Sanchit)
 A function called findConnectedChips in the Square class will use the
 position of the Square (stored internally), find the Square objects
 that represent connections of "this" Square, and return an array of
 them. This will make use of the getRow, getColumn, getDiagonal, and
-getDiagonalLength methods in Gameboard.
+getDiagonalLength methods in Square.
 	a. public Square[] findConnectedChips //Square class
+
+    /**
+     * findConnectingChips() returns a list of square objects 
+     * that "this" Square is "connected" to.
+     *
+     * @return a Square[] containing chips that "this" Square is connected to
+     */
+
+    public Square[] findConnectingChips() {
+    }
+
+    /**
+     * getRow() takes no parameters, and returns an array of square objects
+     * in the same row as "this" Square.
+     *
+     * @return a Square[] containing squares in the same row as "this" Square.
+     */
+
+    public Square[] getRow() {
+    }
+
+    /**
+     * getColumn takes no parameters, and returns an array of square objects
+     * in the same column as "this" Square.
+     *
+     * @return a Square[] containing squares in the same row as "this" Square.
+     */
+
+    public Square[] getColumn() {
+    }
+
+    /**
+     * getDiagonalLength() takes no parameters, and returns an integer
+     * representing the number of valid square objects in the same diagonal
+     * as "this" regardless of direction.
+     *
+     * @return an integer representing the length of the diagonal
+     */
+
+    public getDiagonalLength() {
+    }
+
+    /**
+     * getDiagonal() takes one parameter, a direction, and returns
+     * an array of square objects in the same diagonal as "this"
+     * Square.
+     *
+     * @param direction is an integer representing the direction of the diagonal to
+     * return. More specifically, a -1 represents a northwest-southeast diagonal, 
+     * and a 1 represents a northeast-southwest diagonal.
+     *
+     * @return a Square[] containing squares in the same diagonal as "this" Square.
+     */
+
+    public Square[] getDiagonal(int direction) {
+    }
+
 
 4. Determining whether a player has a network in the gameboard
 (Implemented by Sanchit)
@@ -108,6 +190,19 @@ gameboard and decide if the player has a complete network. Multiple
 helper functions will probably need to be added to this module.
 	a. public boolean containsNetwork(int player) //Gameboard class
 
+    /**
+     * containsNetwork() takes one parameter, the type of the current "player", and
+     * returns whether or not a network could be established with the "player"'s
+     * pieces on "this" Gameboard
+     *
+     * @param player is the type of the player in consideration
+     *
+     * @return true if the current set of pieces contains a Network, false otherwise
+     */
+
+    public boolean containsNetwork(int player) {
+    }
+
 5. Computing the evaluation function for a board/minimax algorithm
 (Implemented by Noah)
 A static function called evaluate in the Evaluator class will take a
@@ -115,5 +210,20 @@ gameboard as a parameter and perform an algorithmic analysis which
 will include an minimax algorithm with alpha-beta pruning. This will
 probably need a multitude of helper methods.
 	a. public static int evaluate(Gameboard g) //Evaluator class
+
+public class Evaluator {
+
+    /**evaluate() takes one parameter, Gameboard g, and assigns a value between 
+     * -1 and 1 to g using a variation of the mini-max alpha-beta pruning algorithm.
+     *
+     *  @param g is a Gameboard, which is evaluated
+     *
+     *  @return an int between -1 and 1
+     */
+
+    public static int evaluate(Gameboard g) {
+        return 1;
+    }
+}
 
 

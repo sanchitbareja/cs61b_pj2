@@ -84,6 +84,44 @@ public class Gameboard {
     }
 
     /**
+     * isValidMove() takes one parameter, and checks if "move" 
+     * can be legally made based on the game rules.
+     * 
+     * @param m is the move in question.
+     *
+     * @return true if the move can be legally made, false otherwise.
+     */
+
+    public boolean isvalidMove(Move m) {
+    }
+    
+    /**
+     * listMoves() takes one parameter, the type of the current player, and 
+     * returns an array of all possible moves.
+     *
+     * @param player is the type of the player in consideration
+     *
+     * @return a Move[] containing all the possible moves possible for "player"
+     * "this" Gameboard.
+     */
+
+    public Move[] listMoves(int player) {
+    }
+
+    /**
+     * containsNetwork() takes one parameter, the type of the current "player", and
+     * returns whether or not a network could be established with the "player"'s
+     * pieces on "this" Gameboard
+     *
+     * @param player is the type of the player in consideration
+     *
+     * @return true if the current set of pieces contains a Network, false otherwise
+     */
+
+    public boolean containsNetwork(int player) {
+    }
+
+    /**
      * toString() returns a String representation of the board.
      */
     public String toString() {
