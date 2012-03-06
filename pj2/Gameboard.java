@@ -61,7 +61,7 @@ public class Gameboard {
      * @param y the y-coordinate of the square
      */
 
-    public void removePiece(int x, int y) {
+    private void removePiece(int x, int y) {
     }
 
     /**

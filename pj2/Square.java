@@ -37,14 +37,14 @@ public class Square {
     }
 
     /**
-     * getNeighbors() takes no parameters, and returns a Square array
-     * of length 8 representing squares around a "this" Square.
+     * getNeighbors() takes no parameters, and returns a 2 x 2 2-D Square array
+     * of representing squares around the "this" Square.
      *
-     * @return a Square[] of length 8 containing squares located orthogonally
+     * @return a 2 x 2 Square[][] containing squares located orthogonally
      * and diagonally adjacent to "this" Square.
      */
 
-    public Square[] getNeighbors() {
+    public Square[][] getNeighbors() {
     }
 
     /**
