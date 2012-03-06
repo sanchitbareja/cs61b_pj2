@@ -73,7 +73,7 @@ Square.java
 Evaluator.java
 
 Modules:
-1. Determine whether a move is valid (Implemented by Yuxin)
+1. Determine whether a move is valid:
 A method in the Gameboard class called isValidMove will take a Move
 object as a parameter and check agaist a variety of things, including
 whether there is already a piece placed in the intended move position,
@@ -82,7 +82,7 @@ making the move is allowed to add more pieces using methods of the
 Square and Gameboard classes. Methods:
 	a. public boolean isValidMove(Move m) //Gameboard class
 
-2. Generating a list of all valid moves (Implemented by Noah)
+2. Generating a list of all valid moves:
 A method in the Gameboard class called listMoves will take in an int
 representing the color of the player to list the moves for, and will
 return a list of Move objects that represent all possible moves for
@@ -92,7 +92,6 @@ of all positions on the board.
 	a. public Move[] listMoves(int player) //Gameboard class
 
 3. Finding chips that form connections with a chip
-(Implemented by Sanchit)
 A function called findConnectedChips in the Square class will use the
 position of the Square (stored internally), find the Square objects
 that represent connections of "this" Square, and return an array of
@@ -101,7 +100,6 @@ getDiagonalLength methods in Gameboard.
 	a. public Square[] findConnectedChips //Square class
 
 4. Determining whether a player has a network in the gameboard
-(Implemented by Sanchit)
 A fuction in the gameboard class called containsNetwork will iterate
 through the connections of the chips of a certain player in "this"
 gameboard and decide if the player has a complete network. Multiple
@@ -109,11 +107,8 @@ helper functions will probably need to be added to this module.
 	a. public boolean containsNetwork(int player) //Gameboard class
 
 5. Computing the evaluation function for a board/minimax algorithm
-(Implemented by Noah)
 A static function called evaluate in the Evaluator class will take a
 gameboard as a parameter and perform an algorithmic analysis which
 will include an minimax algorithm with alpha-beta pruning. This will
 probably need a multitude of helper methods.
 	a. public static int evaluate(Gameboard g) //Evaluator class
-
-
