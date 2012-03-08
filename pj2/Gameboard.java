@@ -2,8 +2,174 @@
 
 public class Gameboard {
 
-    protected Square[][] board;
-    
+    public static final int INVALID = -1; //represents an invalid square
+    public static final int EMPTY = 0; //represents empty square
+    public static final int WHITE = 1; //represents a square containing white piece
+    public static final int BLACK = 2; //represents a square containing black piece 
+
+    protected int[][] board;
+
+    /**
+     * getNeighbors() takes 2 parameters - namely, the coordinate - and returns a 2 x 2 2-D square array
+     * of representing squares around the given square.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a 2 x 2 int[][] containing squares located orthogonally
+     * and diagonally adjacent to the square at (x,y).
+     */
+
+    public int[][] getNeighbors(int x, int y) {
+    }
+
+    /**
+     * getType() takes 2 parameters, and returns an int representing the type
+     * of the square.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return type of the square, a 0 represents EMPTY, a 1 represents WHITE,
+     * a 2 represents BLACK.
+     */
+
+    public int getType(int x, int y) {
+    }
+
+    /**
+     * setType() takes 3 parameters, the coordinates, and an integer representing the new type, and 
+     * changes the type of the square to the new type.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * @param goal represents the type which the square will be changed to. If
+     * newType is the same as the type of the square, nothing is changed.
+     */
+
+    public void setType(int x, int y, int goal) {
+    }
+
+    /**
+     * isValid() takes 2 parameters, the coordinates, and checks whether the type
+     * of square is INVALID.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if type of the square is INVALID, false otherwise.
+     */
+
+    public boolean isValid(int x, int y) {
+    }
+
+    /**
+     * isEmpty() takes 2 parameters, the coordinates, and checks whether the type 
+     * of square is EMPTY.
+     * 
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if type of the square is EMPTY, false otherwise.
+     */
+
+    public boolean isEmpty(int x, int y) {
+    }
+
+    /**
+     * isWhite() takes 2 parameters, the coordinate, and checks whether the type
+     * of square is WHITE.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if type of the square is WHITE, false otherwise.
+     */
+
+    public boolean isWhite(int x, int y) {
+    }
+
+    /**
+     * isBlack() takes 2 parameters, the coordinates, and checks whether the type
+     * of square is BLACK.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if type of square is BLACK, false otherwise.
+     */
+
+    public boolean isBlack(int x, int y) {
+    }
+
+    /**
+     * getRow() takes 1 parameters, the x-coordainte, and returns an array of square ints
+     * in the same row as x.
+     *
+     * @param x the x-coordinate of the row
+     *
+     * @return a int[] containing squares in the same row as int x.
+     */
+
+    public int[] getRow(int x) {
+    }
+
+    /**
+     * getColumn takes 1 parameters, the y-coordinate, and returns an array of square ints
+     * in the same column as the y.
+     *
+     * @param y the y-coordinate of the column
+     *
+     * @return a int[] containing squares in the same column as int y.
+     */
+
+    public int[] getColumn(int y) {
+    }
+
+    /**
+     * getDiagonalLength() takes 2 parameters, the coordinates, and returns an integer
+     * representing the number of valid square ints in the same diagonal
+     * as "this" regardless of direction.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return an integer representing the length of the diagonal
+     */
+
+    public getDiagonalLength(int x, int y) {
+    }
+
+    /**
+     * getDiagonal() takes 3 parameters, the coordiantes, a direction, and returns
+     * an array of square objects in the same diagonal as the square
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * @param direction is an integer representing the direction of the diagonal to
+     * return. More specifically, a -1 represents a northwest-southeast diagonal, 
+     * and a 1 represents a northeast-southwest diagonal.
+     *
+     * @return a int[] containing squares in the same diagonal as the square.
+     */
+
+    public int[] getDiagonal(int x, int y, int direction) {
+    }
+
+
+    /**
+     * findConnectingChips() takes 2 parameters, the coordinates, and returns a list of square ints 
+     * that the square is "connected" to.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing chips that is connected to given square
+     */
+
+    public int[] findConnectingChips(int x, int y) {
+    }
+
     public static final int TOTAL = 10; //represents total allotted pieces per player
     public static final int WHITEPLAYER = 1;
     public static final int BLACKPLAYER = 2;
