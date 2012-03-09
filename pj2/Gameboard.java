@@ -1,5 +1,8 @@
 /* Gameboard */
 
+import java.util.*;
+import player.*;
+
 public class Gameboard {
 
     public static final int INVALID = -1; //represents an invalid square
@@ -176,12 +179,50 @@ public class Gameboard {
 
     protected int whiteCount;
     protected int blackCount;
+
+    protected int width;
+    protected int height;
     
     /**
      * Gameboard constructor takes no parameters, and constructs
-     * an 8 x 8 2-D array of integers.
+     * a default 8 x 8 2-D array of integers.
      */
     public Gameboard() {
+        //fills all squares with EMPTY
+        this.width = 8;
+        this.height = 8;
+        int[][] board = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                board[i][j] = EMPTY;
+            }
+        }
+        //sets corner squares (0,0), (0,7), (7,0), (7,7) to INVALID
+        board[0][0] = INVALID;
+        board[0][7] = INVALID;
+        board[7][0] = INVALID;
+        board[7][7] = INVALID;
+    }
+
+    /**
+     * Gameboard constructor takes two parameters, and constructs
+     * a width * height 2-D array of integers.
+     */
+    public Gameboard(int width, int height) {
+        //fills all squares with EMPTY
+        this.width = width;
+        this.height = height;
+        int[][] board = new int[width][height];
+        for (int i = 0; i < width; i++) {
+            for(int j = 0; j < height; j++) {
+                board[i][j] = EMPTY;
+            }
+        }
+        //sets corner squares (0,0), (0,7), (7,0), (7,7) to INVALID
+        board[0][0] = INVALID;
+        board[0][height - 1] = INVALID;
+        board[width - 1][0] = INVALID;
+        board[width - 1][width - 1] = INVALID;
     }
 
     /**
@@ -192,7 +233,7 @@ public class Gameboard {
      */
 
     public int getWhiteCount() {
-        return whitePieces;
+        return whiteCount;
     }
 
     /**
@@ -203,7 +244,7 @@ public class Gameboard {
      */
 
     public int getBlackCount() {
-        return blackPieces;
+        return blackCount;
     }
 
     /**
@@ -217,6 +258,15 @@ public class Gameboard {
      */
 
     public void addPiece(int x, int y, int goal) {
+        if (condition) throw new AgainstRulesException("")
+        if (goal == WHITE && this.whiteCount > 0) {
+            this.setType(x, y, WHITE);
+            this.whiteCount--;
+        }
+        if (goal == BLACK && this.blackCount > 0) {
+            this.setType(x, y, BLACK);
+            this.blackCount--;
+        }
     }
 
     /**
@@ -228,6 +278,7 @@ public class Gameboard {
      */
 
     private void removePiece(int x, int y) {
+        this.setType(x,y,EMPTY);
     }
 
     /**
@@ -247,6 +298,17 @@ public class Gameboard {
      */
 
     public void switchPiece(int x1, int y1, int x2, int y2) {
+        this.setType(x2, y2, this.getType(x1,y1));
+        this.setType(x1, y1, this.getType(x2, y2));
+    }
+
+    /**
+     * clearBoard() changes all squares with the exception of corner squares
+     * to EMPTY for testing purposes.
+     */
+
+    private void clearBoard() {
+        this = new Gameboard();
     }
 
     /**
@@ -291,7 +353,75 @@ public class Gameboard {
      * toString() returns a String representation of the board.
      */
     public String toString() {
+        System.out.println("   |  0 |  1 |  2 |  3 |  4 |  5 |  6 |  7 |");
+        System.out.println("   -----------------------------------------");
+        for(int i = 0; i < width; i++) {
+            String[] printColumn = new String[height];
+            for(int j = 0; j < height; j++) {
+                switch(getType(i,j)) {
+                    case INVALID:
+                        printColumn[j] = "----";
+                        break;
+                    case EMPTY:
+                        printColumn[j] = "    ";
+                        break;
+                    case WHITE:
+                        printColumn[j] = " WW ";
+                        break;
+                    case BLACK:
+                        printColumn[j] = " BB ";
+                        break;
+                    default:
+                        printColumn[j] = " ERR";
+                }
+            }
+            for(int k = 0; k < printColumn.length; k++) {
+                System.out.println(k + " |");
+                System.out.print(printColumn[k] + '|');
+                System.out.println("   -----------------------------------------");
+            }
+
+        }
     }
+
+    public static void main(String args[]) {
+        Gameboard testGame = new Gameboard();
+        System.out.println(testGame);
+
+        //testing board dimensions
+        try {
+            assert testGame.width == 8: "ERROR (Y): width of gameboard incorrect";
+            assert testGame.height == 8: "ERROR (Y): height of gameboard incorrect";
+
+            //testing board corner square invariants (Rule #1)
+            assert testGame.isValid(0,0) == false: "ERROR (S): invalid squares are valid";
+            assert testGame.isValid(0,7) == false: "ERROR (S): invalid squares are valid";
+            assert testGame.isValid(7,0) == false: "ERROR (S): invalid squares are valid";
+            assert testGame.isValid(7,7) == false: "ERROR (S): invalid squares are valid";
+
+            //testing addPiece() without neighbor conflict
+            testGame.addPiece(6,0,BLACK);
+            testGame.addPiece(6,5,BLACK);
+            testGame.addPiece(5,5,BLACK);
+            testGame.addPiece(3,3,BLACK);
+            testGame.addPiece(3,5,BLACK);
+            testGame.addPiece(5,7,BLACK);
+
+            assert testGame.getType(6,0) == BLACK: "ERROR (Y): square should be BLACK"
+            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK"
+            assert testGame.getType(5,5) == BLACK: "ERROR (Y): square should be BLACK"
+            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK"
+            assert testGame.getType(3,5) == BLACK: "ERROR (Y): square should be BLACK"
+            assert testGame.getType(5,7) == BLACK: "ERROR (Y): square should be BLACK"
+
+            assert testGame.blackCount == 4: "ERROR: blackCount is incorrect";
+        } catch(Exception e) {
+            System.out.println(e);
+        }
+
+    }
+}
+
 
         
 
