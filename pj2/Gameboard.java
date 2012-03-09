@@ -10,17 +10,104 @@ public class Gameboard {
     protected int[][] board;
 
     /**
-     * getNeighbors() takes 2 parameters - namely, the coordinate - and returns a 2 x 2 2-D square array
+     * getNeighbors() takes 2 parameters - namely, the coordinate - and returns a 3 x 3 2-D square array
      * of representing squares around the given square.
      *
      * @param x the x-coordinate of the square
      * @param y the y-coordinate of the square
      *
-     * @return a 2 x 2 int[][] containing squares located orthogonally
-     * and diagonally adjacent to the square at (x,y).
+     * @return a 3 x 3 int[][] containing squares located orthogonally
+     * and diagonally adjacent to the square at (x,y). If square is at the side/corner, it fills 
+     * remainig 3X3 array with -1s
      */
 
     public int[][] getNeighbors(int x, int y) {
+	if(x >= 0 && x<= 7 && y >= 0 && y <= 7){
+	    int toReturn[][] = new int[3][3];
+	    toReturn[0][0] = get00(x,y);
+	    toReturn[0][1] = get01(x,y);
+	    toReturn[0][2] = get02(x,y);
+	    toReturn[1][0] = get10(x,y);
+	    toReturn[1][1] = this.board[x][y];
+	    toReturn[1][2] = get12(x,y);
+	    toReturn[2][0] = get20(x,y);
+	    toReturn[2][1] = get21(x,y);
+	    toReturn[2][2] = get22(x,y);
+	} else {
+	    System.out.println("Invalid x,y given in getNeighbors x: "+x+" y: "+y+" .");
+	    int toReturn[][] = new int[3][3];
+	    for(int i = 0; i < 3; i++){
+		for(int j = 0; j < 3; j++){
+		    toReturn[i][j] = INVALID;
+		}
+	    }
+	    return toReturn;
+	}
+    }
+    
+    //helper methods for getNeighbors
+    private int get00(int x, int y){
+	if(x - 1 >= 0 && y - 1 >= 0){
+	    return this.board[x-1][y-1];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get10(int x, int y){
+	if(y-1 >= 0){
+	    return this.board[x][y-1];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get20(int x, int y){
+	if(x + 1 <= 7 && y-1 >= 0){
+	    return this.board[x+1][y-1];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get01(int x, int y){
+	if(x - 1 >= 0){
+	    return this.board[x-1][y];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get21(int x, int y){
+	if(x+1 <= 7){
+	    return this.board[x+1][y];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get02(int x, int y){
+	if(x-1 >= 0 && y+1 <= 7){
+	    return this.board[x-1][y+1];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get12(int x, int y){
+	if(y+1 <= 7){
+	    return this.board[x][y+1];
+	} else {
+	    return INVALID;
+	}
+    }
+
+    private int get22(int x, int y){
+	if(x+1 <= 7 && y+1<=7){
+	    return this.board[x+1][y+1];
+	} else {
+	    return INVALID;
+	}
     }
 
     /**
@@ -35,6 +122,7 @@ public class Gameboard {
      */
 
     public int getType(int x, int y) {
+	return this.board[x][y];
     }
 
     /**
@@ -47,7 +135,8 @@ public class Gameboard {
      * newType is the same as the type of the square, nothing is changed.
      */
 
-    public void setType(int x, int y, int goal) {
+    private void setType(int x, int y, int goal) {
+	this.board[x][y] = goal;
     }
 
     /**
@@ -61,6 +150,11 @@ public class Gameboard {
      */
 
     public boolean isValid(int x, int y) {
+	if(getType(x,y) == INVALID){
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
@@ -74,6 +168,11 @@ public class Gameboard {
      */
 
     public boolean isEmpty(int x, int y) {
+	if(getType(x,y) == EMPTY){
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
@@ -87,6 +186,11 @@ public class Gameboard {
      */
 
     public boolean isWhite(int x, int y) {
+	if(getType(x, y) == WHITE){
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
@@ -100,10 +204,15 @@ public class Gameboard {
      */
 
     public boolean isBlack(int x, int y) {
+	if(getType(x, y) == BLACK){
+	    return true;
+	} else {
+	    return false;
+	}
     }
 
     /**
-     * getRow() takes 1 parameters, the x-coordainte, and returns an array of square ints
+     * getColumn() takes 1 parameters, the x-coordainte, and returns an array of square ints
      * in the same row as x.
      *
      * @param x the x-coordinate of the row
@@ -111,11 +220,16 @@ public class Gameboard {
      * @return a int[] containing squares in the same row as int x.
      */
 
-    public int[] getRow(int x) {
+    public int[] getColumn(int x) {
+	int columnChips[] = new int[8];
+	for(int j = 0; j < this.height; j++){
+	    columnChips[i] = this.board[x][j];
+	}
+	return columnChips;
     }
 
     /**
-     * getColumn takes 1 parameters, the y-coordinate, and returns an array of square ints
+     * getRow() takes 1 parameters, the y-coordinate, and returns an array of square ints
      * in the same column as the y.
      *
      * @param y the y-coordinate of the column
@@ -123,21 +237,42 @@ public class Gameboard {
      * @return a int[] containing squares in the same column as int y.
      */
 
-    public int[] getColumn(int y) {
+    public int[] getRow(int y) {
+	int rowChips[] = new int[8];
+	for(int i = 0; i < this.row; i++){
+	    rowChips[i] = this.board[i][y];
+	}
+	return rowChips;
     }
 
     /**
-     * getDiagonalLength() takes 2 parameters, the coordinates, and returns an integer
-     * representing the number of valid square ints in the same diagonal
-     * as "this" regardless of direction.
+     * getDiagonalLength() takes 3 parameters, the coordinates, the direction , and returns
+     * and integer representing the number of squares in the same diagonal
+     * as the square regardless of direction.
      *
      * @param x the x-coordinate of the square
      * @param y the y-coordinate of the square
+     * @param direction is an integer representing the direction of the diagonal to
+     * return. More specifically, a -1 represents a northwest-southeast diagonal, 
+     * and a 1 represents a northeast-southwest diagonal
      *
      * @return an integer representing the length of the diagonal
      */
 
-    public getDiagonalLength(int x, int y) {
+    private int getDiagonalLength(int x, int y, int direction) {
+	//this method uses a formula to compute the number of diagnol chips
+	int len = x + y + 1;
+	if(direction == -1){
+	    len = this.height - y + x;
+	    if(len > this.height){
+		len = this.height - len%this.height;
+	    }
+	} else if(direction == 1){
+	    if(len > this.height){
+		len = this.height - len%this.height;
+	    }
+	}
+	return len;
     }
 
     /**
@@ -154,6 +289,45 @@ public class Gameboard {
      */
 
     public int[] getDiagonal(int x, int y, int direction) {
+	int diagnolLength = getDiagnoalLength(x,y,direction);
+	int diagnolChips[] = new int[diagnolLength];
+	int startX = x;
+	int startY = y;
+	if(direction == -1){
+	    if(x > y){
+		startY = 0;
+		startX = x-y;
+	    } else if(y > x){
+		startX = 0;
+		startY = y-x;
+	    } else {
+		startX = 0;
+		startY = 0;
+	    }
+	    int xy = 0;
+	    while(startX < this.height && startY < this.height && xy < diagnolLength){
+		diagnolChips[xy] = this.board[x][y];
+		startX += 1;
+		startY += 1;
+		xy += 1;
+	    }
+	} else if(direction == 1){
+	    if(x + y > 7){
+		startX = 7;
+		startY = x + y - this.height + 1;
+	    } else {
+		startY = 0;
+		startX = x + y;
+	    }
+	    int xy2 = 0;
+	    while(startX > 0 && startY < this.height && xy2 M diagnolLength){
+		diagnolChips[xy2] = this.board[x][y];
+		startX -= 1;
+		startY += 1;
+		xy2 += 1;
+	    }
+	}
+	return diagnolChips;
     }
 
 
