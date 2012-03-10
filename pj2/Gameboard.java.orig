@@ -388,6 +388,18 @@ public class Gameboard {
         		startY = 0;
     	    }
     	    int xy = 0;
+<<<<<<< HEAD
+    	    while((startX < this.height && startY < this.height) && xy < diagonalLength){
+        		diagonalChips[xy] = this.board[x][y];
+        		startX += 1;
+        		startY += 1;
+        		xy += 1;
+    	    }
+    	} else if(direction == 1){
+    	    if(x + y > 7){
+        		startX = 7;
+        		startY = x + y - this.height + 1;
+=======
     	    while((startX < this.width && startY < this.height) && xy < diagonalLength){
     		diagonalChips[xy] = this.board[startX][startY];
     		startX += 1;
@@ -395,19 +407,28 @@ public class Gameboard {
     		xy += 1;
     	    }
     	} else if(direction == 1){
-    	    if(x + y > 7){
-        		startX = 7;
-        		startY = x + y - this.height + 1;
+    	    if(x + y > this.width-1){
+    		startX = this.width-1;
+    		startY = x + y - this.width + 1;
+>>>>>>> 6684ba7e0db7c993d9cb359d36988c8a03e9d5e0
     	    } else {
         		startY = 0;
         		startX = x + y;
     	    }
     	    int xy2 = 0;
+<<<<<<< HEAD
     	    while((startX > 0 && startY < this.height) && xy2 < diagonalLength){
         		diagonalChips[xy2] = this.board[x][y];
         		startX -= 1;
         		startY += 1;
         		xy2 += 1;
+=======
+    	    while((startX > 0 && startY < this.width) && xy2 < diagonalLength){
+    		diagonalChips[xy2] = this.board[startX][startY];
+    		startX -= 1;
+    		startY += 1;
+    		xy2 += 1;
+>>>>>>> 6684ba7e0db7c993d9cb359d36988c8a03e9d5e0
     	    }
     	}
     	return diagonalChips;
@@ -744,6 +765,9 @@ public class Gameboard {
 
             assert testGame.blackCount == 4: "ERROR: blackCount is incorrect";
 
+<<<<<<< HEAD
+
+=======
 	    Gameboard sanchitGame = new Gameboard();
 	    sanchitGame.addPiece(0,1,BLACK);
 	    sanchitGame.addPiece(0,2,BLACK);
@@ -925,6 +949,7 @@ public class Gameboard {
 	    assert Arrays.equals(sanchitGame.getDiagonal(5,5,1),f): "ERROR (S): getDiagonal is wrong";
 	    
 	    System.out.println(sanchitGame);
+>>>>>>> 6684ba7e0db7c993d9cb359d36988c8a03e9d5e0
 
             System.out.println("All tests so far have passed!");
         } catch(Exception e) {
