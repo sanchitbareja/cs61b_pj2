@@ -348,7 +348,7 @@ public class Gameboard {
     	if(direction == -1){
     	    len = this.height - y + x;
     	    if(len > this.height){
-    		  len = this.height - len%this.height;
+    		  len = this.height - len % this.height;
     	    }
     	} else if(direction == 1){
     	    if(len > this.height){
@@ -395,9 +395,9 @@ public class Gameboard {
         		xy += 1;
     	    }
     	} else if(direction == 1){
-    	    if(x + y > 7){
-        		startX = 7;
-        		startY = x + y - this.height + 1;
+    	    if(x + y > this.width - 1){
+        		startX = this.width - 1;
+        		startY = x + y - this.width + 1;
     	    } else {
         		startY = 0;
         		startX = x + y;
@@ -440,13 +440,17 @@ public class Gameboard {
      */
 
     public void addPiece(int x, int y, int type) throws AgainstRulesException {
+        /*
         System.out.println("checkDimensions is " + checkDimensions(x,y) + " at (" + x + ", " + y + ")");
         System.out.println("checkNeighbor is " + checkNeighbors(x,y,type)  + " at (" + x + ", " + y + ") with " + type);
         System.out.println("checkSquare is " + checkSquare(x,y,type) + " at (" + x + ", " + y + ") with " + type);
         System.out.println("check Dimensions is " + checkPiece(type));
         System.out.println("------------------------------------------------------------------");
+        */
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
             setType(x, y, type);
+        } else {
+            throw new AgainstRulesException("attempt to add " + type " fails at  (" + x + ", " + y + ")");
         }
         if (type == BLACK) {
             blackCount--;
@@ -572,18 +576,20 @@ public class Gameboard {
     private int[] locateNeighbors(int x, int y, int type) {
         int[] location = new int[2];
         int[][] neighbors = getNeighbors(x, y);
+        /*
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 System.out.print(neighbors[i][j] + "|");
             }
             System.out.println();
         }
+        */
 
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (neighbors[i][j] == type) {
-                    location[0] = x + i - 1;
-                    location[1] = y + j - 1; 
+                    location[0] = x + i - 1; //true location
+                    location[1] = y + j - 1; //true location
                 }
             }
         }
@@ -610,7 +616,7 @@ public class Gameboard {
         if (countNeighbors(x,y,type) == 0) {
             return true;
         }
-        System.out.println("countNeighbors " + countNeighbors(x,y,type) + " at (" + x + ", " + y + ") with " + type);
+        //System.out.println("countNeighbors " + countNeighbors(x,y,type) + " at (" + x + ", " + y + ") with " + type);
         if (countNeighbors(x,y,type) == 1) {
             int[] location = locateNeighbors(x,y,type);
             if (countNeighbors(location[0], location[1], type) <= 0) {
@@ -634,24 +640,25 @@ public class Gameboard {
     }
 
     /**
-     * swapPiecess() "moves" a piece from one coordinate to another.
+     * movePiece() "moves" a piece from one coordinate to another.
      * More specifically, it takes parameters (x1, y1, x2, y2) and
-     * moves a piece on "this" Gameboard from (x1, y1) to (x2, y2),
-     * and moves the piece at (x2, y2) to (x1, y1).
+     * moves a piece on "this" Gameboard from (x1, y1) to (x2, y2).
      *
-     * Unusual conditions: 
-     * if the piece specified at coordinate (x1, y1) does not exist,
-     * nothing is done.
      *
      * @param x1 the x-coordinate of the square containing the piece
      * @param y1 the y-coordinate of the square containing the piece
-     * @param x2 the x-coordinate of the second square to swap with
-     * @param y2 the y-coordinate of the second square to swap with
+     * @param x2 the x-coordinate of destination
+     * @param y2 the y-coordinate of destination
      */
 
-    public void swapPieces(int x1, int y1, int x2, int y2) {
-        this.setType(x2, y2, this.getType(x1,y1));
-        this.setType(x1, y1, this.getType(x2, y2));
+    public void movePieces(int x1, int y1, int x2, int y2) throws AgainstRulesException {
+        try {
+            addPiece(x2, y2, getType(x1,y1));
+        }
+        catch (AgainstRulesException e) {
+            throw new AgainstRulesException("attempt to move " + type " fails at  (" + x + ", " + y + ")");
+        }
+        removePiece(x1, y1);
     }
 
     /**
