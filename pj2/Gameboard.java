@@ -54,6 +54,8 @@ public class Gameboard {
         //fills all squares with EMPTY
         this.width = width;
         this.height = height;
+        this.whiteCount = 10;
+        this.blackCount = 10;
         int[][] board = new int[width][height];
         for (int i = 0; i < width; i++) {
             for(int j = 0; j < height; j++) {
@@ -346,11 +348,11 @@ public class Gameboard {
     	if(direction == -1){
     	    len = this.height - y + x;
     	    if(len > this.height){
-    		len = this.height - len%this.height;
+    		  len = this.height - len%this.height;
     	    }
     	} else if(direction == 1){
     	    if(len > this.height){
-    		len = this.height - len%this.height;
+    		  len = this.height - len % this.height;
     	    }
     	}
     	return len;
@@ -376,36 +378,36 @@ public class Gameboard {
     	int startY = y;
     	if(direction == -1){
     	    if(x > y){
-    		startY = 0;
-    		startX = x-y;
+        		startY = 0;
+        		startX = x-y;
     	    } else if(y > x){
-    		startX = 0;
-    		startY = y-x;
+        		startX = 0;
+        		startY = y-x;
     	    } else {
-    		startX = 0;
-    		startY = 0;
+        		startX = 0;
+        		startY = 0;
     	    }
     	    int xy = 0;
     	    while((startX < this.height && startY < this.height) && xy < diagonalLength){
-    		diagonalChips[xy] = this.board[x][y];
-    		startX += 1;
-    		startY += 1;
-    		xy += 1;
+        		diagonalChips[xy] = this.board[x][y];
+        		startX += 1;
+        		startY += 1;
+        		xy += 1;
     	    }
     	} else if(direction == 1){
     	    if(x + y > 7){
-    		startX = 7;
-    		startY = x + y - this.height + 1;
+        		startX = 7;
+        		startY = x + y - this.height + 1;
     	    } else {
-    		startY = 0;
-    		startX = x + y;
+        		startY = 0;
+        		startX = x + y;
     	    }
     	    int xy2 = 0;
     	    while((startX > 0 && startY < this.height) && xy2 < diagonalLength){
-    		diagonalChips[xy2] = this.board[x][y];
-    		startX -= 1;
-    		startY += 1;
-    		xy2 += 1;
+        		diagonalChips[xy2] = this.board[x][y];
+        		startX -= 1;
+        		startY += 1;
+        		xy2 += 1;
     	    }
     	}
     	return diagonalChips;
@@ -437,17 +439,165 @@ public class Gameboard {
      * @param goal the new type of the square
      */
 
-    public void addPiece(int x, int y, int goal) {
-        //if (condition) throw new AgainstRulesException("")
-        if (goal == WHITE && this.whiteCount > 0) {
-            this.setType(x, y, WHITE);
-            this.whiteCount--;
+    public void addPiece(int x, int y, int goal) throws AgainstRulesException {
+        if (check(x,y) && (goal == WHITE || goal == BLACK)) { //checks if (x,y) are valid, goal WHITE || BLACK
+                }
         }
-        if (goal == BLACK && this.blackCount > 0) {
-            this.setType(x, y, BLACK);
-            this.blackCount--;
+
+    /*
+    ****************************************************
+    *            addPiece() Helper Methods             *
+    ****************************************************
+    */
+
+    /**
+     * checkDimensions(), takes two parameters, the x-coordinate, and y-coordinate, and verifies
+     * that they are within the dimensions of this.Gameboard.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return true if the coordinate satisfies the dimensions of the board, false otherwise.
+     */
+
+    private boolean checkDimensions(int x, int y) {
+        if ((x < this.width && x >= 0) && (y < this.height && y >= 0)) {
+            return true;
+        } else {
+            return false;
         }
     }
+
+    /**
+     * checkSquare(), takes three parameters, the x-coordinate,  y-coordinate, and a piece, and verifies
+     * that the square is not paired with a coordinate where the piece is not allowed. If the goal is INVALID, automatically
+     * returns false. An INVALID is not allowed anywhere! If the coordinates is at an INVALID spot, also returns false.
+     * 
+     * (RULE #1 and #2)
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * @param goal the piece to be inspected at (x,y)
+     *
+     * @return true if the piece can legitimately be placed on (x,y), false otherwise.
+     */
+
+    private boolean checkSquare(int x, int y, int type) {
+        if (isValid(x,y) && getType(type) != INVALID) { //if (x,y) is valid, and the type of goal is valid
+            if (getType(goal) == EMPTY) { //an EMPTY can be put anywhere, except the invalid squares, which have been checked
+                return true;
+            }
+            if (getType(type) == BLACK) { //a BLACK can not be placed on the left/right edges
+                if (x != 0 && x != (this.width - 1)) { //if x-coordinate is not 0 and its not width - 1
+                    return true;
+                }
+            }
+            if (getType(type) == WHITE) { //a WHITE can not be placed on the top/bottom edges
+                if (y != 0 && y != (this.height - 1)) { //if x-coordinate is not 0 and its not width - 1
+                    return true; 
+                }
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * pieceCheck(), takes one parameter, a type of a piece, returns whether or not the type is {BLACK, WHITE}
+     * 
+     * (RULE #1 and #2)
+     * @param goal the piece to be inspected
+     *
+     * @return true if the piece is WHITE or BLACK, false otherwise.
+     */
+
+    private boolean pieceCheck(int goal) {
+        if (goal == WHITE || goal == BLACK) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * countNeighbor() takes in three parameters, an x-coordinate and y-coordinate, and a type and return the number of neighbors
+     * around it, excluding itself.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * @param goal the type of the piece to be inspected
+     *
+     * @return the number of neighbors surrounding the specified piece, excluding itself,
+     */
+
+    private int countNeighbor(int x, int y, int type) {
+        int[][] neighbors = getNeighbors(x, y, type);
+        int count = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (getType(i, j) == type) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /**
+     * locateNeighbor() takes in three parameters, an x-coordinate, y-coordinate on the board and a type, adjusts 
+     * the coordinates of 2-D array returned from getNeighbor() to overlay the coordinates of the piece on this.Gameboard.
+     *
+     * @param x1 the x-coordinate of the square on the gameboard
+     * @param y1 the y-coordinate of the square on the gameboard
+     * @param type the type of the square we are inspecting
+     *
+     * @return an array of length 2, containing the coordinates of the neighbor on the this.Gameboard. The first index is the x-coordinate,
+     * and the second index is the y-coordinates.
+     */
+
+    private int locateNeighbor(int x, int y, int type) {
+        int[] neighbors = getNeighbors(x, y, type);
+        int[] location = new int[2];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if ((i != 1 && j != 1) && getType(i, j) == type) {
+                    count[0] = x + i - 1;
+                    count[1] = y + j - 1; 
+                }
+            }
+        }
+        return count;
+    }
+
+
+    /**
+     * neighborCheck() takes in three parameters, an x-coordinate and y-coordinate, and a piece and checks whether placing the piece there
+     * would violate the rule that a player may not have more than two chips in a connected group, whether connected
+     * orthogonally or diagonally.
+     * (RULE #4)
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     * @param goal the piece to be inspected
+     *
+     * @return true if the piece is can be placed according to the rules, false otherwise.
+     */
+
+    private boolean neighborCheck(int x, int y, int type) {
+        if squareCheck() {
+            if (neighborCount(x,y,type) == 0) {
+                return true;
+            }
+            if (neighborCount(x,y,type) == 1) {
+                int[] location = oneNeighborLocator(x,y,type);
+                if (neighborCount(location[0], location[1]) <= 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    }
+
 
     /**
      * removePiece(), takes two parameters, and changes the type of the 
@@ -458,11 +608,11 @@ public class Gameboard {
      */
 
     private void removePiece(int x, int y) {
-        this.setType(x,y,EMPTY);
+        this.setType(x, y, EMPTY);
     }
 
     /**
-     * switchPieces() "moves" a piece from one coordinate to another.
+     * swapPiecess() "moves" a piece from one coordinate to another.
      * More specifically, it takes parameters (x1, y1, x2, y2) and
      * moves a piece on "this" Gameboard from (x1, y1) to (x2, y2),
      * and moves the piece at (x2, y2) to (x1, y1).
@@ -477,18 +627,9 @@ public class Gameboard {
      * @param y2 the y-coordinate of the second square to swap with
      */
 
-    public void switchPiece(int x1, int y1, int x2, int y2) {
+    public void swapPieces(int x1, int y1, int x2, int y2) {
         this.setType(x2, y2, this.getType(x1,y1));
         this.setType(x1, y1, this.getType(x2, y2));
-    }
-
-    /**
-     * clearBoard() changes all squares with the exception of corner squares
-     * to EMPTY for testing purposes.
-     */
-
-    private void clearBoard() {
-        //
     }
 
     /**
@@ -602,6 +743,8 @@ public class Gameboard {
             assert testGame.getType(5,7) == BLACK: "ERROR (Y): square should be BLACK";
 
             assert testGame.blackCount == 4: "ERROR: blackCount is incorrect";
+
+
 
             System.out.println("All tests so far have passed!");
         } catch(Exception e) {
