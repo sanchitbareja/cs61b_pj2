@@ -450,7 +450,7 @@ public class Gameboard {
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
             setType(x, y, type);
         } else {
-            throw new AgainstRulesException("attempt to add " + type " fails at  (" + x + ", " + y + ")");
+            throw new AgainstRulesException("attempt to add " + type + " fails at  (" + x + ", " + y + ")");
         }
         if (type == BLACK) {
             blackCount--;
@@ -656,7 +656,7 @@ public class Gameboard {
             addPiece(x2, y2, getType(x1,y1));
         }
         catch (AgainstRulesException e) {
-            throw new AgainstRulesException("attempt to move " + type " fails at  (" + x + ", " + y + ")");
+            throw new AgainstRulesException("attempt to move " + getType(x1,y1) + " from  (" + x1 + ", " + y1 + ") fails.");
         }
         removePiece(x1, y1);
     }
