@@ -105,92 +105,92 @@ public class Gameboard {
 
     private int[][] getNeighbors(int x, int y) {
         int toReturn[][] = new int[3][3];
-    	if(x >= 0 && x<= this.width-1 && y >= 0 && y <= this.width-1){
-    	    //int toReturn[][] = new int[3][3];
-    	    toReturn[0][0] = get00(x,y);
-    	    toReturn[0][1] = get01(x,y);
-    	    toReturn[0][2] = get02(x,y);
-    	    toReturn[1][0] = get10(x,y);
-    	    toReturn[1][1] = INVALID;
-    	    toReturn[1][2] = get12(x,y);
-    	    toReturn[2][0] = get20(x,y);
-    	    toReturn[2][1] = get21(x,y);
-    	    toReturn[2][2] = get22(x,y);
-    	} else {
-    	    System.out.println("Invalid x,y given in getNeighbors x: "+x+" y: "+y+" .");
-    	    //int toReturn[][] = new int[3][3];
-    	    for(int i = 0; i < 3; i++){
-        		for(int j = 0; j < 3; j++){
-        		    toReturn[i][j] = INVALID;
-        		}
-    	    }
-    	}
+        if(x >= 0 && x<= this.width-1 && y >= 0 && y <= this.width-1){
+            //int toReturn[][] = new int[3][3];
+            toReturn[0][0] = get00(x,y);
+            toReturn[0][1] = get01(x,y);
+            toReturn[0][2] = get02(x,y);
+            toReturn[1][0] = get10(x,y);
+            toReturn[1][1] = INVALID;
+            toReturn[1][2] = get12(x,y);
+            toReturn[2][0] = get20(x,y);
+            toReturn[2][1] = get21(x,y);
+            toReturn[2][2] = get22(x,y);
+        } else {
+            System.out.println("Invalid x,y given in getNeighbors x: "+x+" y: "+y+" .");
+            //int toReturn[][] = new int[3][3];
+            for(int i = 0; i < 3; i++){
+                for(int j = 0; j < 3; j++){
+                    toReturn[i][j] = INVALID;
+                }
+            }
+        }
         return toReturn; 
     }
     
     //helper methods for getNeighbors
     private int get00(int x, int y){
-    	if(x - 1 >= 0 && y - 1 >= 0){
-    	    return this.board[x-1][y-1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x - 1 >= 0 && y - 1 >= 0){
+            return this.board[x-1][y-1];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get10(int x, int y){
-    	if(y-1 >= 0){
-    	    return this.board[x][y-1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(y-1 >= 0){
+            return this.board[x][y-1];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get20(int x, int y){
-    	if(x + 1 <= this.width-1 && y-1 >= 0){
-    	    return this.board[x+1][y-1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x + 1 <= this.width-1 && y-1 >= 0){
+            return this.board[x+1][y-1];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get01(int x, int y){
-    	if(x - 1 >= 0){
-    	    return this.board[x-1][y];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x - 1 >= 0){
+            return this.board[x-1][y];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get21(int x, int y){
-    	if(x+1 <= this.width-1){
-    	    return this.board[x+1][y];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x+1 <= this.width-1){
+            return this.board[x+1][y];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get02(int x, int y){
-    	if(x-1 >= 0 && y+1 <= this.width-1){
-    	    return this.board[x-1][y+1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x-1 >= 0 && y+1 <= this.width-1){
+            return this.board[x-1][y+1];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get12(int x, int y){
-    	if(y+1 <= this.width-1){
-    	    return this.board[x][y+1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(y+1 <= this.width-1){
+            return this.board[x][y+1];
+        } else {
+            return INVALID;
+        }
     }
 
     private int get22(int x, int y){
-    	if(x+1 <= this.width-1 && y+1<=this.width-1){
-    	    return this.board[x+1][y+1];
-    	} else {
-    	    return INVALID;
-    	}
+        if(x+1 <= this.width-1 && y+1<=this.width-1){
+            return this.board[x+1][y+1];
+        } else {
+            return INVALID;
+        }
     }
 
     /**
@@ -205,7 +205,7 @@ public class Gameboard {
      */
 
     public int getType(int x, int y) {
-	   return this.board[x][y];
+       return this.board[x][y];
     }
 
     /**
@@ -219,7 +219,7 @@ public class Gameboard {
      */
 
     private void setType(int x, int y, int type) {
-	   this.board[x][y] = type;
+       this.board[x][y] = type;
     }
 
     /**
@@ -233,11 +233,11 @@ public class Gameboard {
      */
 
     public boolean isValid(int x, int y) {
-    	if(getType(x,y) != INVALID){
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+        if(getType(x,y) != INVALID){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -251,11 +251,11 @@ public class Gameboard {
      */
 
     public boolean isEmpty(int x, int y) {
-    	if(getType(x,y) == EMPTY){
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+        if(getType(x,y) == EMPTY){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -269,11 +269,11 @@ public class Gameboard {
      */
 
     public boolean isWhite(int x, int y) {
-    	if(getType(x, y) == WHITE){
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+        if(getType(x, y) == WHITE){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -287,11 +287,11 @@ public class Gameboard {
      */
 
     public boolean isBlack(int x, int y) {
-    	if(getType(x, y) == BLACK){
-    	    return true;
-    	} else {
-    	    return false;
-    	}
+        if(getType(x, y) == BLACK){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -304,11 +304,11 @@ public class Gameboard {
      */
 
     private int[] getColumn(int x) {
-    	int columnChips[] = new int[8];
-    	for(int j = 0; j < this.height; j++){
-    	    columnChips[j] = this.board[x][j];
-    	}
-    	return columnChips;
+        int columnChips[] = new int[8];
+        for(int j = 0; j < this.height; j++){
+            columnChips[j] = this.board[x][j];
+        }
+        return columnChips;
     }
 
     /**
@@ -321,11 +321,11 @@ public class Gameboard {
      */
 
     private int[] getRow(int y) {
-    	int rowChips[] = new int[8];
-    	for(int i = 0; i < this.width; i++){
-    	    rowChips[i] = this.board[i][y];
-    	}
-    	return rowChips;
+        int rowChips[] = new int[8];
+        for(int i = 0; i < this.width; i++){
+            rowChips[i] = this.board[i][y];
+        }
+        return rowChips;
     }
 
     /**
@@ -343,19 +343,19 @@ public class Gameboard {
      */
 
     private int getDiagonalLength(int x, int y, int direction) {
-	//this method uses a formula to compute the number of diagonal chips
-	int len = x + y + 1;
-    	if(direction == -1){
-    	    len = this.height - y + x;
-    	    if(len > this.height){
-    		  len = this.height - len % this.height;
-    	    }
-    	} else if(direction == 1){
-    	    if(len > this.height){
-    		  len = this.height - len % this.height;
-    	    }
-    	}
-    	return len;
+    //this method uses a formula to compute the number of diagonal chips
+    int len = x + y + 1;
+        if(direction == -1){
+            len = this.height - y + x;
+            if(len > this.height){
+              len = this.height - len % this.height;
+            }
+        } else if(direction == 1){
+            if(len > this.height){
+              len = this.height - len % this.height;
+            }
+        }
+        return len;
     }
 
     /**
@@ -372,45 +372,45 @@ public class Gameboard {
      */
 
     private int[] getDiagonal(int x, int y, int direction) {
-    	int diagonalLength = getDiagonalLength(x,y,direction);
-    	int diagonalChips[] = new int[diagonalLength];
-    	int startX = x;
-    	int startY = y;
-    	if(direction == -1){
-    	    if(x > y){
-        		startY = 0;
-        		startX = x-y;
-    	    } else if(y > x){
-        		startX = 0;
-        		startY = y-x;
-    	    } else {
-        		startX = 0;
-        		startY = 0;
-    	    }
-    	    int xy = 0;
-    	    while((startX < this.width && startY < this.height) && xy < diagonalLength){
-        		diagonalChips[xy] = this.board[startX][startY];
-        		startX += 1;
-        		startY += 1;
-        		xy += 1;
-    	    }
-    	} else if(direction == 1){
-    	    if(x + y > this.width - 1){
-        		startX = this.width - 1;
-        		startY = x + y - this.width + 1;
-    	    } else {
-        		startY = 0;
-        		startX = x + y;
-    	    }
-    	    int xy2 = 0;
-    	    while((startX > 0 && startY < this.height) && xy2 < diagonalLength){
-        		diagonalChips[xy2] = this.board[startX][startY];
-        		startX -= 1;
-        		startY += 1;
-        		xy2 += 1;
-    	    }
-    	}
-    	return diagonalChips;
+        int diagonalLength = getDiagonalLength(x,y,direction);
+        int diagonalChips[] = new int[diagonalLength];
+        int startX = x;
+        int startY = y;
+        if(direction == -1){
+            if(x > y){
+                startY = 0;
+                startX = x-y;
+            } else if(y > x){
+                startX = 0;
+                startY = y-x;
+            } else {
+                startX = 0;
+                startY = 0;
+            }
+            int xy = 0;
+            while((startX < this.width && startY < this.height) && xy < diagonalLength){
+                diagonalChips[xy] = this.board[startX][startY];
+                startX += 1;
+                startY += 1;
+                xy += 1;
+            }
+        } else if(direction == 1){
+            if(x + y > this.width - 1){
+                startX = this.width - 1;
+                startY = x + y - this.width + 1;
+            } else {
+                startY = 0;
+                startX = x + y;
+            }
+            int xy2 = 0;
+            while((startX > 0 && startY < this.height) && xy2 < diagonalLength){
+                diagonalChips[xy2] = this.board[startX][startY];
+                startX -= 1;
+                startY += 1;
+                xy2 += 1;
+            }
+        }
+        return diagonalChips;
     }
 
     /**
@@ -1275,216 +1275,225 @@ public class Gameboard {
             testGame.addPiece(4,5, WHITE);
             testGame.addPiece(5,6, WHITE);
             testGame.addPiece(7,1, WHITE);
+
             testGame.addPiece(6,2, WHITE);
             testGame.addPiece(7,5, WHITE);
             testGame.addPiece(7,6, WHITE);
             testGame.addPiece(0,2, WHITE);
             testGame.addPiece(0,6, WHITE);
+
             testGame.addPiece(1,5, WHITE);
             testGame.addPiece(6,1, BLACK);
             testGame.addPiece(1,7, BLACK);
             testGame.addPiece(6,7, BLACK);
             testGame.addPiece(2,1, BLACK);
+
+            testGame.addPiece(2,3, BLACK);
+            testGame.addPiece(2,5, BLACK);
+            testGame.addPiece(2,7, BLACK);
             testGame.addPiece(1,0, BLACK);
             testGame.addPiece(4,2, BLACK);
+
             testGame.addPiece(3,7, BLACK);
             testGame.addPiece(6,0, BLACK);
             testGame.addPiece(6,5, BLACK);
             testGame.addPiece(5,5, BLACK);
             testGame.addPiece(3,3, BLACK);
+
             testGame.addPiece(3,5, BLACK);
             testGame.addPiece(5,7, BLACK);
 
             System.out.println(testGame);
 
+
             //testing connection related methods
 
 
             /*
-    	    Gameboard sanchitGame = new Gameboard();
-    	    sanchitGame.addPiece(0,1,WHITE);
-    	    sanchitGame.addPiece(0,2,WHITE);
-    	    sanchitGame.addPiece(0,3,WHITE);
-    	    sanchitGame.addPiece(0,4,WHITE);
-    	    sanchitGame.addPiece(0,5,WHITE);
-    	    sanchitGame.addPiece(0,6,WHITE);
-    	    
-    	    sanchitGame.addPiece(1,1,WHITE);
-    	    sanchitGame.addPiece(2,2,WHITE);
-    	    sanchitGame.addPiece(3,3,WHITE);
-    	    sanchitGame.addPiece(4,4,WHITE);
-    	    sanchitGame.addPiece(5,5,WHITE);
-    	    sanchitGame.addPiece(6,6,WHITE);
+            Gameboard sanchitGame = new Gameboard();
+            sanchitGame.addPiece(0,1,WHITE);
+            sanchitGame.addPiece(0,2,WHITE);
+            sanchitGame.addPiece(0,3,WHITE);
+            sanchitGame.addPiece(0,4,WHITE);
+            sanchitGame.addPiece(0,5,WHITE);
+            sanchitGame.addPiece(0,6,WHITE);
+            
+            sanchitGame.addPiece(1,1,WHITE);
+            sanchitGame.addPiece(2,2,WHITE);
+            sanchitGame.addPiece(3,3,WHITE);
+            sanchitGame.addPiece(4,4,WHITE);
+            sanchitGame.addPiece(5,5,WHITE);
+            sanchitGame.addPiece(6,6,WHITE);
 
-    	    sanchitGame.addPiece(7,1,WHITE);
-    	    sanchitGame.addPiece(7,2,WHITE);
-    	    sanchitGame.addPiece(7,3,WHITE);
-    	    sanchitGame.addPiece(7,4,WHITE);
-    	    sanchitGame.addPiece(7,5,WHITE);
-    	    sanchitGame.addPiece(7,6,WHITE);
+            sanchitGame.addPiece(7,1,WHITE);
+            sanchitGame.addPiece(7,2,WHITE);
+            sanchitGame.addPiece(7,3,WHITE);
+            sanchitGame.addPiece(7,4,WHITE);
+            sanchitGame.addPiece(7,5,WHITE);
+            sanchitGame.addPiece(7,6,WHITE);
             sanchitGame.addPiece(5,7,WHITE);
 
             System.out.println(sanchitGame);
-    	    
-    	    assert sanchitGame.getDiagonalLength(0,0,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,4,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,5,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,6,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,7,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
+            
+            assert sanchitGame.getDiagonalLength(0,0,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,4,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,5,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,6,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,7,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(1,0,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,1,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,5,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,6,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,7,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,0,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,1,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,5,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,6,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,7,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(2,0,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,2,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,5,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,6,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,7,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,0,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,2,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,5,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,6,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,7,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(3,0,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,1,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,3,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,6,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,7,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,0,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,1,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,3,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,6,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,7,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(4,0,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,1,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,4,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,6,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,7,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,0,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,1,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,4,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,6,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,7,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(5,0,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,1,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,2,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,5,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,7,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,0,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,1,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,2,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,5,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,7,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(6,0,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,1,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,2,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,6,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,7,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,0,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,1,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,2,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,6,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,7,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(7,0,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,1,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,2,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,3,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,7,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,0,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,1,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,2,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,3,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,7,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(0,0,1) == 1: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,1,1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,2,1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,3,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(0,7,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,0,1) == 1: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,1,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,2,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,3,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,7,1) == 8: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(1,0,1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,1,1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,2,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,6,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(1,7,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,0,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,1,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,2,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,6,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,7,1) == 7: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(2,0,1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,1,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,2,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,5,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(2,7,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,0,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,1,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,2,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,5,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,7,1) == 6: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(3,0,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,1,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,4,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,6,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(3,7,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,0,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,1,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,4,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,6,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,7,1) == 5: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(4,0,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,1,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,3,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,6,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(4,7,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,0,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,1,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,3,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,6,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,7,1) == 4: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(5,0,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,2,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,5,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,6,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(5,7,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,0,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,2,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,5,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,6,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,7,1) == 3: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(6,0,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,1,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,5,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,6,1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(6,7,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,0,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,1,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,5,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,6,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,7,1) == 2: "ERROR (S): getDiagonalLength is wrong";
 
-    	    assert sanchitGame.getDiagonalLength(7,0,1) == 8: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,4,1) == 4: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,5,1) == 3: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,6,1) == 2: "ERROR (S): getDiagonalLength is wrong";
-    	    assert sanchitGame.getDiagonalLength(7,7,1) == 1: "ERROR (S): getDiagonalLength is wrong";	 
-    	    
-    	    int[] a = {-1,0,0,0,0,0,0,-1};
-    	    int[] b = {-1,2,1,2,1,2,1,-1};
-    	    int[] c = {-1,0,0,0,0,0,0,-1};
-    	    int[] d = {-1,2,2,2,2,2,2,-1};
-    	    int[] e = {-1,2,1,2,1,2,1,-1};
-    	    int[] f = {1,0,2,0,0};
-    	    
-    	    assert Arrays.equals(sanchitGame.getRow(0),a): "ERROR (S): getRow is wrong";
-    	    assert Arrays.equals(sanchitGame.getDiagonal(0,0,-1),b): "ERROR (S): getDiagonal is wrong";
-    	    assert Arrays.equals(sanchitGame.getRow(7),c): "ERROR (S): getRow is wrong";
-    	    assert Arrays.equals(sanchitGame.getColumn(0),d): "ERROR (S): getColumn is wrong";
-    	    assert Arrays.equals(sanchitGame.getDiagonal(2,2,-1),e): "ERROR (S): getDiagonal is wrong";
-    	    assert Arrays.equals(sanchitGame.getDiagonal(5,5,1),f): "ERROR (S): getDiagonal is wrong";
+            assert sanchitGame.getDiagonalLength(7,0,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,4,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,5,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,6,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,7,1) == 1: "ERROR (S): getDiagonalLength is wrong";   
+            
+            int[] a = {-1,0,0,0,0,0,0,-1};
+            int[] b = {-1,2,1,2,1,2,1,-1};
+            int[] c = {-1,0,0,0,0,0,0,-1};
+            int[] d = {-1,2,2,2,2,2,2,-1};
+            int[] e = {-1,2,1,2,1,2,1,-1};
+            int[] f = {1,0,2,0,0};
+            
+            assert Arrays.equals(sanchitGame.getRow(0),a): "ERROR (S): getRow is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(0,0,-1),b): "ERROR (S): getDiagonal is wrong";
+            assert Arrays.equals(sanchitGame.getRow(7),c): "ERROR (S): getRow is wrong";
+            assert Arrays.equals(sanchitGame.getColumn(0),d): "ERROR (S): getColumn is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(2,2,-1),e): "ERROR (S): getDiagonal is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(5,5,1),f): "ERROR (S): getDiagonal is wrong";
 
-    	    System.out.println(sanchitGame);
+            System.out.println(sanchitGame);
             */
         } catch(Exception e) {
             System.out.println(e);
@@ -1495,6 +1504,5 @@ public class Gameboard {
 
 
         
-
 
 
