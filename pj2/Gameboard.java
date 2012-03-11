@@ -940,24 +940,24 @@ public class Gameboard {
     }
 
     public static void main(String args[]) {
-        Gameboard testGame = new Gameboard();
-        //System.out.println(testGame);
+        Gameboard yuxinGame = new Gameboard();
+        //System.out.println(yuxinGame);
 
         try {
 
             //verifying board dimensions
-            assert testGame.width == 8: "ERROR (Y): width of gameboard incorrect";
-            assert testGame.height == 8: "ERROR (Y): height of gameboard incorrect";
+            assert yuxinGame.width == 8: "ERROR (Y): width of gameboard incorrect";
+            assert yuxinGame.height == 8: "ERROR (Y): height of gameboard incorrect";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
 
             //verifying corner squares are indeed INVALID
-            assert testGame.isValid(0,0) == false: "ERROR (S): invalid squares are valid";
-            assert testGame.isValid(0,7) == false: "ERROR (S): invalid squares are valid";
-            assert testGame.isValid(7,0) == false: "ERROR (S): invalid squares are valid";
-            assert testGame.isValid(7,7) == false: "ERROR (S): invalid squares are valid";
+            assert yuxinGame.isValid(0,0) == false: "ERROR (S): invalid squares are valid";
+            assert yuxinGame.isValid(0,7) == false: "ERROR (S): invalid squares are valid";
+            assert yuxinGame.isValid(7,0) == false: "ERROR (S): invalid squares are valid";
+            assert yuxinGame.isValid(7,7) == false: "ERROR (S): invalid squares are valid";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -965,20 +965,20 @@ public class Gameboard {
 
             //verifying pieces can not be added to INVALID squares
             System.out.println("WARNING: AgainstRulesException in addPiece() is commented out");
-            testGame.addPiece(0,0,BLACK);
-            testGame.addPiece(0,7,BLACK);
-            testGame.addPiece(7,0,BLACK);
-            testGame.addPiece(7,7,BLACK);
-            testGame.addPiece(0,0,WHITE);
-            testGame.addPiece(0,7,WHITE);
-            testGame.addPiece(7,0,WHITE);
-            testGame.addPiece(7,7,WHITE);
+            yuxinGame.addPiece(0,0,BLACK);
+            yuxinGame.addPiece(0,7,BLACK);
+            yuxinGame.addPiece(7,0,BLACK);
+            yuxinGame.addPiece(7,7,BLACK);
+            yuxinGame.addPiece(0,0,WHITE);
+            yuxinGame.addPiece(0,7,WHITE);
+            yuxinGame.addPiece(7,0,WHITE);
+            yuxinGame.addPiece(7,7,WHITE);
 
-            assert testGame.isValid(0,0) == false: "ERROR (Y): a piece has been added to an invalid square";
-            assert testGame.isValid(0,7) == false: "ERROR (Y): a piece has been added to an invalid square";
-            assert testGame.isValid(7,0) == false: "ERROR (Y): a piece has been added to an invalid square";
-            assert testGame.isValid(7,7) == false: "ERROR (Y): a piece has been added to an invalid square";
-            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+            assert yuxinGame.isValid(0,0) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert yuxinGame.isValid(0,7) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert yuxinGame.isValid(7,0) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert yuxinGame.isValid(7,7) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert yuxinGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -986,59 +986,59 @@ public class Gameboard {
 
             //verifying pieces of opposing color can not be added to a player's home rows
             //WHITE's side
-            testGame.addPiece(0,1,BLACK);
-            testGame.addPiece(0,2,BLACK);
-            testGame.addPiece(0,3,BLACK);
-            testGame.addPiece(0,4,BLACK);
-            testGame.addPiece(0,5,BLACK);
-            testGame.addPiece(0,6,BLACK);
+            yuxinGame.addPiece(0,1,BLACK);
+            yuxinGame.addPiece(0,2,BLACK);
+            yuxinGame.addPiece(0,3,BLACK);
+            yuxinGame.addPiece(0,4,BLACK);
+            yuxinGame.addPiece(0,5,BLACK);
+            yuxinGame.addPiece(0,6,BLACK);
 
-            testGame.addPiece(7,1,BLACK);
-            testGame.addPiece(7,2,BLACK);
-            testGame.addPiece(7,2,BLACK);
-            testGame.addPiece(7,3,BLACK);
-            testGame.addPiece(7,4,BLACK);
-            testGame.addPiece(7,5,BLACK);
-            testGame.addPiece(7,6,BLACK);
-            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+            yuxinGame.addPiece(7,1,BLACK);
+            yuxinGame.addPiece(7,2,BLACK);
+            yuxinGame.addPiece(7,2,BLACK);
+            yuxinGame.addPiece(7,3,BLACK);
+            yuxinGame.addPiece(7,4,BLACK);
+            yuxinGame.addPiece(7,5,BLACK);
+            yuxinGame.addPiece(7,6,BLACK);
+            assert yuxinGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
 
             //BLACK's side
-            testGame.addPiece(1,0,WHITE);
-            testGame.addPiece(2,0,WHITE);
-            testGame.addPiece(3,0,WHITE);
-            testGame.addPiece(4,0,WHITE);
-            testGame.addPiece(5,0,WHITE);
-            testGame.addPiece(6,0,WHITE);
+            yuxinGame.addPiece(1,0,WHITE);
+            yuxinGame.addPiece(2,0,WHITE);
+            yuxinGame.addPiece(3,0,WHITE);
+            yuxinGame.addPiece(4,0,WHITE);
+            yuxinGame.addPiece(5,0,WHITE);
+            yuxinGame.addPiece(6,0,WHITE);
 
-            testGame.addPiece(1,7,WHITE);
-            testGame.addPiece(2,7,WHITE);
-            testGame.addPiece(3,7,WHITE);
-            testGame.addPiece(4,7,WHITE);
-            testGame.addPiece(5,7,WHITE);
-            testGame.addPiece(6,7,WHITE);
-            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+            yuxinGame.addPiece(1,7,WHITE);
+            yuxinGame.addPiece(2,7,WHITE);
+            yuxinGame.addPiece(3,7,WHITE);
+            yuxinGame.addPiece(4,7,WHITE);
+            yuxinGame.addPiece(5,7,WHITE);
+            yuxinGame.addPiece(6,7,WHITE);
+            assert yuxinGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
 
             //verifying addPiece() without neighbor conflicts
-            testGame.addPiece(6,0,BLACK);
-            testGame.addPiece(6,5,BLACK);
-            testGame.addPiece(5,5,BLACK);
-            testGame.addPiece(3,3,BLACK);
-            testGame.addPiece(3,5,BLACK);
-            testGame.addPiece(5,7,BLACK);
+            yuxinGame.addPiece(6,0,BLACK);
+            yuxinGame.addPiece(6,5,BLACK);
+            yuxinGame.addPiece(5,5,BLACK);
+            yuxinGame.addPiece(3,3,BLACK);
+            yuxinGame.addPiece(3,5,BLACK);
+            yuxinGame.addPiece(5,7,BLACK);
 
-            assert testGame.getType(6,0) == BLACK: "ERROR (Y): square should be BLACK";
-            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
-            assert testGame.getType(5,5) == BLACK: "ERROR (Y): square should be BLACK";
-            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
-            assert testGame.getType(3,5) == BLACK: "ERROR (Y): square should be BLACK";
-            assert testGame.getType(5,7) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(6,0) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(5,5) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(3,5) == BLACK: "ERROR (Y): square should be BLACK";
+            assert yuxinGame.getType(5,7) == BLACK: "ERROR (Y): square should be BLACK";
 
-            assert testGame.blackCount == 4: "ERROR: blackCount is incorrect";
-            assert testGame.isEmptyBoard() == false: "ERROR (Y): the board should have pieces on it";
+            assert yuxinGame.blackCount == 4: "ERROR: blackCount is incorrect";
+            assert yuxinGame.isEmptyBoard() == false: "ERROR (Y): the board should have pieces on it";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1050,175 +1050,175 @@ public class Gameboard {
             //Test 1: exhaustive attempt to cause neighbor conflicts
 
             //Setup
-            testGame.addPiece(6,1,BLACK);
-            assert testGame.getType(6,1) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(1,7,BLACK);
-            assert testGame.getType(1,7) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(6,7,BLACK);
-            assert testGame.getType(6,7) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(2,1, BLACK);
-            assert testGame.getType(2,1) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(1,0, BLACK);
-            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(6,1,BLACK);
+            assert yuxinGame.getType(6,1) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(1,7,BLACK);
+            assert yuxinGame.getType(1,7) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(6,7,BLACK);
+            assert yuxinGame.getType(6,7) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(2,1, BLACK);
+            assert yuxinGame.getType(2,1) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(1,0, BLACK);
+            assert yuxinGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
 
-            testGame.addPiece(4,2, BLACK);
-            assert testGame.getType(4,2) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(3,7, BLACK);
-            assert testGame.getType(3,7) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(4,2, BLACK);
+            assert yuxinGame.getType(4,2) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(3,7, BLACK);
+            assert yuxinGame.getType(3,7) == BLACK: "ERROR (Y): square should be BLACK";
 
-            System.out.println(testGame);
+            System.out.println(yuxinGame);
 
             //Attempt to cause errors
-            testGame.addPiece(2,0, BLACK);
-            assert testGame.getType(2,0) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,0, BLACK);
-            assert testGame.getType(5,0) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(1,1, BLACK);
-            assert testGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,1, BLACK);
-            assert testGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,1, BLACK);
-            assert testGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,0, BLACK);
+            assert yuxinGame.getType(2,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,0, BLACK);
+            assert yuxinGame.getType(5,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(1,1, BLACK);
+            assert yuxinGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,1, BLACK);
+            assert yuxinGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,1, BLACK);
+            assert yuxinGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.addPiece(2,2, BLACK);
-            assert testGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,2, BLACK);
-            assert testGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,2, BLACK);
-            assert testGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(6,2, BLACK);
-            assert testGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(4,3, BLACK);
-            assert testGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,2, BLACK);
+            assert yuxinGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,2, BLACK);
+            assert yuxinGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,2, BLACK);
+            assert yuxinGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(6,2, BLACK);
+            assert yuxinGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,3, BLACK);
+            assert yuxinGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.addPiece(2,4, BLACK);
-            assert testGame.getType(2,4) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,4, BLACK);
-            assert testGame.getType(3,4) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(4,4, BLACK);
-            assert testGame.getType(4,4) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,4, BLACK);
-            assert testGame.getType(5,4) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(6,4, BLACK);
-            assert testGame.getType(6,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,4, BLACK);
+            assert yuxinGame.getType(2,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,4, BLACK);
+            assert yuxinGame.getType(3,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,4, BLACK);
+            assert yuxinGame.getType(4,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,4, BLACK);
+            assert yuxinGame.getType(5,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(6,4, BLACK);
+            assert yuxinGame.getType(6,4) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.addPiece(4,5, BLACK);
-            assert testGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(2,6, BLACK);
-            assert testGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,6, BLACK);
-            assert testGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(4,6, BLACK);
-            assert testGame.getType(4,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,6, BLACK);
-            assert testGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,5, BLACK);
+            assert yuxinGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,6, BLACK);
+            assert yuxinGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,6, BLACK);
+            assert yuxinGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,6, BLACK);
+            assert yuxinGame.getType(4,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,6, BLACK);
+            assert yuxinGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.addPiece(6,6, BLACK);
-            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(2,7, BLACK);
-            assert testGame.getType(2,7) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(4,7, BLACK);
-            assert testGame.getType(4,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(6,6, BLACK);
+            assert yuxinGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,7, BLACK);
+            assert yuxinGame.getType(2,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,7, BLACK);
+            assert yuxinGame.getType(4,7) == EMPTY: "ERROR (Y): square should be EMPTY";
 
             //Test 2: randomized attempt to insert WHITE around BLACK pieces
 
-            testGame.addPiece(3,1, WHITE);
-            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(3,2, WHITE);
-            assert testGame.getType(3,2) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(4,5, WHITE);
-            assert testGame.getType(4,5) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(5,6, WHITE);
-            assert testGame.getType(5,6) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(7,1, WHITE);
-            assert testGame.getType(7,1) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(3,1, WHITE);
+            assert yuxinGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(3,2, WHITE);
+            assert yuxinGame.getType(3,2) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(4,5, WHITE);
+            assert yuxinGame.getType(4,5) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(5,6, WHITE);
+            assert yuxinGame.getType(5,6) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(7,1, WHITE);
+            assert yuxinGame.getType(7,1) == WHITE: "ERROR (Y): square should be WHITE";
 
-            testGame.addPiece(6,2, WHITE);
-            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(7,5, WHITE);
-            assert testGame.getType(7,5) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(7,6, WHITE);
-            assert testGame.getType(7,6) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(0,2, WHITE);
-            assert testGame.getType(0,2) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(0,6, WHITE);
-            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(6,2, WHITE);
+            assert yuxinGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(7,5, WHITE);
+            assert yuxinGame.getType(7,5) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(7,6, WHITE);
+            assert yuxinGame.getType(7,6) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(0,2, WHITE);
+            assert yuxinGame.getType(0,2) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(0,6, WHITE);
+            assert yuxinGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
 
-            testGame.addPiece(1,5, WHITE);
-            assert testGame.getType(1,5) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(1,5, WHITE);
+            assert yuxinGame.getType(1,5) == WHITE: "ERROR (Y): square should be WHITE";
 
             //Attempt to cause errors
-            testGame.addPiece(2,2, WHITE);
-            assert testGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(7,2, WHITE);
-            assert testGame.getType(7,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(6,6, WHITE);
-            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(0,5, WHITE);
-            assert testGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(1,6, WHITE);
-            assert testGame.getType(1,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,2, WHITE);
+            assert yuxinGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(7,2, WHITE);
+            assert yuxinGame.getType(7,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(6,6, WHITE);
+            assert yuxinGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(0,5, WHITE);
+            assert yuxinGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(1,6, WHITE);
+            assert yuxinGame.getType(1,6) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.addPiece(4,3, WHITE);
-            assert testGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(2,6, WHITE);
-            assert testGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,2, WHITE);
-            assert testGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(5,1, WHITE);
-            assert testGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,6, WHITE);
-            assert testGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,3, WHITE);
+            assert yuxinGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(2,6, WHITE);
+            assert yuxinGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,2, WHITE);
+            assert yuxinGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(5,1, WHITE);
+            assert yuxinGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,6, WHITE);
+            assert yuxinGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            System.out.println(testGame);
+            System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
 
             //attempting to add an INVALID using addPiece()
-            testGame.addPiece(1,1, INVALID);
-            assert testGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(3,0, INVALID);
-            assert testGame.getType(3,0) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(0,5, INVALID);
-            assert testGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(0,1, INVALID);
-            assert testGame.getType(0,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(6,6, INVALID);
-            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.addPiece(4,1, INVALID);
-            assert testGame.getType(4,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(1,1, INVALID);
+            assert yuxinGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(3,0, INVALID);
+            assert yuxinGame.getType(3,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(0,5, INVALID);
+            assert yuxinGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(0,1, INVALID);
+            assert yuxinGame.getType(0,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(6,6, INVALID);
+            assert yuxinGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.addPiece(4,1, INVALID);
+            assert yuxinGame.getType(4,1) == EMPTY: "ERROR (Y): square should be EMPTY";
 
             //attempting to replace piece with an INVALID using addPiece()
-            testGame.addPiece(1,0, INVALID);
-            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(3,1, INVALID);
-            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(6,2, INVALID);
-            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(6,5, INVALID);
-            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(0,6, INVALID);
-            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(3,3, INVALID);
-            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(1,0, INVALID);
+            assert yuxinGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(3,1, INVALID);
+            assert yuxinGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(6,2, INVALID);
+            assert yuxinGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(6,5, INVALID);
+            assert yuxinGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(0,6, INVALID);
+            assert yuxinGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(3,3, INVALID);
+            assert yuxinGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
 
             //attempting to replace piece with an EMPTY using addPiece()
-            testGame.addPiece(1,0, EMPTY);
-            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(3,1, EMPTY);
-            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(6,2, EMPTY);
-            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(6,5, EMPTY);
-            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
-            testGame.addPiece(0,6, EMPTY);
-            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
-            testGame.addPiece(3,3, EMPTY);
-            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(1,0, EMPTY);
+            assert yuxinGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(3,1, EMPTY);
+            assert yuxinGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(6,2, EMPTY);
+            assert yuxinGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(6,5, EMPTY);
+            assert yuxinGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
+            yuxinGame.addPiece(0,6, EMPTY);
+            assert yuxinGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+            yuxinGame.addPiece(3,3, EMPTY);
+            assert yuxinGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
 
             //attempting to add piece to out-of-bound coordinates using addPiece()
-            testGame.addPiece(100,100, BLACK);
-            testGame.addPiece(-20,45, WHITE);
+            yuxinGame.addPiece(100,100, BLACK);
+            yuxinGame.addPiece(-20,45, WHITE);
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1226,166 +1226,168 @@ public class Gameboard {
 
             //checking removePiece()
 
-            testGame.removePiece(6,0);
-            assert testGame.getType(6,0) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(6,5);
-            assert testGame.getType(6,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(5,5);
-            assert testGame.getType(5,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(3,3);
-            assert testGame.getType(3,3) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(3,5);
-            assert testGame.getType(3,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(6,0);
+            assert yuxinGame.getType(6,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(6,5);
+            assert yuxinGame.getType(6,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(5,5);
+            assert yuxinGame.getType(5,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(3,3);
+            assert yuxinGame.getType(3,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(3,5);
+            assert yuxinGame.getType(3,5) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.removePiece(5,7);
-            assert testGame.getType(5,7) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(6,1);
-            assert testGame.getType(6,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(1,7);
-            assert testGame.getType(1,7) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(6,7);
-            assert testGame.getType(6,7) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(2,1);
-            assert testGame.getType(2,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(5,7);
+            assert yuxinGame.getType(5,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(6,1);
+            assert yuxinGame.getType(6,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(1,7);
+            assert yuxinGame.getType(1,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(6,7);
+            assert yuxinGame.getType(6,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(2,1);
+            assert yuxinGame.getType(2,1) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.removePiece(1,0);
-            assert testGame.getType(1,0) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(4,2);
-            assert testGame.getType(4,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(3,7);
-            assert testGame.getType(3,7) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(3,1);
-            assert testGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(3,2);
-            assert testGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(1,0);
+            assert yuxinGame.getType(1,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(4,2);
+            assert yuxinGame.getType(4,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(3,7);
+            assert yuxinGame.getType(3,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(3,1);
+            assert yuxinGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(3,2);
+            assert yuxinGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            testGame.removePiece(4,5);
-            assert testGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(5,6);
-            assert testGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(7,1);
-            assert testGame.getType(7,1) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(6,2);
-            assert testGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(7,5);
-            assert testGame.getType(7,5) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(7,6);
+            yuxinGame.removePiece(4,5);
+            assert yuxinGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(5,6);
+            assert yuxinGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(7,1);
+            assert yuxinGame.getType(7,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(6,2);
+            assert yuxinGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(7,5);
+            assert yuxinGame.getType(7,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(7,6);
 
-            assert testGame.getType(7,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(0,2);
-            assert testGame.getType(0,2) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(0,6);
-            assert testGame.getType(0,6) == EMPTY: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(1,5);
-            assert testGame.getType(1,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            assert yuxinGame.getType(7,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(0,2);
+            assert yuxinGame.getType(0,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(0,6);
+            assert yuxinGame.getType(0,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(1,5);
+            assert yuxinGame.getType(1,5) == EMPTY: "ERROR (Y): square should be EMPTY";
 
             //attempting to remove INVALID squares
-            testGame.removePiece(0,0);
-            assert testGame.getType(0,0) == INVALID: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(0,7);
-            assert testGame.getType(0,7) == INVALID: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(7,0);
-            assert testGame.getType(7,0) == INVALID: "ERROR (Y): square should be EMPTY";
-            testGame.removePiece(7,7);
-            assert testGame.getType(7,7) == INVALID: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(0,0);
+            assert yuxinGame.getType(0,0) == INVALID: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(0,7);
+            assert yuxinGame.getType(0,7) == INVALID: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(7,0);
+            assert yuxinGame.getType(7,0) == INVALID: "ERROR (Y): square should be EMPTY";
+            yuxinGame.removePiece(7,7);
+            assert yuxinGame.getType(7,7) == INVALID: "ERROR (Y): square should be EMPTY";
 
-            System.out.println(testGame);
+            System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
 
             //Setup 
-            testGame.addPiece(3,1, WHITE);
-            testGame.addPiece(3,2, WHITE);
-            testGame.addPiece(4,5, WHITE);
-            testGame.addPiece(5,6, WHITE);
-            testGame.addPiece(7,1, WHITE);
+            yuxinGame.addPiece(3,1, WHITE);
+            yuxinGame.addPiece(3,2, WHITE);
+            yuxinGame.addPiece(4,5, WHITE);
+            yuxinGame.addPiece(5,6, WHITE);
+            yuxinGame.addPiece(7,1, WHITE);
 
-            testGame.addPiece(6,2, WHITE);
-            testGame.addPiece(7,5, WHITE);
-            testGame.addPiece(7,6, WHITE);
-            testGame.addPiece(0,2, WHITE);
-            testGame.addPiece(0,6, WHITE);
+            yuxinGame.addPiece(6,2, WHITE);
+            yuxinGame.addPiece(7,5, WHITE);
+            yuxinGame.addPiece(7,6, WHITE);
+            yuxinGame.addPiece(0,2, WHITE);
+            yuxinGame.addPiece(0,6, WHITE);
 
-            testGame.addPiece(1,5, WHITE);
-            testGame.addPiece(6,1, BLACK);
-            testGame.addPiece(1,7, BLACK);
-            testGame.addPiece(6,7, BLACK);
-            testGame.addPiece(2,1, BLACK);
+            yuxinGame.addPiece(1,5, WHITE);
+            yuxinGame.addPiece(6,1, BLACK);
+            yuxinGame.addPiece(1,7, BLACK);
+            yuxinGame.addPiece(6,7, BLACK);
+            yuxinGame.addPiece(2,1, BLACK);
 
-            testGame.addPiece(2,3, BLACK);
-            testGame.addPiece(2,5, BLACK);
-            testGame.addPiece(2,7, BLACK);
-            testGame.addPiece(1,0, BLACK);
-            testGame.addPiece(4,2, BLACK);
+            yuxinGame.addPiece(2,3, BLACK);
+            yuxinGame.addPiece(2,5, BLACK);
+            yuxinGame.addPiece(2,7, BLACK);
+            yuxinGame.addPiece(1,0, BLACK);
+            yuxinGame.addPiece(4,2, BLACK);
 
-            testGame.addPiece(3,7, BLACK);
-            testGame.addPiece(6,0, BLACK);
-            testGame.addPiece(6,5, BLACK);
-            testGame.addPiece(5,5, BLACK);
-            testGame.addPiece(3,3, BLACK);
+            yuxinGame.addPiece(3,7, BLACK);
+            yuxinGame.addPiece(6,0, BLACK);
+            yuxinGame.addPiece(6,5, BLACK);
+            yuxinGame.addPiece(5,5, BLACK);
+            yuxinGame.addPiece(3,3, BLACK);
 
-            testGame.addPiece(3,5, BLACK);
-            testGame.addPiece(5,7, BLACK);
+            yuxinGame.addPiece(3,5, BLACK);
+            yuxinGame.addPiece(5,7, BLACK);
 
-            System.out.println(testGame);
+            System.out.println("************************************************************");
+            System.out.println("yuxinGame -- Row/Column");
+            System.out.println(yuxinGame);
 
             //testing Connected Columns
             int[][] c02 = {{0,0}, {0,6}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(0,2), c02): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(0,2), c02): "Connected Column Error";
             int[][] c06 = {{0,2}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(0,6), c06): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(0,6), c06): "Connected Column Error";
             int[][] c10 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(1,0), c10): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(1,0), c10): "Connected Column Error";
             int[][] c15 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(1,5), c15): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(1,5), c15): "Connected Column Error";
             int[][] c17 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(1,7), c17): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(1,7), c17): "Connected Column Error";
             
             int[][] c21 = {{0,0}, {2,3}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(2,1), c21): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(2,1), c21): "Connected Column Error";
             int[][] c23 = {{2,1}, {2,5}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(2,3), c23): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(2,3), c23): "Connected Column Error";
             int[][] c25 = {{2,3}, {2,7}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(2,5), c25): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(2,5), c25): "Connected Column Error";
             int[][] c27 = {{2,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(2,7), c27): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(2,7), c27): "Connected Column Error";
             int[][] c31 = {{0,0}, {3,2}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(3,1), c31): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(3,1), c31): "Connected Column Error";
             int[][] c32 = {{3,1}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(3,2), c32): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(3,2), c32): "Connected Column Error";
 
             int[][] c35 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(3,5), c35): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(3,5), c35): "Connected Column Error";
             int[][] c42 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(4,2), c42): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(4,2), c42): "Connected Column Error";
             int[][] c45 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(4,5), c45): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(4,5), c45): "Connected Column Error";
             int[][] c55 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(5,5), c55): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(5,5), c55): "Connected Column Error";
             int[][] c56 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(5,6), c56): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(5,6), c56): "Connected Column Error";
 
             int[][] c57 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(5,7), c57): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(5,7), c57): "Connected Column Error";
             int[][] c60 = {{0,0}, {6,1}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(6,0), c60): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(6,0), c60): "Connected Column Error";
             int[][] c61 = {{6,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(6,1), c61): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(6,1), c61): "Connected Column Error";
             int[][] c62 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(6,2), c62): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(6,2), c62): "Connected Column Error";
             int[][] c65 = {{0,0}, {6,7}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(6,5), c65): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(6,5), c65): "Connected Column Error";
 
             int[][] c67 = {{6,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(6,7), c67): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(6,7), c67): "Connected Column Error";
             int[][] c71 = {{0,0}, {7,5}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(7,1), c71): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(7,1), c71): "Connected Column Error";
             int[][] c75 = {{7,1}, {7,6}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(7,5), c75): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(7,5), c75): "Connected Column Error";
             int[][] c76 = {{7,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedColumn(7,6), c76): "Connected Column Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedColumn(7,6), c76): "Connected Column Error";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1393,124 +1395,126 @@ public class Gameboard {
 
             //testing Connected Rows
             int[][] r02 = {{0,0}, {3,2}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(0,2), r02): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(0,2), r02): "Connected Row Error";
             int[][] r06 = {{0,0}, {5,6}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(0,6), r06): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(0,6), r06): "Connected Row Error";
             int[][] r10 = {{0,0}, {6,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(1,0), r10): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(1,0), r10): "Connected Row Error";
             int[][] r15 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(1,5), r15): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(1,5), r15): "Connected Row Error";
             int[][] r17 = {{0,0}, {2,7}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(1,7), r17): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(1,7), r17): "Connected Row Error";
             
             int[][] r21 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(2,1), r21): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(2,1), r21): "Connected Row Error";
             int[][] r23 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(2,3), r23): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(2,3), r23): "Connected Row Error";
             int[][] r25 = {{0,0}, {3,5}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(2,3), r23): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(2,3), r23): "Connected Row Error";
             int[][] r27 = {{1,7}, {5,7}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(2,7), r27): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(2,7), r27): "Connected Row Error";
             int[][] r31 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(3,1), r31): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(3,1), r31): "Connected Row Error";
             int[][] r32 = {{0,2}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(3,2), r32): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(3,2), r32): "Connected Row Error";
 
             int[][] r35 = {{2,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(3,5), r35): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(3,5), r35): "Connected Row Error";
             int[][] r42 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(4,2), r42): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(4,2), r42): "Connected Row Error";
             int[][] r45 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(4,5), r45): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(4,5), r45): "Connected Row Error";
             int[][] r55 = {{0,0}, {6,5}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(5,5), r55): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(5,5), r55): "Connected Row Error";
             int[][] r56 = {{0,6}, {7,6}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(5,6), r56): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(5,6), r56): "Connected Row Error";
 
             int[][] r57 = {{2,7}, {6,7}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(5,7), r57): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(5,7), r57): "Connected Row Error";
             int[][] r60 = {{1,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(6,0), r60): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(6,0), r60): "Connected Row Error";
             int[][] r61 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(6,1), r61): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(6,1), r61): "Connected Row Error";
             int[][] r62 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(6,2), r62): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(6,2), r62): "Connected Row Error";
             int[][] r65 = {{5,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(6,5), r65): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(6,5), r65): "Connected Row Error";
 
             int[][] r67 = {{5,7}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(6,7), r67): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(6,7), r67): "Connected Row Error";
             int[][] r71 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(7,1), r71): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(7,1), r71): "Connected Row Error";
             int[][] r75 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(7,5), r75): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(7,5), r75): "Connected Row Error";
             int[][] r76 = {{5,6}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRow(7,6), r76): "Connected Row Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRow(7,6), r76): "Connected Row Error";
 
-            System.out.println(testGame);
+            System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
     
             //testing Connected LDiagonal
-            System.out.println("LDiagonal");
-            System.out.println(testGame);
+            System.out.println("************************************************************");
+            System.out.println("yuxinGame -- LDiagonal");
+            System.out.println(yuxinGame);
 
             int[][] ld02 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(0,2), ld02): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(0,2), ld02): "Connected LDiagonal Error";
             int[][] ld06 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(0,6), ld06): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(0,6), ld06): "Connected LDiagonal Error";
             int[][] ld10 = {{0,0}, {2,1}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,0), ld10): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(1,0), ld10): "Connected LDiagonal Error";
             int[][] ld15 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,5), ld15): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(1,5), ld15): "Connected LDiagonal Error";
             int[][] ld17 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,7), ld17): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(1,7), ld17): "Connected LDiagonal Error";
             
             int[][] ld21 = {{1,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,1), ld21): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(2,1), ld21): "Connected LDiagonal Error";
             int[][] ld23 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
             int[][] ld25 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
             int[][] ld27 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,7), ld27): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(2,7), ld27): "Connected LDiagonal Error";
             int[][] ld31 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,1), ld31): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(3,1), ld31): "Connected LDiagonal Error";
             int[][] ld32 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,2), ld32): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(3,2), ld32): "Connected LDiagonal Error";
 
             int[][] ld35 = {{0,0}, {5,7}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,5), ld35): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(3,5), ld35): "Connected LDiagonal Error";
             int[][] ld42 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(4,2), ld42): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(4,2), ld42): "Connected LDiagonal Error";
             int[][] ld45 = {{0,0}, {5,6}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(4,5), ld45): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(4,5), ld45): "Connected LDiagonal Error";
             int[][] ld55 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,5), ld55): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(5,5), ld55): "Connected LDiagonal Error";
             int[][] ld56 = {{4,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,6), ld56): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(5,6), ld56): "Connected LDiagonal Error";
 
             int[][] ld57 = {{3,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,7), ld57): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(5,7), ld57): "Connected LDiagonal Error";
             int[][] ld60 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,0), ld60): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(6,0), ld60): "Connected LDiagonal Error";
             int[][] ld61 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,1), ld61): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(6,1), ld61): "Connected LDiagonal Error";
             int[][] ld62 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,2), ld62): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(6,2), ld62): "Connected LDiagonal Error";
             int[][] ld65 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,5), ld65): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(6,5), ld65): "Connected LDiagonal Error";
 
             int[][] ld67 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,7), ld67): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(6,7), ld67): "Connected LDiagonal Error";
             int[][] ld71 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,1), ld71): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(7,1), ld71): "Connected LDiagonal Error";
             int[][] ld75 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,5), ld75): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(7,5), ld75): "Connected LDiagonal Error";
             int[][] ld76 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,6), ld76): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(7,6), ld76): "Connected LDiagonal Error";
+
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1519,71 +1523,221 @@ public class Gameboard {
             //testing Connected RDiagonal
 
             //Adjustments to cover all cases
-            testGame.addPiece(5,3, BLACK);
-            System.out.println("RDiagonal");
-            System.out.println(testGame);
+            yuxinGame.addPiece(5,3, BLACK);
+            System.out.println("************************************************************");
+            System.out.println("yuxinGame -- RDiagonal");
+            System.out.println(yuxinGame);
 
             int[][] rd02 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(0,2), rd02): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(0,2), rd02): "Connected RDiagonal Error";
             int[][] rd06 = {{1,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(0,6), rd06): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(0,6), rd06): "Connected RDiagonal Error";
             int[][] rd10 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,0), rd10): "Connected RDiagonal Error";
-            //System.out.println(testGame.getType(0,6));
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(1,0), rd10): "Connected RDiagonal Error";
+            //System.out.println(yuxinGame.getType(0,6));
             //for (int i = 0; i < 7; i++) {
-                //System.out.print(testGame.getDiagonal(1,5,1)[i] + " |");
+                //System.out.print(yuxinGame.getDiagonal(1,5,1)[i] + " |");
             //}
             int[][] rd15 = {{0,0}, {0,6}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,5), rd15): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(1,5), rd15): "Connected RDiagonal Error";
             int[][] rd17 = {{3,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,7), rd17): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(1,7), rd17): "Connected RDiagonal Error";
             
             int[][] rd21 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,1), rd21): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(2,1), rd21): "Connected RDiagonal Error";
             int[][] rd23 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
             int[][] rd25 = {{6,1}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
             int[][] rd27 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,7), rd27): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(2,7), rd27): "Connected RDiagonal Error";
             int[][] rd31 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(3,1), rd31): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(3,1), rd31): "Connected RDiagonal Error";
             int[][] rd32 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(3,2), rd32): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(3,2), rd32): "Connected RDiagonal Error";
 
             int[][] rd35 = {{1,7}, {5,3}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(3,5), rd35): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(3,5), rd35): "Connected RDiagonal Error";
             int[][] rd42 = {{0,0}, {6,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(4,2), rd42): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(4,2), rd42): "Connected RDiagonal Error";
             int[][] rd45 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(4,5), rd45): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(4,5), rd45): "Connected RDiagonal Error";
             int[][] rd53 = {{3,5}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(5,3), rd53): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,3), rd53): "Connected RDiagonal Error";
             int[][] rd55 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(5,5), rd55): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,5), rd55): "Connected RDiagonal Error";
             int[][] rd56 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(5,6), rd56): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,6), rd56): "Connected RDiagonal Error";
 
             int[][] rd57 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(5,7), rd57): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,7), rd57): "Connected RDiagonal Error";
             int[][] rd60 = {{4,2}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(6,0), rd60): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,0), rd60): "Connected RDiagonal Error";
             int[][] rd61 = {{0,0}, {2,5}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(6,1), rd61): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,1), rd61): "Connected RDiagonal Error";
             int[][] rd62 = {{0,0}, {7,1}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(6,2), rd62): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,2), rd62): "Connected RDiagonal Error";
             int[][] rd65 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(6,5), rd65): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,5), rd65): "Connected RDiagonal Error";
 
             int[][] rd67 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(6,7), rd67): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,7), rd67): "Connected RDiagonal Error";
             int[][] rd71 = {{6,2}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(7,1), rd71): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(7,1), rd71): "Connected RDiagonal Error";
             int[][] rd75 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(7,5), rd75): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(7,5), rd75): "Connected RDiagonal Error";
             int[][] rd76 = {{0,0}, {0,0}};
-            assert Arrays.deepEquals(testGame.findConnectedRDiagonal(7,6), rd76): "Connected RDiagonal Error";
-            
+            assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(7,6), rd76): "Connected RDiagonal Error";
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //Diagonal Doublecheck
+
+            Gameboard zhuGame = new Gameboard();
+            zhuGame.addPiece(5,5,BLACK);
+            zhuGame.addPiece(3,7,BLACK);
+            zhuGame.addPiece(6,4,BLACK);
+            zhuGame.addPiece(2,0,BLACK);
+            zhuGame.addPiece(1,5,BLACK);
+            zhuGame.addPiece(6,6,WHITE);
+            zhuGame.addPiece(4,4,WHITE);
+            zhuGame.addPiece(1,1, WHITE);
+            zhuGame.addPiece(0,2, WHITE);
+            zhuGame.addPiece(7,3, WHITE);
+            System.out.println(zhuGame);
+
+            int[][] ldd02 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(0,2), ldd02): "Connected LDiagonal Error";
+            int[][] ldd11 = {{0,0}, {4,4}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(1,1), ldd11): "Connected LDiagonal Error";
+            int[][] ldd15 = {{0,0}, {3,7}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(1,5), ldd15): "Connected LDiagonal Error";
+            int[][] ldd20 = {{0,0}, {6,4}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(2,0), ldd20): "Connected LDiagonal Error";
+            int[][] ldd37 = {{1,5}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(3,7), ldd37): "Connected LDiagonal Error";
+
+            int[][] ldd44 = {{1,1}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(4,4), ldd44): "Connected LDiagonal Error";
+            int[][] ldd55 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(5,5), ldd55): "Connected LDiagonal Error";
+            int[][] ldd64 = {{2,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(6,4), ldd20): "Connected LDiagonal Error";
+            int[][] ldd66 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(6,6), ldd66): "Connected LDiagonal Error";
+            int[][] ldd73 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(7,3), ldd73): "Connected LDiagonal Error";   
+
+            int[][] rdd02 = {{1,1}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(0,2), rdd02): "Connected RDiagonal Error";
+            int[][] rdd11 = {{0,0}, {0,2}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(1,1), rdd11): "Connected RDiagonal Error";
+            int[][] rdd15 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(1,5), rdd15): "Connected RDiagonal Error";
+            int[][] rdd20 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(2,0), rdd20): "Connected RDiagonal Error";
+            int[][] rdd37 = {{5,5}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(3,7), rdd37): "Connected RDiagonal Error";
+
+            int[][] rdd44 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(4,4), rdd44): "Connected RDiagonal Error";
+            int[][] rdd55 = {{6,4}, {3,7}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(5,5), rdd55): "Connected RDiagonal Error";
+            int[][] rdd64 = {{5,5}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(6,4), rdd20): "Connected RDiagonal Error";
+            int[][] rdd66 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(6,6), rdd66): "Connected RDiagonal Error";
+            int[][] rdd73 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(7,3), rdd73): "Connected RDiagonal Error"; 
+
+            Gameboard cGame = new Gameboard();
+            cGame.addPiece(0,6,WHITE);
+            cGame.addPiece(1,5,WHITE);
+            cGame.addPiece(4,2,WHITE);
+            cGame.addPiece(5,1,WHITE);
+            cGame.addPiece(6,1,WHITE);
+            cGame.addPiece(1,7,WHITE);
+            cGame.addPiece(1,1,WHITE);
+            cGame.addPiece(6,6, WHITE);
+            cGame.addPiece(6,5, WHITE);
+            cGame.addPiece(2,1, WHITE);
+            System.out.println("************************************************************");
+            System.out.println("cGame");
+            System.out.println(cGame);
+
+            int[][] lddd06 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(0,6), lddd06): "Connected LDiagonal Error";
+            int[][] lddd11 = {{0,0}, {6,6}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(1,1), lddd11): "Connected LDiagonal Error";
+            int[][] lddd15 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(1,5), lddd15): "Connected LDiagonal Error";
+            int[][] lddd21 = {{0,0}, {6,5}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(2,1), lddd21): "Connected LDiagonal Error";
+            int[][] lddd42 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(4,2), lddd42): "Connected LDiagonal Error";
+            int[][] lddd51 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(5,1), lddd51): "Connected LDiagonal Error";
+
+            int[][] lddd65 = {{2,1}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(6,5), lddd65): "Connected LDiagonal Error";
+            int[][] lddd66 = {{1,1}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedLDiagonal(6,6), lddd66): "Connected LDiagonal Error";
+
+            int[][] rddd06 = {{1,5}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(0,6), lddd06): "Connected RDiagonal Error";
+            int[][] rddd11 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(1,1), rddd11): "Connected RDiagonal Error";
+            int[][] rddd15 = {{4,2}, {0,6}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(1,5), rddd15): "Connected RDiagonal Error";
+            int[][] rddd21 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(2,1), rddd21): "Connected RDiagonal Error";
+            int[][] rddd42 = {{5,1}, {1,5}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(4,2), rddd42): "Connected RDiagonal Error";
+            int[][] rddd51 = {{0,0}, {4,2}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(5,1), rddd51): "Connected RDiagonal Error";
+
+            int[][] rddd65 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(6,5), rddd65): "Connected RDiagonal Error";
+            int[][] rddd66 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(6,6), rddd66): "Connected RDiagonal Error";
+
+            Gameboard dGame = new Gameboard();
+            dGame.addPiece(1,7,BLACK);
+            dGame.addPiece(2,6,BLACK);
+            dGame.addPiece(6,7,BLACK);
+            dGame.addPiece(5,6,BLACK);
+            dGame.addPiece(7,6,WHITE);
+            dGame.addPiece(6,5,WHITE);
+            System.out.println("************************************************************");
+            System.out.println("dGame");
+            System.out.println(dGame);
+
+            int[][] ldddd17 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(1,7), ldddd17): "Connected LDiagonal Error";
+            int[][] ldddd26 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(2,6), ldddd26): "Connected LDiagonal Error";
+            int[][] ldddd56 = {{0,0}, {6,7}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(5,6), ldddd56): "Connected LDiagonal Error";
+            int[][] ldddd65 = {{0,0}, {7,6}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(6,5), ldddd65): "Connected LDiagonal Error";
+            int[][] ldddd67 = {{5,6}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(6,7), ldddd67): "Connected LDiagonal Error";
+            int[][] ldddd76 = {{6,5}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedLDiagonal(7,6), ldddd76): "Connected LDiagonal Error";
+
+            int[][] rdddd17 = {{2,6}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(1,7), rdddd17): "Connected RDiagonal Error";
+            int[][] rdddd26 = {{0,0}, {1,7}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(2,6), rdddd26): "Connected RDiagonal Error";
+            int[][] rdddd56 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(5,6), rdddd56): "Connected RDiagonal Error";
+            int[][] rdddd65 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(6,5), rdddd65): "Connected RDiagonal Error";
+            int[][] rdddd67 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(6,7), rdddd67): "Connected RDiagonal Error";
+            int[][] rdddd76 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(dGame.findConnectedRDiagonal(7,6), rdddd76): "Connected RDiagonal Error";
             /*
             Gameboard sanchitGame = new Gameboard();
             sanchitGame.addPiece(0,1,WHITE);
