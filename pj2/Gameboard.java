@@ -488,6 +488,7 @@ public class Gameboard {
                 connectedChips[0][0] = x + i;
                 connectedChips[0][1] = y - i;
                 break;
+            }
             if (diagonal[location - i] != type && checkPiece(diagonal[location - i])) {
                 break;
             }
@@ -496,8 +497,11 @@ public class Gameboard {
         for (int i = 1; i + location < length; i++) {
             if (diagonal[i + location] == type) {
                 connectedChips[1][0] = x - i;
+                //System.out.println(connectedChips[1][0]);
                 connectedChips[1][1] = y + i;
+                //System.out.println(connectedChips[1][1]);
                 break;
+            }
             if (diagonal[location + i] != type && checkPiece(diagonal[location + i])) {
                 break;
             }
@@ -1511,16 +1515,17 @@ public class Gameboard {
 
             //Adjustments to cover all cases
             testGame.addPiece(5,3, BLACK);
+            System.out.println(testGame);
 
             int[][] rd02 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(0,2), rd02): "Connected RDiagonal Error";
-            int[][] rd06 = {{0,0}, {1,5}};
+            int[][] rd06 = {{1,5}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(0,6), rd06): "Connected RDiagonal Error";
             int[][] rd10 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,0), rd10): "Connected RDiagonal Error";
-            int[][] rd15 = {{0,6}, {0,0}};
+            int[][] rd15 = {{0,0}, {0,6}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,5), rd15): "Connected RDiagonal Error";
-            int[][] rd17 = {{0,0}, {3,5}};
+            int[][] rd17 = {{3,5}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,7), rd17): "Connected RDiagonal Error";
             
             int[][] rd21 = {{0,0}, {0,0}};
