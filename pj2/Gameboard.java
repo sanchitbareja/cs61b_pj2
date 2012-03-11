@@ -513,18 +513,24 @@ public class Gameboard {
         int length = row.length;
         int location = x;
 
-        for (int i = location; location - i >= 0; i++) {
+        for (int i = 1; location - i >= 0; i++) {
             if (row[location - i] == type) {
                 connectedChips[0][0] = x - i;
                 connectedChips[0][1] = y;
                 break;
             }
+            if (row[location - i] != type && checkPiece(row[location - i])) {
+                break;
+            }
         }
 
-        for (int i = location; i + location < length; i++) {
+        for (int i = 1; i + location < length; i++) {
             if (row[i + location] == type) {
                 connectedChips[1][0] = x + i;
                 connectedChips[1][1] = y;
+                break;
+            }
+            if (row[location + i] != type && checkPiece(row[location + i])) {
                 break;
             }
         }
@@ -549,18 +555,24 @@ public class Gameboard {
         int length = column.length;
         int location = y;
 
-        for (int i = location; location - i >= 0; i++) {
+        for (int i = 1; location - i >= 0; i++) {
             if (column[location - i] == type) {
                 connectedChips[0][0] = x;
-                connectedChips[0][1] = y + 1;
+                connectedChips[0][1] = y - i;
+                break;
+            }
+            if (column[location - i] != type && checkPiece(column[location - i])) {
                 break;
             }
         }
 
-        for (int i = location; i + location < length; i++) {
+        for (int i = 1; i + location < length; i++) {
             if (column[i + location] == type) {
                 connectedChips[1][0] = x;
-                connectedChips[1][1] = y + 1;
+                connectedChips[1][1] = y + i;
+                break;
+            }
+            if (column[location + i] != type && checkPiece(column[location + i])) {
                 break;
             }
         }
@@ -1305,10 +1317,121 @@ public class Gameboard {
 
             System.out.println(testGame);
 
+            //testing Connected Columns
+            int[][] c02 = {{0,0}, {0,6}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(0,2), c02): "Connected Column Error";
+            int[][] c06 = {{0,2}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(0,6), c06): "Connected Column Error";
+            int[][] c10 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(1,0), c10): "Connected Column Error";
+            int[][] c15 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(1,5), c15): "Connected Column Error";
+            int[][] c17 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(1,7), c17): "Connected Column Error";
+            
+            int[][] c21 = {{0,0}, {2,3}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(2,1), c21): "Connected Column Error";
+            int[][] c23 = {{2,1}, {2,5}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(2,3), c23): "Connected Column Error";
+            int[][] c25 = {{2,3}, {2,7}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(2,5), c25): "Connected Column Error";
+            int[][] c27 = {{2,5}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(2,7), c27): "Connected Column Error";
+            int[][] c31 = {{0,0}, {3,2}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(3,1), c31): "Connected Column Error";
+            int[][] c32 = {{3,1}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(3,2), c32): "Connected Column Error";
 
-            //testing connection related methods
+            int[][] c35 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(3,5), c35): "Connected Column Error";
+            int[][] c42 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(4,2), c42): "Connected Column Error";
+            int[][] c45 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(4,5), c45): "Connected Column Error";
+            int[][] c55 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(5,5), c55): "Connected Column Error";
+            int[][] c56 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(5,6), c56): "Connected Column Error";
 
+            int[][] c57 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(5,7), c57): "Connected Column Error";
+            int[][] c60 = {{0,0}, {6,1}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(6,0), c60): "Connected Column Error";
+            int[][] c61 = {{6,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(6,1), c61): "Connected Column Error";
+            int[][] c62 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(6,2), c62): "Connected Column Error";
+            int[][] c65 = {{0,0}, {6,7}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(6,5), c65): "Connected Column Error";
 
+            int[][] c67 = {{6,5}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(6,7), c67): "Connected Column Error";
+            int[][] c71 = {{0,0}, {7,5}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(7,1), c71): "Connected Column Error";
+            int[][] c75 = {{7,1}, {7,6}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(7,5), c75): "Connected Column Error";
+            int[][] c76 = {{7,5}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedColumn(7,6), c76): "Connected Column Error";
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //testing Connected Rows
+            int[][] r02 = {{0,0}, {3,2}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(0,2), r02): "Connected Row Error";
+            int[][] r06 = {{0,0}, {5,6}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(0,6), r06): "Connected Row Error";
+            int[][] r10 = {{0,0}, {6,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(1,0), r10): "Connected Row Error";
+            int[][] r15 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(1,5), r15): "Connected Row Error";
+            int[][] r17 = {{0,0}, {2,7}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(1,7), r17): "Connected Row Error";
+            
+            int[][] r21 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(2,1), r21): "Connected Row Error";
+            int[][] r23 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(2,3), r23): "Connected Row Error";
+            int[][] r25 = {{0,0}, {3,5}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(2,3), r23): "Connected Row Error";
+            int[][] r27 = {{1,7}, {5,7}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(2,7), r27): "Connected Row Error";
+            int[][] r31 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(3,1), r31): "Connected Row Error";
+            int[][] r32 = {{0,2}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(3,2), r32): "Connected Row Error";
+
+            int[][] r35 = {{2,5}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(3,5), r35): "Connected Row Error";
+            int[][] r42 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(4,2), r42): "Connected Row Error";
+            int[][] r45 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(4,5), r45): "Connected Row Error";
+            int[][] r55 = {{0,0}, {6,5}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(5,5), r55): "Connected Row Error";
+            int[][] r56 = {{0,6}, {7,6}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(5,6), r56): "Connected Row Error";
+
+            int[][] r57 = {{2,7}, {6,7}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(5,7), r57): "Connected Row Error";
+            int[][] r60 = {{1,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(6,0), r60): "Connected Row Error";
+            int[][] r61 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(6,1), r61): "Connected Row Error";
+            int[][] r62 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(6,2), r62): "Connected Row Error";
+            int[][] r65 = {{5,5}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(6,5), r65): "Connected Row Error";
+
+            int[][] r67 = {{5,7}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(6,7), r67): "Connected Row Error";
+            int[][] r71 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(7,1), r71): "Connected Row Error";
+            int[][] r75 = {{0,0}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(7,5), r75): "Connected Row Error";
+            int[][] r76 = {{5,6}, {0,0}};
+            assert Arrays.deepEquals(testGame.findConnectedRow(7,6), r76): "Connected Row Error";
             /*
             Gameboard sanchitGame = new Gameboard();
             sanchitGame.addPiece(0,1,WHITE);
