@@ -103,7 +103,7 @@ public class Gameboard {
      * remainig 3X3 array with -1s
      */
 
-    public int[][] getNeighbors(int x, int y) {
+    private int[][] getNeighbors(int x, int y) {
         int toReturn[][] = new int[3][3];
     	if(x >= 0 && x<= this.width-1 && y >= 0 && y <= this.width-1){
     	    //int toReturn[][] = new int[3][3];
@@ -303,7 +303,7 @@ public class Gameboard {
      * @return a int[] containing squares in the same row as int x.
      */
 
-    public int[] getColumn(int x) {
+    private int[] getColumn(int x) {
     	int columnChips[] = new int[8];
     	for(int j = 0; j < this.height; j++){
     	    columnChips[j] = this.board[x][j];
@@ -320,7 +320,7 @@ public class Gameboard {
      * @return a int[] containing squares in the same column as int y.
      */
 
-    public int[] getRow(int y) {
+    private int[] getRow(int y) {
     	int rowChips[] = new int[8];
     	for(int i = 0; i < this.width; i++){
     	    rowChips[i] = this.board[i][y];
@@ -371,7 +371,7 @@ public class Gameboard {
      * @return a int[] containing squares in the same diagonal as the square.
      */
 
-    public int[] getDiagonal(int x, int y, int direction) {
+    private int[] getDiagonal(int x, int y, int direction) {
     	int diagonalLength = getDiagonalLength(x,y,direction);
     	int diagonalChips[] = new int[diagonalLength];
     	int startX = x;
@@ -413,6 +413,160 @@ public class Gameboard {
     	return diagonalChips;
     }
 
+    /**
+     * findConnectedLDiagonal() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the left diagonal.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the left diagonal
+     */
+
+    private int[][] findConnectedLDiagonal(int x, int y) {
+        int type = getType(x, y);
+
+        int[][] connectedChips = new int[2][2];
+
+        int[] diagonal = getDiagonal(x, y, -1);
+        int length = diagonal.length;
+        int location = -1;
+        if (y >= x) {
+            location = x;
+        } else {
+            location = y;
+        }
+
+        for (int i = 1; location - i >= 0; i++) {
+            if (diagonal[location - i] == type) {
+                connectedChips[0][0] = x - i;
+                connectedChips[0][1] = y - i;
+                break;
+            }
+        }
+
+        for (int i = 1; i + location < length; i++) {
+            if (diagonal[i + location] == type) {
+                connectedChips[1][0] = x + i;
+                connectedChips[1][1] = y + i;
+                break;
+            }
+        }
+        return connectedChips;
+    }
+
+    /**
+     * findConnectedRDiagonal() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the right diagonal.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the right diagonal
+     */
+
+    private int[][] findConnectedRDiagonal(int x, int y) {
+        int type = getType(x, y);
+
+        int[][] connectedChips = new int[2][2];
+
+        int[] diagonal = getDiagonal(x, y, 1);
+        int length = diagonal.length;
+        int location = -1;
+        if (y > (this.width - x - 1)) {
+            location = this.width - x - 1;
+        } else {
+            location = y;
+        }
+
+        for (int i = 1; location - i >= 0; i++) {
+            if (diagonal[location - i] == type) {
+                connectedChips[0][0] = x + i;
+                connectedChips[0][1] = y - i;
+                break;
+            }
+        }
+
+        for (int i = 1; i + location < length; i++) {
+            if (diagonal[i + location] == type) {
+                connectedChips[1][0] = x - i;
+                connectedChips[1][1] = y + i;
+                break;
+            }
+        }
+        return connectedChips;
+    }
+
+    /**
+     * findConnectedRow() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the same row.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the same row
+     */
+
+    private int[][] findConnectedRow(int x, int y) {
+        int type = getType(x, y);
+
+        int[][] connectedChips = new int[2][2];
+
+        int[] row = getRow(y);
+        int length = row.length;
+        int location = x;
+
+        for (int i = location; location - i >= 0; i++) {
+            if (row[location - i] == type) {
+                connectedChips[0][0] = x - i;
+                connectedChips[0][1] = y;
+                break;
+            }
+        }
+
+        for (int i = location; i + location < length; i++) {
+            if (row[i + location] == type) {
+                connectedChips[1][0] = x + i;
+                connectedChips[1][1] = y;
+                break;
+            }
+        }
+        return connectedChips;
+    }
+
+    /**
+     * findConnectedColumn() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the same column.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the same column.
+     */
+
+    private int[][] findConnectedColumn(int x, int y) {
+        int type = getType(x, y);
+
+        int[][] connectedChips = new int[2][2];
+
+        int[] column = getColumn(x);
+        int length = column.length;
+        int location = y;
+
+        for (int i = location; location - i >= 0; i++) {
+            if (column[location - i] == type) {
+                connectedChips[0][0] = x;
+                connectedChips[0][1] = y + 1;
+                break;
+            }
+        }
+
+        for (int i = location; i + location < length; i++) {
+            if (column[i + location] == type) {
+                connectedChips[1][0] = x;
+                connectedChips[1][1] = y + 1;
+                break;
+            }
+        }
+        return connectedChips;
+    }
+
 
     /**
      * findConnectingChips() takes 2 parameters, the coordinates, and returns a list of square ints 
@@ -425,8 +579,8 @@ public class Gameboard {
      */
 
     public int[] findConnectingChips(int x, int y) {
-        int[] connectedChips = new int[1];
-        return connectedChips;
+        int temp[] = new int[2];
+        return temp;
     }
 
     /**
@@ -656,7 +810,7 @@ public class Gameboard {
             addPiece(x2, y2, getType(x1,y1));
         }
         catch (AgainstRulesException e) {
-            throw new AgainstRulesException("attempt to move " + getType(x1,y1) + " from  (" + x1 + ", " + y1 + ") fails.");
+            throw new AgainstRulesException("attempt to move " + getType(x1, y1) + " from  (" + x1 + ", " + y1 + ") fails.");
         }
         removePiece(x1, y1);
     }
@@ -797,9 +951,9 @@ public class Gameboard {
             sanchitGame.addPiece(5,7,WHITE);
 
             
-            int[][] neighbors = sanchitGame.getNeighbors(0, 1);
-            System.out.println("-------");
-            System.out.println("count " + sanchitGame.countNeighbors(0,1,WHITE));
+            //int[][] neighbors = sanchitGame.getNeighbors(0, 1);
+            //System.out.println("-------");
+            //System.out.println("count " + sanchitGame.countNeighbors(0,1,WHITE));
 
             /*
             for (int i = 0; i < 3; i++) {
