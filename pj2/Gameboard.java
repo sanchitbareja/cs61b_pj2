@@ -603,14 +603,14 @@ public class Gameboard {
         */
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
             setType(x, y, type);
+            if (type == BLACK) {
+                blackCount--;
+            }
+            if (type == WHITE) {
+                whiteCount--;
+            }
         } else {
-            throw new AgainstRulesException("attempt to add " + type + " fails at  (" + x + ", " + y + ")");
-        }
-        if (type == BLACK) {
-            blackCount--;
-        }
-        if (type == WHITE) {
-            whiteCount--;
+            //throw new AgainstRulesException("attempt to add " + type + " fails at  (" + x + ", " + y + ")");
         }
     }
 
@@ -748,7 +748,7 @@ public class Gameboard {
             }
         }
 
-        System.out.println(location[0] + ", " + location[1]);
+        //System.out.println(location[0] + ", " + location[1]);
         return location;
     }
 
@@ -790,7 +790,9 @@ public class Gameboard {
      */
 
     private void removePiece(int x, int y) {
-        this.setType(x, y, EMPTY);
+        if (checkPiece(getType(x,y)) && checkDimensions(x,y)) {
+            this.setType(x, y, EMPTY);
+        }   
     }
 
     /**
@@ -858,6 +860,24 @@ public class Gameboard {
     }
 
     /**
+     * isEmptyBoard() takes no parameters, and verifies that there are no pieces on the board. For internal testing only.
+     *
+     * @return empty is true if the board is empty, false otherwise.
+     */
+
+    private boolean isEmptyBoard() {
+        boolean empty = true;
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                if (isBlack(i,j) || isWhite(i,j)) {
+                    empty = false;
+                }
+            }
+        }
+        return empty;
+    }
+
+    /**
      * toString() returns a String representation of the board.
      */
     public String toString() {
@@ -895,28 +915,94 @@ public class Gameboard {
 
     public static void main(String args[]) {
         Gameboard testGame = new Gameboard();
-        System.out.println(testGame);
+        //System.out.println(testGame);
 
-        //testing board dimensions
         try {
+
+            //verifying board dimensions
             assert testGame.width == 8: "ERROR (Y): width of gameboard incorrect";
             assert testGame.height == 8: "ERROR (Y): height of gameboard incorrect";
 
-            //testing board corner square invariants (Rule #1)
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //verifying corner squares are indeed INVALID
             assert testGame.isValid(0,0) == false: "ERROR (S): invalid squares are valid";
             assert testGame.isValid(0,7) == false: "ERROR (S): invalid squares are valid";
             assert testGame.isValid(7,0) == false: "ERROR (S): invalid squares are valid";
             assert testGame.isValid(7,7) == false: "ERROR (S): invalid squares are valid";
 
-            //testing addPiece() without neighbor conflict
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //verifying pieces can not be added to INVALID squares
+            System.out.println("WARNING: AgainstRulesException in addPiece() is commented out");
+            testGame.addPiece(0,0,BLACK);
+            testGame.addPiece(0,7,BLACK);
+            testGame.addPiece(7,0,BLACK);
+            testGame.addPiece(7,7,BLACK);
+            testGame.addPiece(0,0,WHITE);
+            testGame.addPiece(0,7,WHITE);
+            testGame.addPiece(7,0,WHITE);
+            testGame.addPiece(7,7,WHITE);
+
+            assert testGame.isValid(0,0) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert testGame.isValid(0,7) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert testGame.isValid(7,0) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert testGame.isValid(7,7) == false: "ERROR (Y): a piece has been added to an invalid square";
+            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //verifying pieces of opposing color can not be added to a player's home rows
+            //WHITE's side
+            testGame.addPiece(0,1,BLACK);
+            testGame.addPiece(0,2,BLACK);
+            testGame.addPiece(0,3,BLACK);
+            testGame.addPiece(0,4,BLACK);
+            testGame.addPiece(0,5,BLACK);
+            testGame.addPiece(0,6,BLACK);
+
+            testGame.addPiece(7,1,BLACK);
+            testGame.addPiece(7,2,BLACK);
+            testGame.addPiece(7,2,BLACK);
+            testGame.addPiece(7,3,BLACK);
+            testGame.addPiece(7,4,BLACK);
+            testGame.addPiece(7,5,BLACK);
+            testGame.addPiece(7,6,BLACK);
+            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+
+            //BLACK's side
+            testGame.addPiece(1,0,WHITE);
+            testGame.addPiece(2,0,WHITE);
+            testGame.addPiece(3,0,WHITE);
+            testGame.addPiece(4,0,WHITE);
+            testGame.addPiece(5,0,WHITE);
+            testGame.addPiece(6,0,WHITE);
+
+            testGame.addPiece(1,7,WHITE);
+            testGame.addPiece(2,7,WHITE);
+            testGame.addPiece(3,7,WHITE);
+            testGame.addPiece(4,7,WHITE);
+            testGame.addPiece(5,7,WHITE);
+            testGame.addPiece(6,7,WHITE);
+            assert testGame.isEmptyBoard() == true: "ERROR (Y): the board should be empty";
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //verifying addPiece() without neighbor conflicts
             testGame.addPiece(6,0,BLACK);
             testGame.addPiece(6,5,BLACK);
             testGame.addPiece(5,5,BLACK);
             testGame.addPiece(3,3,BLACK);
             testGame.addPiece(3,5,BLACK);
             testGame.addPiece(5,7,BLACK);
-
-            System.out.println(testGame);
 
             assert testGame.getType(6,0) == BLACK: "ERROR (Y): square should be BLACK";
             assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
@@ -926,7 +1012,295 @@ public class Gameboard {
             assert testGame.getType(5,7) == BLACK: "ERROR (Y): square should be BLACK";
 
             assert testGame.blackCount == 4: "ERROR: blackCount is incorrect";
+            assert testGame.isEmptyBoard() == false: "ERROR (Y): the board should have pieces on it";
 
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //verifying addPiece() with neighbor conflicts
+            //BLACK piece initially at (6,0);
+
+            //Test 1: exhaustive attempt to cause neighbor conflicts
+
+            //Setup
+            testGame.addPiece(6,1,BLACK);
+            assert testGame.getType(6,1) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(1,7,BLACK);
+            assert testGame.getType(1,7) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(6,7,BLACK);
+            assert testGame.getType(6,7) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(2,1, BLACK);
+            assert testGame.getType(2,1) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(1,0, BLACK);
+            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+
+            testGame.addPiece(4,2, BLACK);
+            assert testGame.getType(4,2) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(3,7, BLACK);
+            assert testGame.getType(3,7) == BLACK: "ERROR (Y): square should be BLACK";
+
+            System.out.println(testGame);
+
+            //Attempt to cause errors
+            testGame.addPiece(2,0, BLACK);
+            assert testGame.getType(2,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,0, BLACK);
+            assert testGame.getType(5,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(1,1, BLACK);
+            assert testGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,1, BLACK);
+            assert testGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,1, BLACK);
+            assert testGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.addPiece(2,2, BLACK);
+            assert testGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,2, BLACK);
+            assert testGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,2, BLACK);
+            assert testGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(6,2, BLACK);
+            assert testGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(4,3, BLACK);
+            assert testGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.addPiece(2,4, BLACK);
+            assert testGame.getType(2,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,4, BLACK);
+            assert testGame.getType(3,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(4,4, BLACK);
+            assert testGame.getType(4,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,4, BLACK);
+            assert testGame.getType(5,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(6,4, BLACK);
+            assert testGame.getType(6,4) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.addPiece(4,5, BLACK);
+            assert testGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(2,6, BLACK);
+            assert testGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,6, BLACK);
+            assert testGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(4,6, BLACK);
+            assert testGame.getType(4,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,6, BLACK);
+            assert testGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.addPiece(6,6, BLACK);
+            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(2,7, BLACK);
+            assert testGame.getType(2,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(4,7, BLACK);
+            assert testGame.getType(4,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            //Test 2: randomized attempt to insert WHITE around BLACK pieces
+
+            testGame.addPiece(3,1, WHITE);
+            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(3,2, WHITE);
+            assert testGame.getType(3,2) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(4,5, WHITE);
+            assert testGame.getType(4,5) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(5,6, WHITE);
+            assert testGame.getType(5,6) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(7,1, WHITE);
+            assert testGame.getType(7,1) == WHITE: "ERROR (Y): square should be WHITE";
+
+            testGame.addPiece(6,2, WHITE);
+            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(7,5, WHITE);
+            assert testGame.getType(7,5) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(7,6, WHITE);
+            assert testGame.getType(7,6) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(0,2, WHITE);
+            assert testGame.getType(0,2) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(0,6, WHITE);
+            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+
+            testGame.addPiece(1,5, WHITE);
+            assert testGame.getType(1,5) == WHITE: "ERROR (Y): square should be WHITE";
+
+            //Attempt to cause errors
+            testGame.addPiece(2,2, WHITE);
+            assert testGame.getType(2,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(7,2, WHITE);
+            assert testGame.getType(7,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(6,6, WHITE);
+            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(0,5, WHITE);
+            assert testGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(1,6, WHITE);
+            assert testGame.getType(1,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.addPiece(4,3, WHITE);
+            assert testGame.getType(4,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(2,6, WHITE);
+            assert testGame.getType(2,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,2, WHITE);
+            assert testGame.getType(5,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(5,1, WHITE);
+            assert testGame.getType(5,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,6, WHITE);
+            assert testGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            System.out.println(testGame);
+
+            //---------------------------------------------------------------------//
+
+            //attempting to add an INVALID using addPiece()
+            testGame.addPiece(1,1, INVALID);
+            assert testGame.getType(1,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(3,0, INVALID);
+            assert testGame.getType(3,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(0,5, INVALID);
+            assert testGame.getType(0,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(0,1, INVALID);
+            assert testGame.getType(0,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(6,6, INVALID);
+            assert testGame.getType(6,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.addPiece(4,1, INVALID);
+            assert testGame.getType(4,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            //attempting to replace piece with an INVALID using addPiece()
+            testGame.addPiece(1,0, INVALID);
+            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(3,1, INVALID);
+            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(6,2, INVALID);
+            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(6,5, INVALID);
+            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(0,6, INVALID);
+            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(3,3, INVALID);
+            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
+
+            //attempting to replace piece with an EMPTY using addPiece()
+            testGame.addPiece(1,0, EMPTY);
+            assert testGame.getType(1,0) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(3,1, EMPTY);
+            assert testGame.getType(3,1) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(6,2, EMPTY);
+            assert testGame.getType(6,2) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(6,5, EMPTY);
+            assert testGame.getType(6,5) == BLACK: "ERROR (Y): square should be BLACK";
+            testGame.addPiece(0,6, EMPTY);
+            assert testGame.getType(0,6) == WHITE: "ERROR (Y): square should be WHITE";
+            testGame.addPiece(3,3, EMPTY);
+            assert testGame.getType(3,3) == BLACK: "ERROR (Y): square should be BLACK";
+
+            //attempting to add piece to out-of-bound coordinates using addPiece()
+            testGame.addPiece(100,100, BLACK);
+            testGame.addPiece(-20,45, WHITE);
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //checking removePiece()
+
+            testGame.removePiece(6,0);
+            assert testGame.getType(6,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(6,5);
+            assert testGame.getType(6,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(5,5);
+            assert testGame.getType(5,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(3,3);
+            assert testGame.getType(3,3) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(3,5);
+            assert testGame.getType(3,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.removePiece(5,7);
+            assert testGame.getType(5,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(6,1);
+            assert testGame.getType(6,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(1,7);
+            assert testGame.getType(1,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(6,7);
+            assert testGame.getType(6,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(2,1);
+            assert testGame.getType(2,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.removePiece(1,0);
+            assert testGame.getType(1,0) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(4,2);
+            assert testGame.getType(4,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(3,7);
+            assert testGame.getType(3,7) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(3,1);
+            assert testGame.getType(3,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(3,2);
+            assert testGame.getType(3,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            testGame.removePiece(4,5);
+            assert testGame.getType(4,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(5,6);
+            assert testGame.getType(5,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(7,1);
+            assert testGame.getType(7,1) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(6,2);
+            assert testGame.getType(6,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(7,5);
+            assert testGame.getType(7,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(7,6);
+
+            assert testGame.getType(7,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(0,2);
+            assert testGame.getType(0,2) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(0,6);
+            assert testGame.getType(0,6) == EMPTY: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(1,5);
+            assert testGame.getType(1,5) == EMPTY: "ERROR (Y): square should be EMPTY";
+
+            //attempting to remove INVALID squares
+            testGame.removePiece(0,0);
+            assert testGame.getType(0,0) == INVALID: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(0,7);
+            assert testGame.getType(0,7) == INVALID: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(7,0);
+            assert testGame.getType(7,0) == INVALID: "ERROR (Y): square should be EMPTY";
+            testGame.removePiece(7,7);
+            assert testGame.getType(7,7) == INVALID: "ERROR (Y): square should be EMPTY";
+
+            System.out.println(testGame);
+
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+            //---------------------------------------------------------------------//
+
+            //Setup 
+            testGame.addPiece(3,1, WHITE);
+            testGame.addPiece(3,2, WHITE);
+            testGame.addPiece(4,5, WHITE);
+            testGame.addPiece(5,6, WHITE);
+            testGame.addPiece(7,1, WHITE);
+            testGame.addPiece(6,2, WHITE);
+            testGame.addPiece(7,5, WHITE);
+            testGame.addPiece(7,6, WHITE);
+            testGame.addPiece(0,2, WHITE);
+            testGame.addPiece(0,6, WHITE);
+            testGame.addPiece(1,5, WHITE);
+            testGame.addPiece(6,1, BLACK);
+            testGame.addPiece(1,7, BLACK);
+            testGame.addPiece(6,7, BLACK);
+            testGame.addPiece(2,1, BLACK);
+            testGame.addPiece(1,0, BLACK);
+            testGame.addPiece(4,2, BLACK);
+            testGame.addPiece(3,7, BLACK);
+            testGame.addPiece(6,0, BLACK);
+            testGame.addPiece(6,5, BLACK);
+            testGame.addPiece(5,5, BLACK);
+            testGame.addPiece(3,3, BLACK);
+            testGame.addPiece(3,5, BLACK);
+            testGame.addPiece(5,7, BLACK);
+
+            System.out.println(testGame);
+
+            //testing connection related methods
+
+
+            /*
     	    Gameboard sanchitGame = new Gameboard();
     	    sanchitGame.addPiece(0,1,WHITE);
     	    sanchitGame.addPiece(0,2,WHITE);
@@ -949,44 +1323,6 @@ public class Gameboard {
     	    sanchitGame.addPiece(7,5,WHITE);
     	    sanchitGame.addPiece(7,6,WHITE);
             sanchitGame.addPiece(5,7,WHITE);
-
-            
-            //int[][] neighbors = sanchitGame.getNeighbors(0, 1);
-            //System.out.println("-------");
-            //System.out.println("count " + sanchitGame.countNeighbors(0,1,WHITE));
-
-            /*
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    System.out.print(neighbors[j][i] + "|");
-                }
-                System.out.println();
-            }
-
-            neighbors = sanchitGame.getNeighbors(0, 2);
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    System.out.print(neighbors[j][i] + "|");
-                }
-                System.out.println();
-            }
-
-            neighbors = sanchitGame.getNeighbors(0, 3);
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    System.out.print(neighbors[j][i] + "|");
-                }
-                System.out.println();
-            }
-
-            neighbors = sanchitGame.getNeighbors(0, 4);
-            for (int i = 0; i < 3; i++) {
-                for (int j = 0; j < 3; j++) {
-                    System.out.print(neighbors[j][i] + "|");
-                }
-                System.out.println();
-            }
-            */
 
             System.out.println(sanchitGame);
     	    
@@ -1149,8 +1485,7 @@ public class Gameboard {
     	    assert Arrays.equals(sanchitGame.getDiagonal(5,5,1),f): "ERROR (S): getDiagonal is wrong";
 
     	    System.out.println(sanchitGame);
-
-            System.out.println("All tests so far have passed!");
+            */
         } catch(Exception e) {
             System.out.println(e);
         }
