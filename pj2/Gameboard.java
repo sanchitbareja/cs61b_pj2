@@ -1447,66 +1447,71 @@ public class Gameboard {
             int[][] r76 = {{5,6}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRow(7,6), r76): "Connected Row Error";
 
+            System.out.println(testGame);
+
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
-            /*
+    
             //testing Connected LDiagonal
+            System.out.println("LDiagonal");
+            System.out.println(testGame);
+
             int[][] ld02 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(0,2), ld02): "Connected LDiagonal Error";
-            int[][] ld06 = {{0,0}, {1,5}};
+            int[][] ld06 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(0,6), ld06): "Connected LDiagonal Error";
-            int[][] ld10 = {{0,0}, {0,0}};
+            int[][] ld10 = {{0,0}, {2,1}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,0), ld10): "Connected LDiagonal Error";
-            int[][] ld15 = {{0,6}, {0,0}};
+            int[][] ld15 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,5), ld15): "Connected LDiagonal Error";
-            int[][] ld17 = {{0,0}, {3,5}};
+            int[][] ld17 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(1,7), ld17): "Connected LDiagonal Error";
             
-            int[][] ld21 = {{0,0}, {0,0}};
+            int[][] ld21 = {{1,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,1), ld21): "Connected LDiagonal Error";
             int[][] ld23 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
-            int[][] ld25 = {{6,0}, {3,5}};
+            int[][] ld25 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,3), ld23): "Connected LDiagonal Error";
-            int[][] ld27 = {{1,7}, {5,7}};
+            int[][] ld27 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(2,7), ld27): "Connected LDiagonal Error";
             int[][] ld31 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,1), ld31): "Connected LDiagonal Error";
-            int[][] ld32 = {{0,2}, {0,0}};
+            int[][] ld32 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,2), ld32): "Connected LDiagonal Error";
 
-            int[][] ld35 = {{2,5}, {0,0}};
+            int[][] ld35 = {{0,0}, {5,7}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(3,5), ld35): "Connected LDiagonal Error";
             int[][] ld42 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(4,2), ld42): "Connected LDiagonal Error";
-            int[][] ld45 = {{0,0}, {0,0}};
+            int[][] ld45 = {{0,0}, {5,6}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(4,5), ld45): "Connected LDiagonal Error";
-            int[][] ld55 = {{0,0}, {6,5}};
+            int[][] ld55 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,5), ld55): "Connected LDiagonal Error";
-            int[][] ld56 = {{0,6}, {7,6}};
+            int[][] ld56 = {{4,5}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,6), ld56): "Connected LDiagonal Error";
 
-            int[][] ld57 = {{2,7}, {6,7}};
+            int[][] ld57 = {{3,5}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(5,7), ld57): "Connected LDiagonal Error";
-            int[][] ld60 = {{1,0}, {0,0}};
+            int[][] ld60 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,0), ld60): "Connected LDiagonal Error";
             int[][] ld61 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,1), ld61): "Connected LDiagonal Error";
             int[][] ld62 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,2), ld62): "Connected LDiagonal Error";
-            int[][] ld65 = {{5,5}, {0,0}};
+            int[][] ld65 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,5), ld65): "Connected LDiagonal Error";
 
-            int[][] ld67 = {{5,7}, {0,0}};
+            int[][] ld67 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(6,7), ld67): "Connected LDiagonal Error";
             int[][] ld71 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,1), ld71): "Connected LDiagonal Error";
             int[][] ld75 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,5), ld75): "Connected LDiagonal Error";
-            int[][] ld76 = {{5,6}, {0,0}};
+            int[][] ld76 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedLDiagonal(7,6), ld76): "Connected LDiagonal Error";
-            */
+
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1515,6 +1520,7 @@ public class Gameboard {
 
             //Adjustments to cover all cases
             testGame.addPiece(5,3, BLACK);
+            System.out.println("RDiagonal");
             System.out.println(testGame);
 
             int[][] rd02 = {{0,0}, {0,0}};
@@ -1523,6 +1529,10 @@ public class Gameboard {
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(0,6), rd06): "Connected RDiagonal Error";
             int[][] rd10 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,0), rd10): "Connected RDiagonal Error";
+            //System.out.println(testGame.getType(0,6));
+            //for (int i = 0; i < 7; i++) {
+                //System.out.print(testGame.getDiagonal(1,5,1)[i] + " |");
+            //}
             int[][] rd15 = {{0,0}, {0,6}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(1,5), rd15): "Connected RDiagonal Error";
             int[][] rd17 = {{3,5}, {0,0}};
@@ -1532,7 +1542,7 @@ public class Gameboard {
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,1), rd21): "Connected RDiagonal Error";
             int[][] rd23 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
-            int[][] rd25 = {{0,0}, {6,1}};
+            int[][] rd25 = {{6,1}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,3), rd23): "Connected RDiagonal Error";
             int[][] rd27 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(testGame.findConnectedRDiagonal(2,7), rd27): "Connected RDiagonal Error";
