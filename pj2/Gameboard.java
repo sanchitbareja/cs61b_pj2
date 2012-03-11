@@ -403,7 +403,7 @@ public class Gameboard {
                 startX = x + y;
             }
             int xy2 = 0;
-            while((startX > 0 && startY < this.height) && xy2 < diagonalLength){
+            while((startX >= 0 && startY < this.height) && xy2 < diagonalLength){
                 diagonalChips[xy2] = this.board[startX][startY];
                 startX -= 1;
                 startY += 1;
@@ -446,7 +446,6 @@ public class Gameboard {
                 break;
             }
         }
-
         for (int i = 1; i + location < length; i++) {
             if (diagonal[i + location] == type) {
                 connectedChips[1][0] = x + i;
@@ -1556,13 +1555,13 @@ public class Gameboard {
             int[][] rd32 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(3,2), rd32): "Connected RDiagonal Error";
 
-            int[][] rd35 = {{1,7}, {5,3}};
+            int[][] rd35 = {{5,3},{1,7}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(3,5), rd35): "Connected RDiagonal Error";
-            int[][] rd42 = {{0,0}, {6,0}};
+            int[][] rd42 = {{6,0},{0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(4,2), rd42): "Connected RDiagonal Error";
             int[][] rd45 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(4,5), rd45): "Connected RDiagonal Error";
-            int[][] rd53 = {{3,5}, {0,0}};
+            int[][] rd53 = {{0,0},{3,5}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,3), rd53): "Connected RDiagonal Error";
             int[][] rd55 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,5), rd55): "Connected RDiagonal Error";
@@ -1571,18 +1570,18 @@ public class Gameboard {
 
             int[][] rd57 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(5,7), rd57): "Connected RDiagonal Error";
-            int[][] rd60 = {{4,2}, {0,0}};
+            int[][] rd60 = {{0,0},{4,2}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,0), rd60): "Connected RDiagonal Error";
-            int[][] rd61 = {{0,0}, {2,5}};
+            int[][] rd61 = {{0,0},{2,5}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,1), rd61): "Connected RDiagonal Error";
-            int[][] rd62 = {{0,0}, {7,1}};
+            int[][] rd62 = {{7,1},{0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,2), rd62): "Connected RDiagonal Error";
             int[][] rd65 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,5), rd65): "Connected RDiagonal Error";
 
             int[][] rd67 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(6,7), rd67): "Connected RDiagonal Error";
-            int[][] rd71 = {{6,2}, {0,0}};
+            int[][] rd71 = {{0,0},{6,2}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(7,1), rd71): "Connected RDiagonal Error";
             int[][] rd75 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(7,5), rd75): "Connected RDiagonal Error";
@@ -1623,7 +1622,7 @@ public class Gameboard {
             int[][] ldd55 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(5,5), ldd55): "Connected LDiagonal Error";
             int[][] ldd64 = {{2,0}, {0,0}};
-            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(6,4), ldd20): "Connected LDiagonal Error";
+            assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(6,4), ldd64): "Connected LDiagonal Error";
             int[][] ldd66 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(6,6), ldd66): "Connected LDiagonal Error";
             int[][] ldd73 = {{0,0}, {0,0}};
@@ -1644,8 +1643,8 @@ public class Gameboard {
             assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(4,4), rdd44): "Connected RDiagonal Error";
             int[][] rdd55 = {{6,4}, {3,7}};
             assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(5,5), rdd55): "Connected RDiagonal Error";
-            int[][] rdd64 = {{5,5}, {0,0}};
-            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(6,4), rdd20): "Connected RDiagonal Error";
+            int[][] rdd64 = {{0,0},{5,5}};
+            assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(6,4), rdd64): "Connected RDiagonal Error";
             int[][] rdd66 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(zhuGame.findConnectedRDiagonal(6,6), rdd66): "Connected RDiagonal Error";
             int[][] rdd73 = {{0,0}, {0,0}};
@@ -1685,7 +1684,7 @@ public class Gameboard {
             assert Arrays.deepEquals(cGame.findConnectedLDiagonal(6,6), lddd66): "Connected LDiagonal Error";
 
             int[][] rddd06 = {{1,5}, {0,0}};
-            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(0,6), lddd06): "Connected RDiagonal Error";
+            assert Arrays.deepEquals(cGame.findConnectedRDiagonal(0,6), rddd06): "Connected RDiagonal Error";
             int[][] rddd11 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(cGame.findConnectedRDiagonal(1,1), rddd11): "Connected RDiagonal Error";
             int[][] rddd15 = {{4,2}, {0,6}};
@@ -1924,6 +1923,7 @@ public class Gameboard {
 
             System.out.println(sanchitGame);
             */
+	    System.out.println("ALL TESTS PASSED! TAKE A BREAK!");
         } catch(Exception e) {
             System.out.println(e);
         }
