@@ -2,6 +2,7 @@
 
 import java.util.*;
 import player.*;
+import list.*; 
 
 public class Gameboard {
 
@@ -603,7 +604,7 @@ public class Gameboard {
      * @return a int[] containing chips that is connected to given square
      */
 
-    public int[] findConnectingChips(int x, int y) {
+    private int[] findConnectingChips(int x, int y) {
         int temp[] = new int[2];
         return temp;
     }
@@ -618,7 +619,7 @@ public class Gameboard {
      * @param type the new type of the square
      */
 
-    public void addPiece(int x, int y, int type) throws AgainstRulesException {
+    private void addPiece(int x, int y, int type) throws AgainstRulesException {
         /*
         System.out.println("checkDimensions is " + checkDimensions(x,y) + " at (" + x + ", " + y + ")");
         System.out.println("checkNeighbor is " + checkNeighbors(x,y,type)  + " at (" + x + ", " + y + ") with " + type);
@@ -832,14 +833,20 @@ public class Gameboard {
      * @param y2 the y-coordinate of destination
      */
 
-    public void movePieces(int x1, int y1, int x2, int y2) throws AgainstRulesException {
-        try {
-            addPiece(x2, y2, getType(x1,y1));
+    private void movePieces(int x1, int y1, int x2, int y2) throws AgainstRulesException {
+        if (x1 == x2 && y1 == y2) {
+            throw new AgainstRulesException("attempt to move to same coordinates (" + x1 + ", " + y1 + ") = (" + x2 + ", " + y2 + ")");
+        } else {
+            int type = getType(x1,y1);
+            try {
+                removePiece(x1, y1);
+                addPiece(x2, y2, type);
+            }
+            catch (AgainstRulesException e) {
+                addPiece(x1, y1, type);
+                throw new AgainstRulesException("attempt to move " + getType(x1, y1) + " from  (" + x1 + ", " + y1 + ") fails game rules.");
+            }
         }
-        catch (AgainstRulesException e) {
-            throw new AgainstRulesException("attempt to move " + getType(x1, y1) + " from  (" + x1 + ", " + y1 + ") fails.");
-        }
-        removePiece(x1, y1);
     }
 
     /**
@@ -851,9 +858,104 @@ public class Gameboard {
      * @return true if the move can be legally made, false otherwise.
      */
 
-    public boolean isvalidMove(Move m) {
-        return true;
+    public boolean isValidMove(Move m, int type) {
+        //does not test if moving away the piece allows other
+        //player to win WARNING!
+        if(m.moveKind == Move.ADD) {
+            try{
+                addPiece(m.x1, m.y1, type);
+                removePiece(m.x1, m.y1);
+                return true;
+            } catch (AgainstRulesException e){
+                return false;
+            }
+
+        }
+        if(m.moveKind == Move.STEP) {
+            try{
+                movePieces(m.x1, m.y1, m.x2, m.y2);
+                movePieces(m.x2, m.y2, m.x1, m.y2);
+                return true;
+            } catch (AgainstRulesException e){
+                return false;
+            }
+        }
+        if(m.moveKind == Move.QUIT) {
+            return true; 
+        } else {
+            return false;
+        }
     }
+
+    /**
+     * listBlacks() takes no parameters, and returns the coordinates of all squares
+     * with a black piece.
+     *
+     *
+     * @return a two dimensional array containing the location of all black pieces, the first
+     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     */
+
+    public int[][] listBlacks() {
+        int[][] black = new int[TOTAL - this.getBlackCount()][2];
+        int count = 0;
+        for (int j = 0; j < this.height; j++) {
+            for (int i = 0; i < this.width; i++) {
+                if (isBlack(i, j)) {
+                    black[count][0] = i;
+                    black[count][1] = j;
+                    count++;
+                } 
+            }
+        }
+        return black;
+    }
+
+    /**
+     * listWhites() takes no parameters, and returns the coordinates of all squares
+     * with a whites piece.
+     *
+     *
+     * @return a two dimensional array containing the location of all whites pieces, the first
+     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     */
+
+    public int[][] listWhites() {
+        int[][] white = new int[TOTAL - this.getWhiteCount()][2];
+        int count = 0;
+        for (int j = 0; j < this.height; j++) {
+            for (int i = 0; i < this.width; i++) {
+                if (isWhite(i, j)) {
+                    white[count][0] = i;
+                    white[count][1] = j;
+                    count++;
+                } 
+            }
+        }
+        return white;
+    }
+
+    /**
+     * listPieces takes one parameter, and returns the coordinates of all the pieces on the board
+     * of the given type.
+     * 
+     * @param a type, either WHITE or BLACK 
+     *
+     * @return a two dimensional array containing the location of all pieces of type, the first
+     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     */
+
+    public int[][] listPieces(int type) throws AgainstRulesException {
+        if (type == WHITE) {
+            return this.listWhites();
+        }
+        if (type == BLACK) {
+            return this.listBlacks();
+        } else {
+            throw new AgainstRulesException("attempting to list pieces of type neither black nor white");
+        }
+    }
+
     
     /**
      * listMoves() takes one parameter, the type of the current player, and 
@@ -865,10 +967,31 @@ public class Gameboard {
      * "this" Gameboard.
      */
 
-    public Move[] listMoves(int player) {
-        Move[] list = new Move[1];
-        return list;
+    public SList listMoves(int player) throws AgainstRulesException {
+        SList validMoves = new SList();
+
+
+        //addPiece()
+        for (int j = 0; j < this.height; j++) {
+            for (int i = 0; i < this.width; i++) {
+                if (isValidMove(new Move(i, j), player)) {
+                    validMoves.insertBack(new Move(i,j));
+                }
+            }
+        }
+        int[][] piece = listPieces(player);
+        for (int k = 0; k < piece.length; k++) {
+            for (int j = 0; j < this.height; j++) {
+                for (int i = 0; i < this.width; i++) {
+                    if (isValidMove(new Move(piece[k][0], piece[k][1], i, j), player)) {
+                        validMoves.insertBack(new Move(piece[k][0], piece[k][1], i, j));
+                    }
+                }
+            }
+        }
+        return validMoves;
     }
+
 
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
@@ -879,9 +1002,17 @@ public class Gameboard {
      *
      * @return true if the current set of pieces contains a Network, false otherwise
      */
+    private boolean containsNetwork(int player) {
+        if (player == BLACKPLAYER) {
+            int[] topRow = getRow(0);
+            for each chip in topRow
+                formulate a 3*3*2 supergrid
+                for each connection in supergrid
 
-    public boolean containsNetwork(int player) {
-        return true;
+        }
+        if(player == WHITEPLAYER){
+            int[] leftCol = getColumn(0);
+        }
     }
 
     /**
@@ -900,6 +1031,20 @@ public class Gameboard {
             }
         }
         return empty;
+    }
+
+    /**
+     * evaluator takes in two parameters, a player, and evaluates the this.Gameboard based
+     * on the chances of winning for the player.
+     *
+     * @param player the player on the board to be evaluated
+     *
+     * @return an double representing the chances of winning for the player, 1 for guaranteed win, -1
+     * for guaranteed loss, and a number in between for boards that are not either.
+     */
+
+    private double evaluator(int player) {
+        return (Math.random() * 2.0) - 1.0;
     }
 
     /**
@@ -941,6 +1086,7 @@ public class Gameboard {
     public static void main(String args[]) {
         Gameboard yuxinGame = new Gameboard();
         //System.out.println(yuxinGame);
+        //System.out.println(yuxinGame.evaluator(BLACKPLAYER));
 
         try {
 
@@ -1065,7 +1211,7 @@ public class Gameboard {
             yuxinGame.addPiece(3,7, BLACK);
             assert yuxinGame.getType(3,7) == BLACK: "ERROR (Y): square should be BLACK";
 
-            System.out.println(yuxinGame);
+            //System.out.println(yuxinGame);
 
             //Attempt to cause errors
             yuxinGame.addPiece(2,0, BLACK);
@@ -1169,7 +1315,7 @@ public class Gameboard {
             yuxinGame.addPiece(3,6, WHITE);
             assert yuxinGame.getType(3,6) == EMPTY: "ERROR (Y): square should be EMPTY";
 
-            System.out.println(yuxinGame);
+            //System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
 
@@ -1288,7 +1434,7 @@ public class Gameboard {
             yuxinGame.removePiece(7,7);
             assert yuxinGame.getType(7,7) == INVALID: "ERROR (Y): square should be EMPTY";
 
-            System.out.println(yuxinGame);
+            //System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1328,9 +1474,9 @@ public class Gameboard {
             yuxinGame.addPiece(3,5, BLACK);
             yuxinGame.addPiece(5,7, BLACK);
 
-            System.out.println("************************************************************");
-            System.out.println("yuxinGame -- Row/Column");
-            System.out.println(yuxinGame);
+            //System.out.println("************************************************************");
+            //System.out.println("yuxinGame -- Row/Column");
+            //System.out.println(yuxinGame);
 
             //testing Connected Columns
             int[][] c02 = {{0,0}, {0,6}};
@@ -1448,16 +1594,16 @@ public class Gameboard {
             int[][] r76 = {{5,6}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRow(7,6), r76): "Connected Row Error";
 
-            System.out.println(yuxinGame);
+            //System.out.println(yuxinGame);
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
     
             //testing Connected LDiagonal
-            System.out.println("************************************************************");
-            System.out.println("yuxinGame -- LDiagonal");
-            System.out.println(yuxinGame);
+            //System.out.println("************************************************************");
+            //System.out.println("yuxinGame -- LDiagonal");
+            //System.out.println(yuxinGame);
 
             int[][] ld02 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedLDiagonal(0,2), ld02): "Connected LDiagonal Error";
@@ -1520,12 +1666,10 @@ public class Gameboard {
             //---------------------------------------------------------------------//
 
             //testing Connected RDiagonal
-
-            //Adjustments to cover all cases
             yuxinGame.addPiece(5,3, BLACK);
-            System.out.println("************************************************************");
-            System.out.println("yuxinGame -- RDiagonal");
-            System.out.println(yuxinGame);
+            //System.out.println("************************************************************");
+            //System.out.println("yuxinGame -- RDiagonal");
+            //System.out.println(yuxinGame);
 
             int[][] rd02 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(yuxinGame.findConnectedRDiagonal(0,2), rd02): "Connected RDiagonal Error";
@@ -1604,7 +1748,7 @@ public class Gameboard {
             zhuGame.addPiece(1,1, WHITE);
             zhuGame.addPiece(0,2, WHITE);
             zhuGame.addPiece(7,3, WHITE);
-            System.out.println(zhuGame);
+            //System.out.println(zhuGame);
 
             int[][] ldd02 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(zhuGame.findConnectedLDiagonal(0,2), ldd02): "Connected LDiagonal Error";
@@ -1661,9 +1805,9 @@ public class Gameboard {
             cGame.addPiece(6,6, WHITE);
             cGame.addPiece(6,5, WHITE);
             cGame.addPiece(2,1, WHITE);
-            System.out.println("************************************************************");
-            System.out.println("cGame");
-            System.out.println(cGame);
+            //System.out.println("************************************************************");
+            //System.out.println("cGame");
+            //System.out.println(cGame);
 
             int[][] lddd06 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(cGame.findConnectedLDiagonal(0,6), lddd06): "Connected LDiagonal Error";
@@ -1708,9 +1852,9 @@ public class Gameboard {
             dGame.addPiece(5,6,BLACK);
             dGame.addPiece(7,6,WHITE);
             dGame.addPiece(6,5,WHITE);
-            System.out.println("************************************************************");
-            System.out.println("dGame");
-            System.out.println(dGame);
+            //System.out.println("************************************************************");
+            //System.out.println("dGame");
+            //System.out.println(dGame);
 
             int[][] ldddd17 = {{0,0}, {0,0}};
             assert Arrays.deepEquals(dGame.findConnectedLDiagonal(1,7), ldddd17): "Connected LDiagonal Error";
@@ -1923,7 +2067,7 @@ public class Gameboard {
 
             System.out.println(sanchitGame);
             */
-	    System.out.println("ALL TESTS PASSED! TAKE A BREAK!");
+	    System.out.println("All tests passed!");
         } catch(Exception e) {
             System.out.println(e);
         }
