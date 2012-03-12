@@ -600,34 +600,32 @@ public class Gameboard {
 
 
     /**
-     * findConnectingChips() takes 2 parameters, the coordinates, and returns a list of square ints 
+     * findConnectingChips() takes 1 parameter, the coordinate, and returns a list of square ints 
      * that the square is "connected" to.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes in the coordiantes of the square
      *
-     * @return a int[] containing chips that is connected to given square
+     * @return a Coordainte containing chips that is connected to given square
      */
 
-    private int[] findConnectingChips(int x, int y) {
-        int temp[] = new int[2];
+    private Coordinate findConnectingChips(Coordinate coord) {
+        Coordinate temp = new Coordinate(0,0);
         return temp;
     }
 
     /**
-     * addPiece(), takes three parameters, and changes the type of the
+     * addPiece(), takes 2 parameters, and changes the type of the
      * indicated square on "this" Gameboard at the coordinates (x,y) to
      * the specified type.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordiante coord takes in the coordiantes of the square
      * @param type the new type of the square
      */
 
-    private void addPiece(int x, int y, int type) throws AgainstRulesException {
+    private void addPiece(Coordinate coord, int type) throws AgainstRulesException {
         //if (checkRules(x,y,type)) { //YOU NEED TO TURN THIS ON!
-        if (checkRulesExceptCount(x,y,type)) {
-            setType(x, y, type);
+        if (checkRulesExceptCount(coord,type)) {
+            setType(coord, type);
             if (type == BLACK) {
                 blackCount--;
             }
@@ -653,19 +651,18 @@ public class Gameboard {
     }
 
     /**
-     * checkRules(), takes two parameters, the x-coordinate,  y-coordinate, and a type, and verifies
+     * checkRules(), takes 2 parameters, the coordinates, and a type, and verifies
      * all the check methods. Namely, it verifies that checkDimensions(), checkPiece(), checkCount(), checkSquare(), and checkNeighbors()
      * returns true.
      * 
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordiante coord takes in the coordiantes of the square
      * @param type of the piece being considered
      *
      * @return true if all of the above tests return true, false otherwise.
      */
 
-    private boolean checkRules(int x, int y, int type) {
-        if (checkCount(x,y,type) && ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type)))) {
+    private boolean checkRules(Coordinate coord, int type) {
+        if (checkCount(coord,type) && ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type)))) {
             return true;
         } else {
             return false;
@@ -673,19 +670,18 @@ public class Gameboard {
     }
 
     /**
-     * checkRulesExcept Count(), takes two parameters, the x-coordinate,  y-coordinate, and a type, and verifies
+     * checkRulesExcept Count(), takes 2 parameters, the coordinates, and a type, and verifies
      * all the check methods. Namely, it verifies that checkDimensions(), checkPiece(), checkSquare(), and checkNeighbors()
      * returns true. Important: This method is for testing only, it does not check checkCount().
      * 
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes in the coordiantes of the square
      * @param type of the piece being considered
      *
      * @return true if all of the above tests return true, false otherwise.
      */
 
-    private boolean checkRulesExceptCount(int x, int y, int type) {
-        if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
+    private boolean checkRulesExceptCount(Coordinate coord, int type) {
+        if ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type))) {
             return true;
         } else {
             return false;
@@ -693,17 +689,18 @@ public class Gameboard {
     }
 
     /**
-     * checkDimensions(), takes two parameters, the x-coordinate, and y-coordinate, and verifies
+     * checkDimensions(), takes 1 parameters, the coordinates, and verifies
      * that they are within the dimensions of this.Gameboard.
      *
+     * @param Coordinate coord takes in the coordiantes of the square
      * @param x the x-coordinate of the square
      * @param y the y-coordinate of the square
      *
      * @return true if the coordinate satisfies the dimensions of the board, false otherwise.
      */
 
-    private boolean checkDimensions(int x, int y) {
-        if ((x < this.width && x >= 0) && (y < this.height && y >= 0)) {
+    private boolean checkDimensions(Coordinate coord) {
+        if ((coord.x < this.width && coord.x >= 0) && (coord.y < this.height && coord.y >= 0)) {
             return true;
         } else {
             return false;
@@ -711,29 +708,28 @@ public class Gameboard {
     }
 
     /**
-     * checkSquare(), takes three parameters, the x-coordinate,  y-coordinate, and a piece, and verifies
+     * checkSquare(), takes 2 parameters, the coordinates, and a piece, and verifies
      * that the square is not paired with a coordinate where the piece is not allowed. If the type is INVALID, automatically
      * returns false. An INVALID is not allowed anywhere! If the coordinates is at an INVALID spot, also returns false.
      * 
      * (RULE #1 and #2)
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes in the coordiantes of the square
      * @param type the piece to be inspected at (x,y)
      *
      * @return true if the piece can legitimately be placed on (x,y), false otherwise.
      */
 
-    private boolean checkSquare(int x, int y, int type) {
-        if (isEmpty(x,y)) { //if (x,y) is valid, and the type of square is valid
+    private boolean checkSquare(Coordinate coord, int type) {
+        if (isEmpty(coord)) { //if (x,y) is valid, and the type of square is valid
             if (type == BLACK) { //a BLACK can not be placed on the left/right edges
-                if (x != 0 && x != (this.width - 1)) { //if x-coordinate is not 0 and its not width - 1
+                if (coord.x != 0 && coord.x != (this.width - 1)) { //if x-coordinate is not 0 and its not width - 1
                     return true;
                 } else {
                     return false;
                 }
             }
             if (type == WHITE) { //a WHITE can not be placed on the top/bottom edges
-                if (y != 0 && y != (this.height - 1)) { //if x-coordinate is not 0 and its not width - 1
+                if (coord.y != 0 && coord.y != (this.height - 1)) { //if x-coordinate is not 0 and its not width - 1
                     return true; 
                 } else {
                     return false;
@@ -747,17 +743,15 @@ public class Gameboard {
     }
 
     /**
-     * checkCount(), takes two parameters, the x-coordinate,  y-coordinate, and a type, and verifies
+     * checkCount(), takes one parameters, a type, and verifies
      * number of pieces remaining is greater than zero.
      * 
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
      * @param type of the piece being considered
      *
      * @return true if the number of pieces remaining of type is greater than zero, false otherwise
      */
 
-    private boolean checkCount(int x, int y, int type) {
+    private boolean checkCount(int type) {
         if (type == BLACK) {
             if (this.getBlackCount() > 0) {
                 return true;
@@ -794,19 +788,18 @@ public class Gameboard {
     }
 
     /**
-     * countNeighbor() takes in three parameters, an x-coordinate and y-coordinate, and a type and return the number of neighbors
+     * countNeighbor() takes in 2 parameters, a coordinate, and a type and return the number of neighbors
      * around it, excluding itself.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes in the coordinates of a square
      * @param type the type of the piece to be inspected
      *
      * @return the number of neighbors surrounding the specified piece, excluding itself,
      */
 
-    private int countNeighbors(int x, int y, int type) {
+    private int countNeighbors(Coordinate coord, int type) {
         int count = 0;
-        int[][] neighbors = getNeighbors(x, y);
+        int[][] neighbors = getNeighbors(coord);
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (neighbors[i][j] == type) {
@@ -823,21 +816,19 @@ public class Gameboard {
     }
 
     /**
-     * locateNeighbor() takes in three parameters, an x-coordinate, y-coordinate on the board and a type, adjusts 
+     * locateNeighbor() takes in 2 parameters, a coordinate on the board and a type, adjusts 
      * the coordinates of 2-D array returned from getNeighbor() to overlay the coordinates of the piece on this.Gameboard. Only
      * returns the first neighbor it finds.
      *
-     * @param x1 the x-coordinate of the square on the gameboard
-     * @param y1 the y-coordinate of the square on the gameboard
+     * @param Coordinate coord takes teh coordinates of a square
      * @param type the type of the square we are inspecting
      *
-     * @return an array of length 2, containing the coordinates of first neighbor on the this.Gameboard. The first index is the x-coordinate,
-     * and the second index is the y-coordinates.
+     * @return a coordiante, containing the coordinates of first neighbor on the this.Gameboard.
      */
 
-    private int[] locateNeighbors(int x, int y, int type) {
-        int[] location = new int[2];
-        int[][] neighbors = getNeighbors(x, y);
+    private Coordinate locateNeighbors(Coordinate coord, int type) {
+        Coordainte location;
+        int[][] neighbors = getNeighbors(coord);
         /*
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
@@ -850,8 +841,7 @@ public class Gameboard {
         for (int j = 0; j < 3; j++) {
             for (int i = 0; i < 3; i++) {
                 if (neighbors[i][j] == type) {
-                    location[0] = x + i - 1; //true location
-                    location[1] = y + j - 1; //true location
+                    location = new Coordinate(coord.x + i - 1, coord.y + j - 1); //true location
                 }
             }
         }
@@ -862,26 +852,25 @@ public class Gameboard {
 
 
     /**
-     * checkNeighbors() takes in three parameters, an x-coordinate and y-coordinate, and a piece and checks whether placing the piece there
+     * checkNeighbors() takes in 2 parameters, a coordinate and a piece and checks whether placing the piece there
      * would violate the rule that a player may not have more than two chips in a connected group, whether connected
      * orthogonally or diagonally.
      * (RULE #4)
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes in the coordinate of a square
      * @param type the type of the square
      *
      * @return true if the piece is can be placed according to the rules, false otherwise.
      */
 
-    private boolean checkNeighbors(int x, int y, int type) {
-        if (countNeighbors(x,y,type) == 0) {
+    private boolean checkNeighbors(Coordinate coord, int type) {
+        if (countNeighbors(coord,type) == 0) {
             return true;
         }
         //System.out.println("countNeighbors " + countNeighbors(x,y,type) + " at (" + x + ", " + y + ") with " + type);
-        if (countNeighbors(x,y,type) == 1) {
-            int[] location = locateNeighbors(x,y,type);
-            if (countNeighbors(location[0], location[1], type) <= 0) {
+        if (countNeighbors(coord,type) == 1) {
+            Coordinate location = locateNeighbors(coord,type);
+            if (countNeighbors(location, type) <= 0) {
                 return true;
             }
         }
@@ -890,50 +879,47 @@ public class Gameboard {
 
 
     /**
-     * removePiece(), takes two parameters, and changes the type of the 
+     * removePiece(), takes 1 parameter, the coordinate, and changes the type of the 
      * indicated square on "this" Gameboard at the coordinates (x,y) to EMPTY.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes the coordinates of a square
      */
 
-    private void removePiece(int x, int y) {
-        if (checkPiece(getType(x,y)) && checkDimensions(x,y)) {
-            int temp = this.getType(x,y);
+    private void removePiece(Coordinate coord) {
+        if (checkPiece(getType(coord)) && checkDimensions(coord)) {
+            int temp = this.getType(coord);
             if (temp == BLACK) {
                 blackCount++;
             }
             if (temp == WHITE) {
                 whiteCount++;
             }
-            this.setType(x, y, EMPTY);
+            this.setType(coord, EMPTY);
         }   
     }
 
     /**
      * movePiece() "moves" a piece from one coordinate to another.
-     * More specifically, it takes parameters (x1, y1, x2, y2) and
-     * moves a piece on "this" Gameboard from (x1, y1) to (x2, y2).
+     * More specifically, it takes parameters (Coordinate coord1, Coordiante coord2) and
+     * moves a piece on "this" Gameboard from coord1 to coord2.
      *
      *
-     * @param x1 the x-coordinate of the square containing the piece
-     * @param y1 the y-coordinate of the square containing the piece
-     * @param x2 the x-coordinate of destination
-     * @param y2 the y-coordinate of destination
+     * @param Coordiante coord1 takes the coordinates of the first square
+     * @param Coordiante coord2 takes the coordinates of the second square
      */
 
-    private void movePieces(int x1, int y1, int x2, int y2) throws AgainstRulesException {
-        if (x1 == x2 && y1 == y2) {
-            throw new AgainstRulesException("attempt to move to same coordinates (" + x1 + ", " + y1 + ") = (" + x2 + ", " + y2 + ")");
+    private void movePieces(Coordinate coord1, Coordinate coord2) throws AgainstRulesException {
+        if (coord1.x == coord2.x && coord1.y == coord2.y) {
+            throw new AgainstRulesException("attempt to move to same coordinates (" + coord1.x + ", " + coord.y + ") = (" + coord2.x + ", " + coord2.y + ")");
         } else {
-            int type = getType(x1,y1);
+            int type = getType(coord1);
             try {
-                removePiece(x1, y1);
-                addPiece(x2, y2, type);
+                removePiece(coord1);
+                addPiece(coord2, type);
             }
             catch (AgainstRulesException e) {
-                addPiece(x1, y1, type);
-                throw new AgainstRulesException("attempt to move " + getType(x1, y1) + " from  (" + x1 + ", " + y1 + ") fails game rules.");
+                addPiece(coord1, type);
+                throw new AgainstRulesException("attempt to move " + getType(coord1) + " from  (" + coord1.x + ", " + coord1.y + ") fails game rules.");
             }
         }
     }
@@ -953,8 +939,8 @@ public class Gameboard {
         //player to win WARNING!
         if(m.moveKind == Move.ADD) {
             try{
-                addPiece(m.x1, m.y1, type);
-                removePiece(m.x1, m.y1);
+                addPiece(new Coordinate(m.x1,m.y1), type);
+                removePiece(new Coordinate(m.x1, m.y1));
                 return true;
             } catch (AgainstRulesException e){
                 return false;
@@ -963,8 +949,8 @@ public class Gameboard {
         }
         if(m.moveKind == Move.STEP) {
             try{
-                movePieces(m.x1, m.y1, m.x2, m.y2);
-                movePieces(m.x2, m.y2, m.x1, m.y2);
+                movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
+                movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y2));
                 return true;
             } catch (AgainstRulesException e){
                 return false;
@@ -982,18 +968,16 @@ public class Gameboard {
      * with a black piece.
      *
      *
-     * @return a two dimensional array containing the location of all black pieces, the first
-     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     * @return an array containing the coordinate of all black pieces
      */
 
-    private int[][] listBlacks() {
-        int[][] black = new int[TOTAL - this.getBlackCount()][2];
+    private Coordinate[] listBlacks() {
+        Coordinate[] black = new Coordinate[TOTAL - this.getBlackCount()];
         int count = 0;
         for (int j = 0; j < this.height; j++) {
             for (int i = 0; i < this.width; i++) {
-                if (isBlack(i, j)) {
-                    black[count][0] = i;
-                    black[count][1] = j;
+                if (isBlack(new Coordinate(i, j))) {
+                    black[count] = new Coordinate(i,j);
                     count++;
                 } 
             }
@@ -1006,18 +990,16 @@ public class Gameboard {
      * with a whites piece.
      *
      *
-     * @return a two dimensional array containing the location of all whites pieces, the first
-     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     * @return an array containing the coordinate of all white pieces
      */
 
-    private int[][] listWhites() {
-        int[][] white = new int[TOTAL - this.getWhiteCount()][2];
+    private Coordinate[] listWhites() {
+        Coordinate[] white = new Coordinate[TOTAL - this.getWhiteCount()];
         int count = 0;
         for (int j = 0; j < this.height; j++) {
             for (int i = 0; i < this.width; i++) {
-                if (isWhite(i, j)) {
-                    white[count][0] = i;
-                    white[count][1] = j;
+                if (isWhite(new Coordinate(i,j))) {
+                    white[count] = new Coordinate(i,j);
                     count++;
                 } 
             }
@@ -1031,11 +1013,10 @@ public class Gameboard {
      * 
      * @param a type, either WHITE or BLACK 
      *
-     * @return a two dimensional array containing the location of all pieces of type, the first
-     * index in the inner-array is the x-coordinate, the second is the y-coordinate.
+     * @return an array containing the coordinate of the specified type
      */
 
-    public int[][] listPieces(int type) throws AgainstRulesException {
+    public Coordinate[] listPieces(int type) throws AgainstRulesException {
         if (type == WHITE) {
             return this.listWhites();
         }
@@ -1083,34 +1064,26 @@ public class Gameboard {
     }
 
     /**
-     * makeGrid() takes two parameters, an x-coordinate and y-coordinate, and returns a 3-D array containing the pieces
+     * makeGrid() takes 1 parameter, a coordinate, and returns a 3-D array containing the pieces
      * it has connections to in every direction.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes the coordinates of the square
      *
-     * @return a three dimension array containing the pieces of the same type the specified square is connected to. More specifically,
-     * the first two dimensions specify a 3 x 3 two dimension array, where each direction specifies the direction of the connected chip.
-     * For example, the top middle index of the 3 x 3 array would point to the first connected piece in same column, the top left index
-     * of the 3 x 3 array would point to the first connected piece in the upper-left diagonal direction. The third dimension of the array
-     * is of length two, and specifies the coordinates of the connected piece. The center index of the 3 x 3 array contains the coordinates
-     * of the given square.
+     * @return a coordiante containing the pieces of the same type the specified square is connected to.
      */
 
-    private int[][][] makeGrid(int x, int y) {
-        int[][][] grid = new int[3][3][2];
-        int[][] row = findConnectedRow(x,y);
-        int[][] column = findConnectedColumn(x,y);
-        int[][] ldiagonal = findConnectedLDiagonal(x,y);
-        int[][] rdiagonal = findConnectedRDiagonal(x,y);
+    private Coordinate[][] makeGrid(Coordinate coord) {
+        Coordinate[][] grid = new Coordiante[3][3];
+        Coordinate[] row = findConnectedRow(coord);
+        Coordinate[] column = findConnectedColumn(coord);
+        Coordinate[] ldiagonal = findConnectedLDiagonal(coord);
+        Coordinate[] rdiagonal = findConnectedRDiagonal(coord);
 
         grid[0][0] = ldiagonal[0];
         grid[0][1] = column[0];
         grid[0][2] = rdiagonal[0];
         grid[1][0] = row[0];
-        grid[1][1] = new int[2];
-        grid[1][1][0] = x; 
-        grid[1][1][1] = y;
+        grid[1][1] = coord; 
         grid[1][2] = row[1];
         grid[2][0] = rdiagonal[1];
         grid[2][1] = column[1];
@@ -1120,30 +1093,27 @@ public class Gameboard {
     }
 
     /**
-     * makeHGrid() takes two parameters, an x-coordinate and y-coordinate, and returns a 2-D array containing the pieces
+     * makeHGrid() takes 1 parameter, a coordinate, and returns a 2-D array containing the pieces
      * it has connections to in every direction.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate coord takes the coordinates of the square
      *
-     * @return a two dimension array containing the pieces of the same type the specified square is connected to. More specifically, it returns
-     * a horizontal version of makeGrid(), where the indices of the first two dimensional array progresses horizontally. 
+     * @return an array containing the pieces of the same type the specified square is connected to. More specifically, it returns
+     * a horizontal version of makeGrid().
      */
 
-    private int[][] makeHGrid(int x, int y) {
-        int[][] grid = new int[9][2];
-        int[][] row = findConnectedRow(x,y);
-        int[][] column = findConnectedColumn(x,y);
-        int[][] ldiagonal = findConnectedLDiagonal(x,y);
-        int[][] rdiagonal = findConnectedRDiagonal(x,y);
+    private Coordiante[] makeHGrid(Coordinate coord) {
+        Coordinate[] grid = new Coordinate[9];
+        Coordinate[] row = findConnectedRow(x,y);
+        Coordinate[] column = findConnectedColumn(x,y);
+        Coordinate[] ldiagonal = findConnectedLDiagonal(x,y);
+        Coordiante[] rdiagonal = findConnectedRDiagonal(x,y);
 
         grid[0] = ldiagonal[0];
         grid[1] = column[0];
         grid[2] = rdiagonal[0];
         grid[3] = row[0];
-        grid[4] = new int[2];
-        grid[4][0] = x; 
-        grid[4][1] = y;
+        grid[4] = coord;
         grid[5] = row[1];
         grid[6] = rdiagonal[1];
         grid[7] = column[1];
@@ -1164,10 +1134,10 @@ public class Gameboard {
     /*
     private boolean containsNetwork(int player) {
         if (player == BLACKPLAYER) {
-            int[] topRow = getRow(0);
+            int[] topRow = getRow(new Coordinate(0,0));
             for (int i = 0; i < topRow.length; i++) {
                 if(topRow[i] == BLACK) {
-                    if(containsNetworkHelper({0,i}, new SList(), 1)) {
+                    if(containsNetworkHelper(new Coordinate(0,i), new SList(), 1)) {
                         return true; 
                     }               
                 }
@@ -1178,7 +1148,7 @@ public class Gameboard {
     }
     */
 
-    //private boolean containsNetworkHelper(int[] coord, SList noahsark, int depth) {
+    //private boolean containsNetworkHelper(Coordiante coord, SList noahsark, int depth) {
         /*
         if(noahsark.contains(coord)) {
             return false;
@@ -1218,7 +1188,7 @@ public class Gameboard {
         boolean empty = true;
         for (int i = 0; i < this.width; i++) {
             for (int j = 0; j < this.height; j++) {
-                if (isBlack(i,j) || isWhite(i,j)) {
+                if (isBlack(new Coordinate(i,j)) || isWhite(new Coordinate(i,j))) {
                     empty = false;
                 }
             }
@@ -1248,7 +1218,7 @@ public class Gameboard {
         for(int j = 0; j < this.height; j++) {
             String[] printColumn = new String[this.width];
             for(int i = 0; i < this.width; i++) {
-                int typeAt = getType(i,j);
+                int typeAt = getType(new Coordiante(i,j));
                 //System.out.println(typeAt + " at coordinates (" + i + ", " + j + ")");
                 switch(typeAt) {
                     case INVALID:
