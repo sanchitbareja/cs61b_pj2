@@ -7,4 +7,8 @@ public class Coordinate {
 		this.x = x;
 		this.y = y;
 	}
+
+	public boolean equals(Coordinate other) {
+		return this.x == other.x && this.y == other.y;
+	}
 }
