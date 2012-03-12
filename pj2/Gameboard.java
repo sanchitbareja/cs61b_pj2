@@ -95,32 +95,31 @@ public class Gameboard {
     }
 
     /**
-     * getNeighbors() takes 2 parameters - namely, the coordinate - and returns a 3 x 3 2-D square array
+     * getNeighbors() takes one parameter, a Coordinate, and returns a 3 x 3 2-D square array
      * of representing squares around the given square.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return a 3 x 3 int[][] containing squares located orthogonally
      * and diagonally adjacent to the square at (x,y). If square is at the side/corner, it fills 
      * remainig 3X3 array with -1s
      */
 
-    private int[][] getNeighbors(int x, int y) {
+    private int[][] getNeighbors(Coordinate c) {
         int toReturn[][] = new int[3][3];
-        if(x >= 0 && x<= this.width-1 && y >= 0 && y <= this.width-1){
+        if(c.x >= 0 && c.x<= this.width-1 && c.y >= 0 && c.y <= this.width-1){
             //int toReturn[][] = new int[3][3];
-            toReturn[0][0] = get00(x,y);
-            toReturn[0][1] = get01(x,y);
-            toReturn[0][2] = get02(x,y);
-            toReturn[1][0] = get10(x,y);
+            toReturn[0][0] = get00(c.x,c.y);
+            toReturn[0][1] = get01(c.x,c.y);
+            toReturn[0][2] = get02(c.x,c.y);
+            toReturn[1][0] = get10(c.x,c.y);
             toReturn[1][1] = INVALID;
-            toReturn[1][2] = get12(x,y);
-            toReturn[2][0] = get20(x,y);
-            toReturn[2][1] = get21(x,y);
-            toReturn[2][2] = get22(x,y);
+            toReturn[1][2] = get12(c.x,c.y);
+            toReturn[2][0] = get20(c.x,c.y);
+            toReturn[2][1] = get21(c.x,c.y);
+            toReturn[2][2] = get22(c.x,c.y);
         } else {
-            System.out.println("Invalid x,y given in getNeighbors x: "+x+" y: "+y+" .");
+            System.out.println("Invalid x,y given in getNeighbors x: "+c.x+" y: "+c.y+" .");
             //int toReturn[][] = new int[3][3];
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j < 3; j++){
@@ -132,111 +131,109 @@ public class Gameboard {
     }
     
     //helper methods for getNeighbors
-    private int get00(int x, int y){
-        if(x - 1 >= 0 && y - 1 >= 0){
-            return this.board[x-1][y-1];
+    private int get00(Coordinate c){
+        if(c.x - 1 >= 0 && c.y - 1 >= 0){
+            return this.board[c.x-1][c.y-1];
         } else {
             return INVALID;
         }
     }
 
-    private int get10(int x, int y){
-        if(y-1 >= 0){
-            return this.board[x][y-1];
+    private int get10(Coordinate c){
+        if(c.y-1 >= 0){
+            return this.board[c.x][c.y-1];
         } else {
             return INVALID;
         }
     }
 
-    private int get20(int x, int y){
-        if(x + 1 <= this.width-1 && y-1 >= 0){
-            return this.board[x+1][y-1];
+    private int get20(Coordinate c){
+        if(c.x + 1 <= this.width-1 && c.y-1 >= 0){
+            return this.board[c.x+1][c.y-1];
         } else {
             return INVALID;
         }
     }
 
-    private int get01(int x, int y){
-        if(x - 1 >= 0){
-            return this.board[x-1][y];
+    private int get01(Coordinate c){
+        if(c.x - 1 >= 0){
+            return this.board[c.x-1][c.y];
         } else {
             return INVALID;
         }
     }
 
-    private int get21(int x, int y){
-        if(x+1 <= this.width-1){
-            return this.board[x+1][y];
+    private int get21(Coordinate c){
+        if(c.x+1 <= this.width-1){
+            return this.board[c.x+1][c.y];
         } else {
             return INVALID;
         }
     }
 
-    private int get02(int x, int y){
-        if(x-1 >= 0 && y+1 <= this.width-1){
-            return this.board[x-1][y+1];
+    private int get02(Coordinate c){
+        if(c.x-1 >= 0 && c.y+1 <= this.width-1){
+            return this.board[c.x-1][c.y+1];
         } else {
             return INVALID;
         }
     }
 
-    private int get12(int x, int y){
+    private int get12(Coordinate c){
         if(y+1 <= this.width-1){
-            return this.board[x][y+1];
+            return this.board[c.x][c.y+1];
         } else {
             return INVALID;
         }
     }
 
-    private int get22(int x, int y){
-        if(x+1 <= this.width-1 && y+1<=this.width-1){
-            return this.board[x+1][y+1];
+    private int get22(Coordinate c){
+        if(c.x+1 <= this.width-1 && c.y+1<=this.width-1){
+            return this.board[c.x+1][c.y+1];
         } else {
             return INVALID;
         }
     }
 
     /**
-     * getType() takes 2 parameters, and returns an int representing the type
+     * getType() takes one parameter, a Coordinate, and returns an int representing the type
      * of the square.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return type of the square, a 0 represents EMPTY, a 1 represents WHITE,
      * a 2 represents BLACK.
      */
 
-    public int getType(int x, int y) {
-       return this.board[x][y];
+    public int getType(Coordinate c) {
+       return this.board[c.x][c.y];
     }
 
     /**
-     * setType() takes 3 parameters, the coordinates, and an integer representing the new type, and 
+     * setType() takes two parameter, a Coordinate, and an integer representing the new type, and 
      * changes the type of the square to the new type.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
+     *
      * @param type represents the type which the square will be changed to. If
      * newType is the same as the type of the square, nothing is changed.
      */
 
-    private void setType(int x, int y, int type) {
-       this.board[x][y] = type;
+    private void setType(Coordinate c, int type) {
+       this.board[c.x][c.y] = type;
     }
 
     /**
-     * isValid() takes 2 parameters, the coordinates, and checks whether the type
+     * isValid() takes one parameter, a Coordinate, and checks whether the type
      * of square is INVALID.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return true if type of the square is INVALID, false otherwise.
      */
 
-    public boolean isValid(int x, int y) {
-        if(getType(x,y) != INVALID){
+    public boolean isValid(Coordinate c) {
+        if(getType(c.x,c.y) != INVALID){
             return true;
         } else {
             return false;
@@ -244,17 +241,16 @@ public class Gameboard {
     }
 
     /**
-     * isEmpty() takes 2 parameters, the coordinates, and checks whether the type 
+     * isEmpty() takes one parameter, a Coordinate, and checks whether the type 
      * of square is EMPTY.
      * 
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return true if type of the square is EMPTY, false otherwise.
      */
 
-    public boolean isEmpty(int x, int y) {
-        if(getType(x,y) == EMPTY){
+    public boolean isEmpty(Coordinate c) {
+        if(getType(c.x,c.y) == EMPTY){
             return true;
         } else {
             return false;
@@ -262,17 +258,16 @@ public class Gameboard {
     }
 
     /**
-     * isWhite() takes 2 parameters, the coordinate, and checks whether the type
+     * isWhite() takes one parameter, a Coordinate, and checks whether the type
      * of square is WHITE.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return true if type of the square is WHITE, false otherwise.
      */
 
-    public boolean isWhite(int x, int y) {
-        if(getType(x, y) == WHITE){
+    public boolean isWhite(Coordinate c) {
+        if(getType(c.x, c.y) == WHITE){
             return true;
         } else {
             return false;
@@ -280,17 +275,16 @@ public class Gameboard {
     }
 
     /**
-     * isBlack() takes 2 parameters, the coordinates, and checks whether the type
+     * isBlack() takes one parameter, a Coordinate, and checks whether the type
      * of square is BLACK.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
      * @return true if type of square is BLACK, false otherwise.
      */
 
-    public boolean isBlack(int x, int y) {
-        if(getType(x, y) == BLACK){
+    public boolean isBlack(Coordinate c) {
+        if(getType(c.x, c.y) == BLACK){
             return true;
         } else {
             return false;
@@ -298,46 +292,45 @@ public class Gameboard {
     }
 
     /**
-     * getColumn() takes 1 parameters, the x-coordainte, and returns an array of square ints
-     * in the same row as x.
+     * getColumn() takes one parameter, a Coordinate, and returns an array of square ints
+     * in the same row as the coordinate.
      *
-     * @param x the x-coordinate of the row
+     * @param Coordinate c, representing the coordinate of the square
      *
-     * @return a int[] containing squares in the same row as int x.
+     * @return an int[] containing squares in the same row as int x.
      */
 
-    private int[] getColumn(int x) {
+    private int[] getColumn(Coordinate c) {
         int columnChips[] = new int[8];
         for(int j = 0; j < this.height; j++){
-            columnChips[j] = this.board[x][j];
+            columnChips[j] = this.board[c.x][j];
         }
         return columnChips;
     }
 
     /**
-     * getRow() takes 1 parameters, the y-coordinate, and returns an array of square ints
+     * getRow() takes 1 parameter, a Coordinate, and returns an array of square ints
      * in the same column as the y.
      *
-     * @param y the y-coordinate of the column
+     * @param Coordinate c, representing the coordinate of the square
      *
-     * @return a int[] containing squares in the same column as int y.
+     * @return an int[] containing squares in the same column as int y.
      */
 
-    private int[] getRow(int y) {
+    private int[] getRow(Coordinate c) {
         int rowChips[] = new int[8];
         for(int i = 0; i < this.width; i++){
-            rowChips[i] = this.board[i][y];
+            rowChips[i] = this.board[i][c.y];
         }
         return rowChips;
     }
 
     /**
-     * getDiagonalLength() takes 3 parameters, the coordinates, the direction , and returns
+     * getDiagonalLength() takes two parameters, a Coordinate, the direction , and returns
      * and integer representing the number of squares in the same diagonal
      * as the square regardless of direction.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      * @param direction is an integer representing the direction of the diagonal to
      * return. More specifically, a -1 represents a northwest-southeast diagonal, 
      * and a 1 represents a northeast-southwest diagonal
@@ -345,11 +338,11 @@ public class Gameboard {
      * @return an integer representing the length of the diagonal
      */
 
-    private int getDiagonalLength(int x, int y, int direction) {
+    private int getDiagonalLength(Coordinate c, int direction) {
     //this method uses a formula to compute the number of diagonal chips
-    int len = x + y + 1;
+    int len = c.x + c.y + 1;
         if(direction == -1){
-            len = this.height - y + x;
+            len = this.height - c.y + c.x;
             if(len > this.height){
               len = this.height - len % this.height;
             }
@@ -362,30 +355,29 @@ public class Gameboard {
     }
 
     /**
-     * getDiagonal() takes 3 parameters, the coordiantes, a direction, and returns
+     * getDiagonal() takes two parameters, the Coordinate object, a direction, and returns
      * an array of square objects in the same diagonal as the square
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      * @param direction is an integer representing the direction of the diagonal to
      * return. More specifically, a -1 represents a northwest-southeast diagonal, 
      * and a 1 represents a northeast-southwest diagonal.
      *
-     * @return a int[] containing squares in the same diagonal as the square.
+     * @return a Coordinate[] containing squares in the same diagonal as the square.
      */
 
-    private int[] getDiagonal(int x, int y, int direction) {
-        int diagonalLength = getDiagonalLength(x,y,direction);
+    private Coordinate[] getDiagonal(Coordinate c, int direction) {
+        int diagonalLength = getDiagonalLength(c, direction);
         int diagonalChips[] = new int[diagonalLength];
-        int startX = x;
-        int startY = y;
+        int startX = c.x;
+        int startY = c.y;
         if(direction == -1){
-            if(x > y){
+            if(c.x > c.y){
                 startY = 0;
-                startX = x-y;
+                startX = c.x-c.y;
             } else if(y > x){
                 startX = 0;
-                startY = y-x;
+                startY = c.y-c.x;
             } else {
                 startX = 0;
                 startY = 0;
@@ -398,12 +390,12 @@ public class Gameboard {
                 xy += 1;
             }
         } else if(direction == 1){
-            if(x + y > this.width - 1){
+            if(c.x + c.y > this.width - 1){
                 startX = this.width - 1;
-                startY = x + y - this.width + 1;
+                startY = c.x + c.y - this.width + 1;
             } else {
                 startY = 0;
-                startX = x + y;
+                startX = c.x + c.y;
             }
             int xy2 = 0;
             while((startX >= 0 && startY < this.height) && xy2 < diagonalLength){
@@ -417,32 +409,33 @@ public class Gameboard {
     }
 
     /**
-     * findConnectedLDiagonal() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the left diagonal.
+     * findConnectedLDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the left diagonal.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
-     * @return a int[] containing "connected" squares of the same type in the left diagonal
+     * @return a Coordinate[] containing "connected" squares of the same type in the left diagonal
      */
 
-    private int[][] findConnectedLDiagonal(int x, int y) {
-        int type = getType(x, y);
+    private Coordinate[] findConnectedLDiagonal(Coordinate c) {
+        int type = getType(c);
 
-        int[][] connectedChips = new int[2][2];
-
-        int[] diagonal = getDiagonal(x, y, -1);
+        Coordinate[] connectedChips = new Coordinate[2];
+        //int[][] connectedChips = new int[2][2];
+        int[] diagonal = getDiagonal(c, -1);
+        //int[] diagonal = getDiagonal(c.x, c.y, -1);
         int length = diagonal.length;
         int location = -1;
-        if (y >= x) {
-            location = x;
+        if (c.y >= c.x) {
+            location = c.x;
         } else {
-            location = y;
+            location = c.y;
         }
 
         for (int i = 1; location - i >= 0; i++) {
             if (diagonal[location - i] == type) {
-                connectedChips[0][0] = x - i;
-                connectedChips[0][1] = y - i;
+                connectedChips[0] = new Coordinate(c.x - i, c.y - i);
+                //connectedChips[0][0] = c.x - i;
+                //connectedChips[0][1] = c.y - i;
                 break;
             }
             if (diagonal[location - i] != type && checkPiece(diagonal[location - i])) {
@@ -451,8 +444,9 @@ public class Gameboard {
         }
         for (int i = 1; i + location < length; i++) {
             if (diagonal[i + location] == type) {
-                connectedChips[1][0] = x + i;
-                connectedChips[1][1] = y + i;
+                connectedChips[1] = new Coordinate(c.x - i, c.y - i);
+                //connectedChips[1][0] = c.x + i;
+                //connectedChips[1][1] = c.y + i;
                 break;
             }
             if (diagonal[location + i] != type && checkPiece(diagonal[location + i])) {
@@ -463,32 +457,33 @@ public class Gameboard {
     }
 
     /**
-     * findConnectedRDiagonal() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the right diagonal.
+     * findConnectedRDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the right diagonal.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c representing the coordinate of the square
      *
-     * @return a int[] containing "connected" squares of the same type in the right diagonal
+     * @return a Coordinate[] containing "connected" squares of the same type in the right diagonal
      */
 
-    private int[][] findConnectedRDiagonal(int x, int y) {
-        int type = getType(x, y);
+    private Coordinate[] findConnectedRDiagonal(Coordinate c) {
+        int type = getType(c);
 
-        int[][] connectedChips = new int[2][2];
+        Coordinate[] connectedChips = new Coordinate[2];
+        //int[][] connectedChips = new int[2][2];
 
-        int[] diagonal = getDiagonal(x, y, 1);
+        int[] diagonal = getDiagonal(c, 1);
         int length = diagonal.length;
         int location = -1;
-        if (y > (this.width - x - 1)) {
-            location = this.width - x - 1;
+        if (c.y > (this.width - c.x - 1)) {
+            location = this.width - c.x - 1;
         } else {
-            location = y;
+            location = c.y;
         }
 
         for (int i = 1; location - i >= 0; i++) {
             if (diagonal[location - i] == type) {
-                connectedChips[0][0] = x + i;
-                connectedChips[0][1] = y - i;
+                connectedChips[0] = new Coordinate(c.x + i, c.y - i);
+                //connectedChips[0][0] = c.x + i;
+                //connectedChips[0][1] = c.y - i;
                 break;
             }
             if (diagonal[location - i] != type && checkPiece(diagonal[location - i])) {
@@ -498,9 +493,10 @@ public class Gameboard {
 
         for (int i = 1; i + location < length; i++) {
             if (diagonal[i + location] == type) {
-                connectedChips[1][0] = x - i;
+                connectedChips[1] = new Coordinate(c.x - i, c.y + i);
+                //connectedChips[1][0] = c.x - i;
                 //System.out.println(connectedChips[1][0]);
-                connectedChips[1][1] = y + i;
+                //connectedChips[1][1] = c.y + i;
                 //System.out.println(connectedChips[1][1]);
                 break;
             }
@@ -512,27 +508,29 @@ public class Gameboard {
     }
 
     /**
-     * findConnectedRow() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the same row.
+     * findConnectedRow() takes one parameter, the Coordinate, and returns a list of connected squares of the same type in the same row.
      *
-     * @param x the x-coordinate of the square
-     * @param y the y-coordinate of the square
+     * @param Coordinate c, representing the coordinate of the square
      *
-     * @return a int[] containing "connected" squares of the same type in the same row
+     * @return a Coordinate[] containing "connected" squares of the same type in the same row
      */
 
-    private int[][] findConnectedRow(int x, int y) {
-        int type = getType(x, y);
+    private Coordinate[] findConnectedRow(Coordinate c) {
+        int type = getType(c);
 
-        int[][] connectedChips = new int[2][2];
+        Coordinate[] connectedChips = new Coordinate[2];
+        //int[][] connectedChips = new int[2][2];
 
-        int[] row = getRow(y);
+        int[] row = getRow(c);
         int length = row.length;
-        int location = x;
+        int location = c.x;
 
         for (int i = 1; location - i >= 0; i++) {
             if (row[location - i] == type) {
-                connectedChips[0][0] = x - i;
-                connectedChips[0][1] = y;
+
+                connectedChips[0] = new Coordinate(x-i, y);
+                //connectedChips[0][0] = x - i;
+                //connectedChips[0][1] = y;
                 break;
             }
             if (row[location - i] != type && checkPiece(row[location - i])) {
@@ -542,8 +540,10 @@ public class Gameboard {
 
         for (int i = 1; i + location < length; i++) {
             if (row[i + location] == type) {
-                connectedChips[1][0] = x + i;
-                connectedChips[1][1] = y;
+
+                connectedChips[1] = new Coordinate(x+i, y);
+                //connectedChips[1][0] = x + i;
+                //connectedChips[1][1] = y;
                 break;
             }
             if (row[location + i] != type && checkPiece(row[location + i])) {
@@ -562,19 +562,21 @@ public class Gameboard {
      * @return a int[] containing "connected" squares of the same type in the same column.
      */
 
-    private int[][] findConnectedColumn(int x, int y) {
-        int type = getType(x, y);
+    private Coordinate[] findConnectedColumn(Coordinate c) {
+        int type = getType(c);
 
-        int[][] connectedChips = new int[2][2];
+        Coordinate[] connectedChips = new Coordinate[2];
+        //int[][] connectedChips = new int[2][2];
 
-        int[] column = getColumn(x);
+        int[] column = getColumn(c);
         int length = column.length;
-        int location = y;
+        int location = c.y;
 
         for (int i = 1; location - i >= 0; i++) {
             if (column[location - i] == type) {
-                connectedChips[0][0] = x;
-                connectedChips[0][1] = y - i;
+                connectedChips[0] = new Coordinate(x,y-i);
+                //connectedChips[0][0] = x;
+                //connectedChips[0][1] = y - i;
                 break;
             }
             if (column[location - i] != type && checkPiece(column[location - i])) {
@@ -584,8 +586,9 @@ public class Gameboard {
 
         for (int i = 1; i + location < length; i++) {
             if (column[i + location] == type) {
-                connectedChips[1][0] = x;
-                connectedChips[1][1] = y + i;
+                connectedColumn[1] = new Coordinate(x, y+i);
+                //connectedChips[1][0] = x;
+                //connectedChips[1][1] = y + i;
                 break;
             }
             if (column[location + i] != type && checkPiece(column[location + i])) {
