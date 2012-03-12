@@ -119,7 +119,7 @@ public class Gameboard {
             toReturn[2][1] = get21(c.x,c.y);
             toReturn[2][2] = get22(c.x,c.y);
         } else {
-            System.out.println("Invalid x,y given in getNeighbors x: "+c.x+" y: "+c.y+" .");
+            System.out.println("Invalid Coordinate given in getNeighbors x: "+ c.x + " y: " + c.y + " .");
             //int toReturn[][] = new int[3][3];
             for(int i = 0; i < 3; i++){
                 for(int j = 0; j < 3; j++){
@@ -603,7 +603,7 @@ public class Gameboard {
      * findConnectingChips() takes 1 parameter, the coordinate, and returns a list of square ints 
      * that the square is "connected" to.
      *
-     * @param Coordinate coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      *
      * @return a Coordainte containing chips that is connected to given square
      */
@@ -618,7 +618,7 @@ public class Gameboard {
      * indicated square on "this" Gameboard at the coordinates (x,y) to
      * the specified type.
      *
-     * @param Coordiante coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      * @param type the new type of the square
      */
 
@@ -655,7 +655,7 @@ public class Gameboard {
      * all the check methods. Namely, it verifies that checkDimensions(), checkPiece(), checkCount(), checkSquare(), and checkNeighbors()
      * returns true.
      * 
-     * @param Coordiante coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      * @param type of the piece being considered
      *
      * @return true if all of the above tests return true, false otherwise.
@@ -674,7 +674,7 @@ public class Gameboard {
      * all the check methods. Namely, it verifies that checkDimensions(), checkPiece(), checkSquare(), and checkNeighbors()
      * returns true. Important: This method is for testing only, it does not check checkCount().
      * 
-     * @param Coordinate coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      * @param type of the piece being considered
      *
      * @return true if all of the above tests return true, false otherwise.
@@ -692,7 +692,7 @@ public class Gameboard {
      * checkDimensions(), takes 1 parameters, the coordinates, and verifies
      * that they are within the dimensions of this.Gameboard.
      *
-     * @param Coordinate coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      * @param x the x-coordinate of the square
      * @param y the y-coordinate of the square
      *
@@ -713,7 +713,7 @@ public class Gameboard {
      * returns false. An INVALID is not allowed anywhere! If the coordinates is at an INVALID spot, also returns false.
      * 
      * (RULE #1 and #2)
-     * @param Coordinate coord takes in the coordiantes of the square
+     * @param Coordinate coord takes in the coordinates of the square
      * @param type the piece to be inspected at (x,y)
      *
      * @return true if the piece can legitimately be placed on (x,y), false otherwise.
@@ -771,7 +771,7 @@ public class Gameboard {
     }
 
     /**
-     * pieceCheck(), takes one parameter, a type of a piece, returns whether or not the type is {BLACK, WHITE}
+     * pieceCheck(), takes one parameter, the type of a piece, returns whether or not the type is {BLACK, WHITE}
      * 
      * (RULE #1 and #2)
      * @param type the piece to be inspected
@@ -788,7 +788,7 @@ public class Gameboard {
     }
 
     /**
-     * countNeighbor() takes in 2 parameters, a coordinate, and a type and return the number of neighbors
+     * countNeighbor() takes in 2 parameters, a Coordinate, and a type and return the number of neighbors
      * around it, excluding itself.
      *
      * @param Coordinate coord takes in the coordinates of a square
@@ -820,7 +820,7 @@ public class Gameboard {
      * the coordinates of 2-D array returned from getNeighbor() to overlay the coordinates of the piece on this.Gameboard. Only
      * returns the first neighbor it finds.
      *
-     * @param Coordinate coord takes teh coordinates of a square
+     * @param Coordinate coord takes the coordinates of a square
      * @param type the type of the square we are inspecting
      *
      * @return a coordiante, containing the coordinates of first neighbor on the this.Gameboard.
@@ -900,12 +900,12 @@ public class Gameboard {
 
     /**
      * movePiece() "moves" a piece from one coordinate to another.
-     * More specifically, it takes parameters (Coordinate coord1, Coordiante coord2) and
+     * More specifically, it takes parameters (Coordinate coord1, Coordinate coord2) and
      * moves a piece on "this" Gameboard from coord1 to coord2.
      *
      *
-     * @param Coordiante coord1 takes the coordinates of the first square
-     * @param Coordiante coord2 takes the coordinates of the second square
+     * @param Coordinate coord1 takes the coordinates of the first square
+     * @param Coordinate coord2 takes the coordinates of the second square
      */
 
     private void movePieces(Coordinate coord1, Coordinate coord2) throws AgainstRulesException {
@@ -1073,7 +1073,7 @@ public class Gameboard {
      */
 
     private Coordinate[][] makeGrid(Coordinate coord) {
-        Coordinate[][] grid = new Coordiante[3][3];
+        Coordinate[][] grid = new Coordinate[3][3];
         Coordinate[] row = findConnectedRow(coord);
         Coordinate[] column = findConnectedColumn(coord);
         Coordinate[] ldiagonal = findConnectedLDiagonal(coord);
@@ -1102,12 +1102,12 @@ public class Gameboard {
      * a horizontal version of makeGrid().
      */
 
-    private Coordiante[] makeHGrid(Coordinate coord) {
+    private Coordinate[] makeHGrid(Coordinate coord) {
         Coordinate[] grid = new Coordinate[9];
         Coordinate[] row = findConnectedRow(x,y);
         Coordinate[] column = findConnectedColumn(x,y);
         Coordinate[] ldiagonal = findConnectedLDiagonal(x,y);
-        Coordiante[] rdiagonal = findConnectedRDiagonal(x,y);
+        Coordinate[] rdiagonal = findConnectedRDiagonal(x,y);
 
         grid[0] = ldiagonal[0];
         grid[1] = column[0];
@@ -1148,7 +1148,7 @@ public class Gameboard {
     }
     */
 
-    //private boolean containsNetworkHelper(Coordiante coord, SList noahsark, int depth) {
+    //private boolean containsNetworkHelper(Coordinate coord, SList noahsark, int depth) {
         /*
         if(noahsark.contains(coord)) {
             return false;
@@ -1218,7 +1218,7 @@ public class Gameboard {
         for(int j = 0; j < this.height; j++) {
             String[] printColumn = new String[this.width];
             for(int i = 0; i < this.width; i++) {
-                int typeAt = getType(new Coordiante(i,j));
+                int typeAt = getType(new Coordinate(i,j));
                 //System.out.println(typeAt + " at coordinates (" + i + ", " + j + ")");
                 switch(typeAt) {
                     case INVALID:
