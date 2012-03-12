@@ -109,15 +109,15 @@ public class Gameboard {
         int toReturn[][] = new int[3][3];
         if(c.x >= 0 && c.x<= this.width-1 && c.y >= 0 && c.y <= this.width-1){
             //int toReturn[][] = new int[3][3];
-            toReturn[0][0] = get00(c);
-            toReturn[0][1] = get01(c);
-            toReturn[0][2] = get02(c);
-            toReturn[1][0] = get10(c);
+            toReturn[0][0] = get00(c.x,c.y);
+            toReturn[0][1] = get01(c.x,c.y);
+            toReturn[0][2] = get02(c.x,c.y);
+            toReturn[1][0] = get10(c.x,c.y);
             toReturn[1][1] = INVALID;
-            toReturn[1][2] = get12(c);
-            toReturn[2][0] = get20(c);
-            toReturn[2][1] = get21(c);
-            toReturn[2][2] = get22(c);
+            toReturn[1][2] = get12(c.x,c.y);
+            toReturn[2][0] = get20(c.x,c.y);
+            toReturn[2][1] = get21(c.x,c.y);
+            toReturn[2][2] = get22(c.x,c.y);
         } else {
             System.out.println("Invalid Coordinate given in getNeighbors x: "+ c.x + " y: " + c.y + " .");
             //int toReturn[][] = new int[3][3];
@@ -180,7 +180,7 @@ public class Gameboard {
     }
 
     private int get12(Coordinate c){
-        if(c.y+1 <= this.width-1){
+        if(y+1 <= this.width-1){
             return this.board[c.x][c.y+1];
         } else {
             return INVALID;
@@ -196,7 +196,11 @@ public class Gameboard {
     }
 
     /**
+<<<<<<< HEAD
      * getType() takes one parameter, a Coordinate, and returns an int representing the type
+=======
+     * getType( takes 2 parameters, and returns an int representing the type
+>>>>>>> eb64d0ab6e5383734470d6b67772e7dc8ab4a90a
      * of the square.
      *
      * @param Coordinate c, representing the coordinate of the square
@@ -233,7 +237,7 @@ public class Gameboard {
      */
 
     public boolean isValid(Coordinate c) {
-        if(getType(c) != INVALID){
+        if(getType(c.x,c.y) != INVALID){
             return true;
         } else {
             return false;
@@ -250,7 +254,7 @@ public class Gameboard {
      */
 
     public boolean isEmpty(Coordinate c) {
-        if(getType(c) == EMPTY){
+        if(getType(c.x,c.y) == EMPTY){
             return true;
         } else {
             return false;
@@ -267,7 +271,7 @@ public class Gameboard {
      */
 
     public boolean isWhite(Coordinate c) {
-        if(getType(c) == WHITE){
+        if(getType(c.x, c.y) == WHITE){
             return true;
         } else {
             return false;
@@ -284,7 +288,7 @@ public class Gameboard {
      */
 
     public boolean isBlack(Coordinate c) {
-        if(getType(c) == BLACK){
+        if(getType(c.x, c.y) == BLACK){
             return true;
         } else {
             return false;
@@ -363,10 +367,10 @@ public class Gameboard {
      * return. More specifically, a -1 represents a northwest-southeast diagonal, 
      * and a 1 represents a northeast-southwest diagonal.
      *
-     * @return an int[] containing squares in the same diagonal as the square.
+     * @return a Coordinate[] containing squares in the same diagonal as the square.
      */
 
-    private int[] getDiagonal(Coordinate c, int direction) {
+    private Coordinate[] getDiagonal(Coordinate c, int direction) {
         int diagonalLength = getDiagonalLength(c, direction);
         int diagonalChips[] = new int[diagonalLength];
         int startX = c.x;
@@ -375,7 +379,7 @@ public class Gameboard {
             if(c.x > c.y){
                 startY = 0;
                 startX = c.x-c.y;
-            } else if(c.y > c.x){
+            } else if(y > x){
                 startX = 0;
                 startY = c.y-c.x;
             } else {
@@ -420,8 +424,6 @@ public class Gameboard {
         int type = getType(c);
 
         Coordinate[] connectedChips = new Coordinate[2];
-        connectedChips[0] = new Coordinate(0,0);
-        connectedChips[1] = new Coordinate(0,0);
         //int[][] connectedChips = new int[2][2];
         int[] diagonal = getDiagonal(c, -1);
         //int[] diagonal = getDiagonal(c.x, c.y, -1);
@@ -446,7 +448,7 @@ public class Gameboard {
         }
         for (int i = 1; i + location < length; i++) {
             if (diagonal[i + location] == type) {
-                connectedChips[1] = new Coordinate(c.x + i, c.y + i);
+                connectedChips[1] = new Coordinate(c.x - i, c.y - i);
                 //connectedChips[1][0] = c.x + i;
                 //connectedChips[1][1] = c.y + i;
                 break;
@@ -471,8 +473,6 @@ public class Gameboard {
 
         Coordinate[] connectedChips = new Coordinate[2];
         //int[][] connectedChips = new int[2][2];
-        connectedChips[0] = new Coordinate(0,0);
-        connectedChips[1] = new Coordinate(0,0);
 
         int[] diagonal = getDiagonal(c, 1);
         int length = diagonal.length;
@@ -524,8 +524,6 @@ public class Gameboard {
 
         Coordinate[] connectedChips = new Coordinate[2];
         //int[][] connectedChips = new int[2][2];
-        connectedChips[0] = new Coordinate(0,0);
-        connectedChips[1] = new Coordinate(0,0);
 
         int[] row = getRow(c);
         int length = row.length;
@@ -534,7 +532,7 @@ public class Gameboard {
         for (int i = 1; location - i >= 0; i++) {
             if (row[location - i] == type) {
 
-                connectedChips[0] = new Coordinate(c.x-i, c.y);
+                connectedChips[0] = new Coordinate(x-i, y);
                 //connectedChips[0][0] = x - i;
                 //connectedChips[0][1] = y;
                 break;
@@ -547,7 +545,7 @@ public class Gameboard {
         for (int i = 1; i + location < length; i++) {
             if (row[i + location] == type) {
 
-                connectedChips[1] = new Coordinate(c.x+i, c.y);
+                connectedChips[1] = new Coordinate(x+i, y);
                 //connectedChips[1][0] = x + i;
                 //connectedChips[1][1] = y;
                 break;
@@ -573,8 +571,6 @@ public class Gameboard {
 
         Coordinate[] connectedChips = new Coordinate[2];
         //int[][] connectedChips = new int[2][2];
-        connectedChips[0] = new Coordinate(0,0);
-        connectedChips[1] = new Coordinate(0,0);
 
         int[] column = getColumn(c);
         int length = column.length;
@@ -582,7 +578,7 @@ public class Gameboard {
 
         for (int i = 1; location - i >= 0; i++) {
             if (column[location - i] == type) {
-                connectedChips[0] = new Coordinate(c.x,c.y-i);
+                connectedChips[0] = new Coordinate(x,y-i);
                 //connectedChips[0][0] = x;
                 //connectedChips[0][1] = y - i;
                 break;
@@ -594,7 +590,7 @@ public class Gameboard {
 
         for (int i = 1; i + location < length; i++) {
             if (column[i + location] == type) {
-                connectedChips[1] = new Coordinate(c.x, c.y+i);
+                connectedColumn[1] = new Coordinate(x, y+i);
                 //connectedChips[1][0] = x;
                 //connectedChips[1][1] = y + i;
                 break;
@@ -613,7 +609,7 @@ public class Gameboard {
      *
      * @param Coordinate coord takes in the coordinates of the square
      *
-     * @return a Coordinate containing chips that is connected to given square
+     * @return a Coordainte containing chips that is connected to given square
      */
 
     private Coordinate findConnectingChips(Coordinate coord) {
@@ -670,7 +666,7 @@ public class Gameboard {
      */
 
     private boolean checkRules(Coordinate coord, int type) {
-        if (checkCount(type) && ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type)))) {
+        if (checkCount(coord,type) && ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type)))) {
             return true;
         } else {
             return false;
@@ -835,7 +831,7 @@ public class Gameboard {
      */
 
     private Coordinate locateNeighbors(Coordinate coord, int type) {
-        Coordinate location = null;
+        Coordainte location;
         int[][] neighbors = getNeighbors(coord);
         /*
         for (int j = 0; j < 3; j++) {
@@ -887,7 +883,11 @@ public class Gameboard {
 
 
     /**
+<<<<<<< HEAD
      * removePiece(), takes 1 parameter, the coordinate, and changes the type of the 
+=======
+     * removePiece takes two parameters, and changes the type of the 
+>>>>>>> eb64d0ab6e5383734470d6b67772e7dc8ab4a90a
      * indicated square on "this" Gameboard at the coordinates (x,y) to EMPTY.
      *
      * @param Coordinate coord takes the coordinates of a square
@@ -918,7 +918,7 @@ public class Gameboard {
 
     private void movePieces(Coordinate coord1, Coordinate coord2) throws AgainstRulesException {
         if (coord1.x == coord2.x && coord1.y == coord2.y) {
-            throw new AgainstRulesException("attempt to move to same coordinates (" + coord1.x + ", " + coord1.y + ") = (" + coord2.x + ", " + coord2.y + ")");
+            throw new AgainstRulesException("attempt to move to same coordinates (" + coord1.x + ", " + coord.y + ") = (" + coord2.x + ", " + coord2.y + ")");
         } else {
             int type = getType(coord1);
             try {
@@ -1058,12 +1058,12 @@ public class Gameboard {
                 }
             }
         }
-        Coordinate[] piece = listPieces(player);
+        int[][] piece = listPieces(player);
         for (int k = 0; k < piece.length; k++) {
             for (int j = 0; j < this.height; j++) {
                 for (int i = 0; i < this.width; i++) {
-                    if (isValidMove(new Move(piece[k].x, piece[k].y, i, j), player)) {
-                        validMoves.insertBack(new Move(piece[k].x, piece[k].y, i, j));
+                    if (isValidMove(new Move(piece[k][0], piece[k][1], i, j), player)) {
+                        validMoves.insertBack(new Move(piece[k][0], piece[k][1], i, j));
                     }
                 }
             }
@@ -1112,10 +1112,10 @@ public class Gameboard {
 
     private Coordinate[] makeHGrid(Coordinate coord) {
         Coordinate[] grid = new Coordinate[9];
-        Coordinate[] row = findConnectedRow(coord);
-        Coordinate[] column = findConnectedColumn(coord);
-        Coordinate[] ldiagonal = findConnectedLDiagonal(coord);
-        Coordinate[] rdiagonal = findConnectedRDiagonal(coord);
+        Coordinate[] row = findConnectedRow(x,y);
+        Coordinate[] column = findConnectedColumn(x,y);
+        Coordinate[] ldiagonal = findConnectedLDiagonal(x,y);
+        Coordinate[] rdiagonal = findConnectedRDiagonal(x,y);
 
         grid[0] = ldiagonal[0];
         grid[1] = column[0];
@@ -1651,120 +1651,120 @@ public class Gameboard {
             //System.out.println(yuxinGame);
 
             //testing Connected Columns
-            Coordinate[] c02 = {new Coordinate(0,0), new Coordinate(0,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(0,2)), c02): "Connected Column Error";
-            Coordinate[] c06 = {new Coordinate(0,2), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(0,6)), c06): "Connected Column Error";
-            Coordinate[] c10 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(1,0)), c10): "Connected Column Error";
-            Coordinate[] c15 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(1,5)), c15): "Connected Column Error";
-            Coordinate[] c17 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(1,7)), c17): "Connected Column Error";
+            int[] c02 = {new Coordinate(0,0), new Coordinate(0,6)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(0,2), c02)): "Connected Column Error";
+            int[] c06 = {new Coordinate(0,2), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(0,6), c06)): "Connected Column Error";
+            int[] c10 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(1,0), c10)): "Connected Column Error";
+            int[] c15 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(1,5), c15)): "Connected Column Error";
+            int[] c17 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(1,7), c17)): "Connected Column Error";
             
-            Coordinate[] c21 = {new Coordinate(0,0), new Coordinate(2,3)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(2,1)), c21): "Connected Column Error";
-            Coordinate[] c23 = {new Coordinate(2,1), new Coordinate(2,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(2,3)), c23): "Connected Column Error";
-            Coordinate[] c25 = {new Coordinate(2,3), new Coordinate(2,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(2,5)), c25): "Connected Column Error";
-            Coordinate[] c27 = {new Coordinate(2,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(2,7)), c27): "Connected Column Error";
-            Coordinate[] c31 = {new Coordinate(0,0), new Coordinate(3,2)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(3,1)), c31): "Connected Column Error";
-            Coordinate[] c32 = {new Coordinate(3,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(3,2)), c32): "Connected Column Error";
+            int[] c21 = {new Coordinate(0,0), new Coordinate(2,3)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(2,1), c21)): "Connected Column Error";
+            int[] c23 = {new Coordinate(2,1), new Coordinate(2,5)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(2,3), c23)): "Connected Column Error";
+            int[] c25 = {new Coordinate(2,3), new Coordinate(2,7)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(2,5), c25)): "Connected Column Error";
+            int[] c27 = {new Coordinate(2,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(2,7), c27)): "Connected Column Error";
+            int[] c31 = {new Coordinate(0,0), new Coordinate(3,2)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(3,1), c31)): "Connected Column Error";
+            int[] c32 = {new Coordinate(3,1), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(3,2), c32)): "Connected Column Error";
 
-            Coordinate[] c35 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(3,5)), c35): "Connected Column Error";
-            Coordinate[] c42 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(4,2)), c42): "Connected Column Error";
-            Coordinate[] c45 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(4,5)), c45): "Connected Column Error";
-            Coordinate[] c55 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(5,5)), c55): "Connected Column Error";
-            Coordinate[] c56 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(5,6)), c56): "Connected Column Error";
+            int[] c35 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(3,5), c35)): "Connected Column Error";
+            int[] c42 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(4,2), c42)): "Connected Column Error";
+            int[] c45 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(4,5), c45)): "Connected Column Error";
+            int[] c55 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(5,5), c55)): "Connected Column Error";
+            int[] c56 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(5,6), c56)): "Connected Column Error";
 
-            Coordinate[] c57 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(5,7)), c57): "Connected Column Error";
-            Coordinate[] c60 = {new Coordinate(0,0), new Coordinate(6,1)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(6,0)), c60): "Connected Column Error";
-            Coordinate[] c61 = {new Coordinate(6,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(6,1)), c61): "Connected Column Error";
-            Coordinate[] c62 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(6,2)), c62): "Connected Column Error";
-            Coordinate[] c65 = {new Coordinate(0,0), new Coordinate(6,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(6,5)), c65): "Connected Column Error";
+            int[] c57 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(5,7), c57)): "Connected Column Error";
+            int[] c60 = {new Coordinate(0,0), new Coordinate(6,1)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(6,0), c60)): "Connected Column Error";
+            int[] c61 = {new Coordinate(6,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(6,1), c61)): "Connected Column Error";
+            int[] c62 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(6,2), c62)): "Connected Column Error";
+            int[] c65 = {new Coordinate(0,0), new Coordinate(6,7)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(6,5), c65)): "Connected Column Error";
 
-            Coordinate[] c67 = {new Coordinate(6,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(6,7)), c67): "Connected Column Error";
-            Coordinate[] c71 = {new Coordinate(0,0), new Coordinate(7,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(7,1)), c71): "Connected Column Error";
-            Coordinate[] c75 = {new Coordinate(7,1), new Coordinate(7,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(7,5)), c75): "Connected Column Error";
-            Coordinate[] c76 = {new Coordinate(7,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedColumn(new Coordinate(7,6)), c76): "Connected Column Error";
+            int[] c67 = {new Coordinate(6,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(6,7), c67)): "Connected Column Error";
+            int[] c71 = {new Coordinate(0,0), new Coordinate(7,5)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(7,1), c71)): "Connected Column Error";
+            int[] c75 = {new Coordinate(7,1), new Coordinate(7,6)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(7,5), c75)): "Connected Column Error";
+            int[] c76 = {new Coordinate(7,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedColumn(new Coordinate(7,6), c76)): "Connected Column Error";
 
             //---------------------------------------------------------------------/)/
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
 
             //testing Connected Rows
-            Coordinate[] r02 = {new Coordinate(0,0), new Coordinate(3,2)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(0,2)), r02): "Connected Row Error";
-            Coordinate[] r06 = {new Coordinate(0,0), new Coordinate(5,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(0,6)), r06): "Connected Row Error";
-            Coordinate[] r10 = {new Coordinate(0,0), new Coordinate(6,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(1,0)), r10): "Connected Row Error";
-            Coordinate[] r15 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(1,5)), r15): "Connected Row Error";
-            Coordinate[] r17 = {new Coordinate(0,0), new Coordinate(2,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(1,7)), r17): "Connected Row Error";
+            int[] r02 = {new Coordinate(0,0), new Coordinate(3,2)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(0,2), r02)): "Connected Row Error";
+            int[] r06 = {new Coordinate(0,0), new Coordinate(5,6)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(0,6), r06)): "Connected Row Error";
+            int[] r10 = {new Coordinate(0,0), new Coordinate(6,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(1,0), r10)): "Connected Row Error";
+            int[] r15 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(1,5), r15)): "Connected Row Error";
+            int[] r17 = {new Coordinate(0,0), new Coordinate(2,7)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(1,7), r17)): "Connected Row Error";
             
-            Coordinate[] r21 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(2,1)), r21): "Connected Row Error";
-            Coordinate[] r23 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(2,3)), r23): "Connected Row Error";
-            Coordinate[] r25 = {new Coordinate(0,0), new Coordinate(3,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(2,3)), r23): "Connected Row Error";
-            Coordinate[] r27 = {new Coordinate(1,7), new Coordinate(5,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(2,7)), r27): "Connected Row Error";
-            Coordinate[] r31 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(3,1)), r31): "Connected Row Error";
-            Coordinate[] r32 = {new Coordinate(0,2), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(3,2)), r32): "Connected Row Error";
+            int[] r21 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(2,1), r21)): "Connected Row Error";
+            int[] r23 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(2,3), r23)): "Connected Row Error";
+            int[] r25 = {new Coordinate(0,0), new Coordinate(3,5)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(2,3), r23)): "Connected Row Error";
+            int[] r27 = {new Coordinate(1,7), new Coordinate(5,7)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(2,7), r27)): "Connected Row Error";
+            int[] r31 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(3,1), r31)): "Connected Row Error";
+            int[] r32 = {new Coordinate(0,2), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(3,2), r32)): "Connected Row Error";
 
-            Coordinate[] r35 = {new Coordinate(2,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(3,5)), r35): "Connected Row Error";
-            Coordinate[] r42 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(4,2)), r42): "Connected Row Error";
-            Coordinate[] r45 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(4,5)), r45): "Connected Row Error";
-            Coordinate[] r55 = {new Coordinate(0,0), new Coordinate(6,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(5,5)), r55): "Connected Row Error";
-            Coordinate[] r56 = {new Coordinate(0,6), new Coordinate(7,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(5,6)), r56): "Connected Row Error";
+            int[] r35 = {new Coordinate(2,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(3,5), r35)): "Connected Row Error";
+            int[] r42 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(4,2), r42)): "Connected Row Error";
+            int[] r45 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(4,5), r45)): "Connected Row Error";
+            int[] r55 = {new Coordinate(0,0), new Coordinate(6,5)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(5,5), r55)): "Connected Row Error";
+            int[] r56 = {new Coordinate(0,6), new Coordinate(7,6)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(5,6), r56)): "Connected Row Error";
 
-            Coordinate[] r57 = {new Coordinate(2,7), new Coordinate(6,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(5,7)), r57): "Connected Row Error";
-            Coordinate[] r60 = {new Coordinate(1,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(6,0)), r60): "Connected Row Error";
-            Coordinate[] r61 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(6,1)), r61): "Connected Row Error";
-            Coordinate[] r62 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(6,2)), r62): "Connected Row Error";
-            Coordinate[] r65 = {new Coordinate(5,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(6,5)), r65): "Connected Row Error";
+            int[] r57 = {new Coordinate(2,7), new Coordinate(6,7)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(5,7), r57)): "Connected Row Error";
+            int[] r60 = {new Coordinate(1,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(6,0), r60)): "Connected Row Error";
+            int[] r61 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(6,1), r61)): "Connected Row Error";
+            int[] r62 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(6,2), r62)): "Connected Row Error";
+            int[] r65 = {new Coordinate(5,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(6,5), r65)): "Connected Row Error";
 
-            Coordinate[] r67 = {new Coordinate(5,7), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(6,7)), r67): "Connected Row Error";
-            Coordinate[] r71 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(7,1)), r71): "Connected Row Error";
-            Coordinate[] r75 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(7,5)), r75): "Connected Row Error";
-            Coordinate[] r76 = {new Coordinate(5,6), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRow(new Coordinate(7,6)), r76): "Connected Row Error";
+            int[] r67 = {new Coordinate(5,7), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(6,7), r67)): "Connected Row Error";
+            int[] r71 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(7,1), r71)): "Connected Row Error";
+            int[] r75 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(7,5), r75)): "Connected Row Error";
+            int[] r76 = {new Coordinate(5,6), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRow(new Coordinate(7,6), r76)): "Connected Row Error";
 
             //System.out.println(yuxinGame);
 
@@ -1777,60 +1777,60 @@ public class Gameboard {
             //System.out.println("yuxinGame -- LDiagonal");
             //System.out.println(yuxinGame);
 
-            Coordinate[] ld02 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(0,2)), ld02): "Connected LDiagonal Error";
-            Coordinate[] ld06 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(0,6)), ld06): "Connected LDiagonal Error";
-            Coordinate[] ld10 = {new Coordinate(0,0), new Coordinate(2,1)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,0)), ld10): "Connected LDiagonal Error";
-            Coordinate[] ld15 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,5)), ld15): "Connected LDiagonal Error";
-            Coordinate[] ld17 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,7)), ld17): "Connected LDiagonal Error";
+            int[] ld02 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(0,2), ld02)): "Connected LDiagonal Error";
+            int[] ld06 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(0,6), ld06)): "Connected LDiagonal Error";
+            int[] ld10 = {new Coordinate(0,0), new Coordinate(2,1)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,0), ld10)): "Connected LDiagonal Error";
+            int[] ld15 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,5), ld15)): "Connected LDiagonal Error";
+            int[] ld17 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(1,7), ld17)): "Connected LDiagonal Error";
             
-            Coordinate[] ld21 = {new Coordinate(1,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,1)), ld21): "Connected LDiagonal Error";
-            Coordinate[] ld23 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,3)), ld23): "Connected LDiagonal Error";
-            Coordinate[] ld25 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,3)), ld23): "Connected LDiagonal Error";
-            Coordinate[] ld27 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,7)), ld27): "Connected LDiagonal Error";
-            Coordinate[] ld31 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,1)), ld31): "Connected LDiagonal Error";
-            Coordinate[] ld32 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,2)), ld32): "Connected LDiagonal Error";
+            int[] ld21 = {new Coordinate(1,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,1), ld21)): "Connected LDiagonal Error";
+            int[] ld23 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,3), ld23)): "Connected LDiagonal Error";
+            int[] ld25 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,3), ld23)): "Connected LDiagonal Error";
+            int[] ld27 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(2,7), ld27)): "Connected LDiagonal Error";
+            int[] ld31 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,1), ld31)): "Connected LDiagonal Error";
+            int[] ld32 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,2), ld32)): "Connected LDiagonal Error";
 
-            Coordinate[] ld35 = {new Coordinate(0,0), new Coordinate(5,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,5)), ld35): "Connected LDiagonal Error";
-            Coordinate[] ld42 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(4,2)), ld42): "Connected LDiagonal Error";
-            Coordinate[] ld45 = {new Coordinate(0,0), new Coordinate(5,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(4,5)), ld45): "Connected LDiagonal Error";
-            Coordinate[] ld55 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,5)), ld55): "Connected LDiagonal Error";
-            Coordinate[] ld56 = {new Coordinate(4,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,6)), ld56): "Connected LDiagonal Error";
+            int[] ld35 = {new Coordinate(0,0), new Coordinate(5,7)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(3,5), ld35)): "Connected LDiagonal Error";
+            int[] ld42 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(4,2), ld42)): "Connected LDiagonal Error";
+            int[] ld45 = {new Coordinate(0,0), new Coordinate(5,6)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(4,5), ld45)): "Connected LDiagonal Error";
+            int[] ld55 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,5), ld55)): "Connected LDiagonal Error";
+            int[] ld56 = {new Coordinate(4,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,6), ld56)): "Connected LDiagonal Error";
 
-            Coordinate[] ld57 = {new Coordinate(3,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,7)), ld57): "Connected LDiagonal Error";
-            Coordinate[] ld60 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,0)), ld60): "Connected LDiagonal Error";
-            Coordinate[] ld61 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,1)), ld61): "Connected LDiagonal Error";
-            Coordinate[] ld62 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,2)), ld62): "Connected LDiagonal Error";
-            Coordinate[] ld65 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,5)), ld65): "Connected LDiagonal Error";
+            int[] ld57 = {new Coordinate(3,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(5,7), ld57)): "Connected LDiagonal Error";
+            int[] ld60 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,0), ld60)): "Connected LDiagonal Error";
+            int[] ld61 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,1), ld61)): "Connected LDiagonal Error";
+            int[] ld62 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,2), ld62)): "Connected LDiagonal Error";
+            int[] ld65 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,5), ld65)): "Connected LDiagonal Error";
 
-            Coordinate[] ld67 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,7)), ld67): "Connected LDiagonal Error";
-            Coordinate[] ld71 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,1)), ld71): "Connected LDiagonal Error";
-            Coordinate[] ld75 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,5)), ld75): "Connected LDiagonal Error";
-            Coordinate[] ld76 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,6)), ld76): "Connected LDiagonal Error";
+            int[] ld67 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(6,7), ld67)): "Connected LDiagonal Error";
+            int[] ld71 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,1), ld71)): "Connected LDiagonal Error";
+            int[] ld75 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,5), ld75)): "Connected LDiagonal Error";
+            int[] ld76 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedLDiagonal(new Coordinate(7,6), ld76)): "Connected LDiagonal Error";
 
 
             //---------------------------------------------------------------------//
@@ -1843,66 +1843,66 @@ public class Gameboard {
             //System.out.println("yuxinGame -- RDiagonal");
             //System.out.println(yuxinGame);
 
-            Coordinate[] rd02 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(0,2)), rd02): "Connected RDiagonal Error";
-            Coordinate[] rd06 = {new Coordinate(1,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(0,6)), rd06): "Connected RDiagonal Error";
-            Coordinate[] rd10 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,0)), rd10): "Connected RDiagonal Error";
+            int[] rd02 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(0,2), rd02)): "Connected RDiagonal Error";
+            int[] rd06 = {new Coordinate(1,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(0,6), rd06)): "Connected RDiagonal Error";
+            int[] rd10 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,0), rd10)): "Connected RDiagonal Error";
             //System.out.println(yuxinGame.getType(new Coordinate(0,6));
             //for (int i = 0; i < 7; i++) {
                 //System.out.print(yuxinGame.getDiagonal(1,5,1)[i] + " |");
             //}
-            Coordinate[] rd15 = {new Coordinate(0,0), new Coordinate(0,6)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,5)), rd15): "Connected RDiagonal Error";
-            Coordinate[] rd17 = {new Coordinate(3,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,7)), rd17): "Connected RDiagonal Error";
+            int[] rd15 = {new Coordinate(0,0), new Coordinate(0,6)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,5), rd15)): "Connected RDiagonal Error";
+            int[] rd17 = {new Coordinate(3,5), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(1,7), rd17)): "Connected RDiagonal Error";
             
-            Coordinate[] rd21 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,1)), rd21): "Connected RDiagonal Error";
-            Coordinate[] rd23 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,3)), rd23): "Connected RDiagonal Error";
-            Coordinate[] rd25 = {new Coordinate(6,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,3)), rd23): "Connected RDiagonal Error";
-            Coordinate[] rd27 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,7)), rd27): "Connected RDiagonal Error";
-            Coordinate[] rd31 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,1)), rd31): "Connected RDiagonal Error";
-            Coordinate[] rd32 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,2)), rd32): "Connected RDiagonal Error";
+            int[] rd21 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,1), rd21)): "Connected RDiagonal Error";
+            int[] rd23 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,3), rd23)): "Connected RDiagonal Error";
+            int[] rd25 = {new Coordinate(6,1), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,3), rd23)): "Connected RDiagonal Error";
+            int[] rd27 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(2,7), rd27)): "Connected RDiagonal Error";
+            int[] rd31 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,1), rd31)): "Connected RDiagonal Error";
+            int[] rd32 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,2), rd32)): "Connected RDiagonal Error";
 
-            Coordinate[] rd35 = {new Coordinate(5,3),new Coordinate(1,7)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,5)), rd35): "Connected RDiagonal Error";
-            Coordinate[] rd42 = {new Coordinate(6,0),new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(4,2)), rd42): "Connected RDiagonal Error";
-            Coordinate[] rd45 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(4,5)), rd45): "Connected RDiagonal Error";
-            Coordinate[] rd53 = {new Coordinate(0,0), new Coordinate(3,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,3)), rd53): "Connected RDiagonal Error";
-            Coordinate[] rd55 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,5)), rd55): "Connected RDiagonal Error";
-            Coordinate[] rd56 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,6)), rd56): "Connected RDiagonal Error";
+            int[] rd35 = {new Coordinate(5,3},{1,7)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(3,5), rd35)): "Connected RDiagonal Error";
+            int[] rd42 = {new Coordinate(6,0},{0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(4,2), rd42)): "Connected RDiagonal Error";
+            int[] rd45 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(4,5), rd45)): "Connected RDiagonal Error";
+            int[] rd53 = {new Coordinate(0,0},{3,5)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,3), rd53)): "Connected RDiagonal Error";
+            int[] rd55 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,5), rd55)): "Connected RDiagonal Error";
+            int[] rd56 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,6), rd56)): "Connected RDiagonal Error";
 
-            Coordinate[] rd57 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,7)), rd57): "Connected RDiagonal Error";
-            Coordinate[] rd60 = {new Coordinate(0,0), new Coordinate(4,2)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,0)), rd60): "Connected RDiagonal Error";
-            Coordinate[] rd61 = {new Coordinate(0,0), new Coordinate(2,5)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,1)), rd61): "Connected RDiagonal Error";
-            Coordinate[] rd62 = {new Coordinate(7,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,2)), rd62): "Connected RDiagonal Error";
-            Coordinate[] rd65 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,5)), rd65): "Connected RDiagonal Error";
+            int[] rd57 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(5,7), rd57)): "Connected RDiagonal Error";
+            int[] rd60 = {new Coordinate(0,0},{4,2)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,0), rd60)): "Connected RDiagonal Error";
+            int[] rd61 = {new Coordinate(0,0},{2,5)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,1), rd61)): "Connected RDiagonal Error";
+            int[] rd62 = {new Coordinate(7,1},{0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,2), rd62)): "Connected RDiagonal Error";
+            int[] rd65 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,5), rd65)): "Connected RDiagonal Error";
 
-            Coordinate[] rd67 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,7)), rd67): "Connected RDiagonal Error";
-            Coordinate[] rd71 = {new Coordinate(0,0), new Coordinate(6,2)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,1)), rd71): "Connected RDiagonal Error";
-            Coordinate[] rd75 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,5)), rd75): "Connected RDiagonal Error";
-            Coordinate[] rd76 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,6)), rd76): "Connected RDiagonal Error";
+            int[] rd67 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(6,7), rd67)): "Connected RDiagonal Error";
+            int[] rd71 = {new Coordinate(0,0},{6,2)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,1), rd71)): "Connected RDiagonal Error";
+            int[] rd75 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,5), rd75)): "Connected RDiagonal Error";
+            int[] rd76 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(yuxinGame.findConnectedRDiagonal(new Coordinate(7,6), rd76)): "Connected RDiagonal Error";
 
             //---------------------------------------------------------------------//
             //---------------------------------------------------------------------//
@@ -1922,49 +1922,49 @@ public class Gameboard {
             zhuGame.addPiece(new Coordinate(7,3), WHITE);
             //System.out.println(zhuGame);
 
-            Coordinate[] ldd02 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(0,2)), ldd02): "Connected LDiagonal Error";
-            Coordinate[] ldd11 = {new Coordinate(0,0), new Coordinate(4,4)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(1,1)), ldd11): "Connected LDiagonal Error";
-            Coordinate[] ldd15 = {new Coordinate(0,0), new Coordinate(3,7)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(1,5)), ldd15): "Connected LDiagonal Error";
-            Coordinate[] ldd20 = {new Coordinate(0,0), new Coordinate(6,4)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(2,0)), ldd20): "Connected LDiagonal Error";
-            Coordinate[] ldd37 = {new Coordinate(1,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(3,7)), ldd37): "Connected LDiagonal Error";
+            int[] ldd02 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(0,2), ldd02)): "Connected LDiagonal Error";
+            int[] ldd11 = {new Coordinate(0,0), new Coordinate(4,4)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(1,1), ldd11)): "Connected LDiagonal Error";
+            int[] ldd15 = {new Coordinate(0,0), new Coordinate(3,7)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(1,5), ldd15)): "Connected LDiagonal Error";
+            int[] ldd20 = {new Coordinate(0,0), new Coordinate(6,4)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(2,0), ldd20)): "Connected LDiagonal Error";
+            int[] ldd37 = {new Coordinate(1,5), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(3,7), ldd37)): "Connected LDiagonal Error";
 
-            Coordinate[] ldd44 = {new Coordinate(1,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(4,4)), ldd44): "Connected LDiagonal Error";
-            Coordinate[] ldd55 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(5,5)), ldd55): "Connected LDiagonal Error";
-            Coordinate[] ldd64 = {new Coordinate(2,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(6,4)), ldd64): "Connected LDiagonal Error";
-            Coordinate[] ldd66 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(6,6)), ldd66): "Connected LDiagonal Error";
-            Coordinate[] ldd73 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedLDiagonal(new Coordinate(7,3)), ldd73): "Connected LDiagonal Error";   
+            int[] ldd44 = {new Coordinate(1,1), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(4,4), ldd44)): "Connected LDiagonal Error";
+            int[] ldd55 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(5,5), ldd55)): "Connected LDiagonal Error";
+            int[] ldd64 = {new Coordinate(2,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(6,4), ldd64)): "Connected LDiagonal Error";
+            int[] ldd66 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(6,6), ldd66)): "Connected LDiagonal Error";
+            int[] ldd73 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedLDiagonal(new Coordinate(7,3), ldd73)): "Connected LDiagonal Error";   
 
-            Coordinate[] rdd02 = {new Coordinate(1,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(0,2)), rdd02): "Connected RDiagonal Error";
-            Coordinate[] rdd11 = {new Coordinate(0,0), new Coordinate(0,2)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(1,1)), rdd11): "Connected RDiagonal Error";
-            Coordinate[] rdd15 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(1,5)), rdd15): "Connected RDiagonal Error";
-            Coordinate[] rdd20 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(2,0)), rdd20): "Connected RDiagonal Error";
-            Coordinate[] rdd37 = {new Coordinate(5,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(3,7)), rdd37): "Connected RDiagonal Error";
+            int[] rdd02 = {new Coordinate(1,1), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(0,2), rdd02)): "Connected RDiagonal Error";
+            int[] rdd11 = {new Coordinate(0,0), new Coordinate(0,2)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(1,1), rdd11)): "Connected RDiagonal Error";
+            int[] rdd15 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(1,5), rdd15)): "Connected RDiagonal Error";
+            int[] rdd20 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(2,0), rdd20)): "Connected RDiagonal Error";
+            int[] rdd37 = {new Coordinate(5,5), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(3,7), rdd37)): "Connected RDiagonal Error";
 
-            Coordinate[] rdd44 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(4,4)), rdd44): "Connected RDiagonal Error";
-            Coordinate[] rdd55 = {new Coordinate(6,4), new Coordinate(3,7)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(5,5)), rdd55): "Connected RDiagonal Error";
-            Coordinate[] rdd64 = {new Coordinate(0,0), new Coordinate(5,5)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(6,4)), rdd64): "Connected RDiagonal Error";
-            Coordinate[] rdd66 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(6,6)), rdd66): "Connected RDiagonal Error";
-            Coordinate[] rdd73 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(zhuGame.findConnectedRDiagonal(new Coordinate(7,3)), rdd73): "Connected RDiagonal Error"; 
+            int[] rdd44 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(4,4), rdd44)): "Connected RDiagonal Error";
+            int[] rdd55 = {new Coordinate(6,4), new Coordinate(3,7)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(5,5), rdd55)): "Connected RDiagonal Error";
+            int[] rdd64 = {new Coordinate(0,0},{5,5)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(6,4), rdd64)): "Connected RDiagonal Error";
+            int[] rdd66 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(6,6), rdd66)): "Connected RDiagonal Error";
+            int[] rdd73 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(zhuGame.findConnectedRDiagonal(new Coordinate(7,3), rdd73)): "Connected RDiagonal Error"; 
 
             Gameboard cGame = new Gameboard();
             cGame.addPiece(new Coordinate(0,6),WHITE);
@@ -1981,41 +1981,41 @@ public class Gameboard {
             //System.out.println("cGame");
             //System.out.println(cGame);
 
-            Coordinate[] lddd06 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(0,6)), lddd06): "Connected LDiagonal Error";
-            Coordinate[] lddd11 = {new Coordinate(0,0), new Coordinate(6,6)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(1,1)), lddd11): "Connected LDiagonal Error";
-            Coordinate[] lddd15 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(1,5)), lddd15): "Connected LDiagonal Error";
-            Coordinate[] lddd21 = {new Coordinate(0,0), new Coordinate(6,5)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(2,1)), lddd21): "Connected LDiagonal Error";
-            Coordinate[] lddd42 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(4,2)), lddd42): "Connected LDiagonal Error";
-            Coordinate[] lddd51 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(5,1)), lddd51): "Connected LDiagonal Error";
+            int[] lddd06 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(0,6), lddd06)): "Connected LDiagonal Error";
+            int[] lddd11 = {new Coordinate(0,0), new Coordinate(6,6)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(1,1), lddd11)): "Connected LDiagonal Error";
+            int[] lddd15 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(1,5), lddd15)): "Connected LDiagonal Error";
+            int[] lddd21 = {new Coordinate(0,0), new Coordinate(6,5)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(2,1), lddd21)): "Connected LDiagonal Error";
+            int[] lddd42 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(4,2), lddd42)): "Connected LDiagonal Error";
+            int[] lddd51 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(5,1), lddd51)): "Connected LDiagonal Error";
 
-            Coordinate[] lddd65 = {new Coordinate(2,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(6,5)), lddd65): "Connected LDiagonal Error";
-            Coordinate[] lddd66 = {new Coordinate(1,1), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedLDiagonal(new Coordinate(6,6)), lddd66): "Connected LDiagonal Error";
+            int[] lddd65 = {new Coordinate(2,1), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(6,5), lddd65)): "Connected LDiagonal Error";
+            int[] lddd66 = {new Coordinate(1,1), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedLDiagonal(new Coordinate(6,6), lddd66)): "Connected LDiagonal Error";
 
-            Coordinate[] rddd06 = {new Coordinate(1,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(0,6)), rddd06): "Connected RDiagonal Error";
-            Coordinate[] rddd11 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(1,1)), rddd11): "Connected RDiagonal Error";
-            Coordinate[] rddd15 = {new Coordinate(4,2), new Coordinate(0,6)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(1,5)), rddd15): "Connected RDiagonal Error";
-            Coordinate[] rddd21 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(2,1)), rddd21): "Connected RDiagonal Error";
-            Coordinate[] rddd42 = {new Coordinate(5,1), new Coordinate(1,5)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(4,2)), rddd42): "Connected RDiagonal Error";
-            Coordinate[] rddd51 = {new Coordinate(0,0), new Coordinate(4,2)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(5,1)), rddd51): "Connected RDiagonal Error";
+            int[] rddd06 = {new Coordinate(1,5), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(0,6), rddd06)): "Connected RDiagonal Error";
+            int[] rddd11 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(1,1), rddd11)): "Connected RDiagonal Error";
+            int[] rddd15 = {new Coordinate(4,2), new Coordinate(0,6)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(1,5), rddd15)): "Connected RDiagonal Error";
+            int[] rddd21 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(2,1), rddd21)): "Connected RDiagonal Error";
+            int[] rddd42 = {new Coordinate(5,1), new Coordinate(1,5)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(4,2), rddd42)): "Connected RDiagonal Error";
+            int[] rddd51 = {new Coordinate(0,0), new Coordinate(4,2)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(5,1), rddd51)): "Connected RDiagonal Error";
 
-            Coordinate[] rddd65 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(6,5)), rddd65): "Connected RDiagonal Error";
-            Coordinate[] rddd66 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(cGame.findConnectedRDiagonal(new Coordinate(6,6)), rddd66): "Connected RDiagonal Error";
+            int[] rddd65 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(6,5), rddd65)): "Connected RDiagonal Error";
+            int[] rddd66 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(cGame.findConnectedRDiagonal(new Coordinate(6,6), rddd66)): "Connected RDiagonal Error";
 
             Gameboard dGame = new Gameboard();
             dGame.addPiece(new Coordinate(1,7),BLACK);
@@ -2028,206 +2028,219 @@ public class Gameboard {
             //System.out.println("dGame");
             //System.out.println(dGame);
 
-            Coordinate[] ldddd17 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(1,7)), ldddd17): "Connected LDiagonal Error";
-            Coordinate[] ldddd26 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(2,6)), ldddd26): "Connected LDiagonal Error";
-            Coordinate[] ldddd56 = {new Coordinate(0,0), new Coordinate(6,7)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(5,6)), ldddd56): "Connected LDiagonal Error";
-            Coordinate[] ldddd65 = {new Coordinate(0,0), new Coordinate(7,6)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(6,5)), ldddd65): "Connected LDiagonal Error";
-            Coordinate[] ldddd67 = {new Coordinate(5,6), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(6,7)), ldddd67): "Connected LDiagonal Error";
-            Coordinate[] ldddd76 = {new Coordinate(6,5), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedLDiagonal(new Coordinate(7,6)), ldddd76): "Connected LDiagonal Error";
+            int[] ldddd17 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(1,7), ldddd17)): "Connected LDiagonal Error";
+            int[] ldddd26 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(2,6), ldddd26)): "Connected LDiagonal Error";
+            int[] ldddd56 = {new Coordinate(0,0), new Coordinate(6,7)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(5,6), ldddd56)): "Connected LDiagonal Error";
+            int[] ldddd65 = {new Coordinate(0,0), new Coordinate(7,6)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(6,5), ldddd65)): "Connected LDiagonal Error";
+            int[] ldddd67 = {new Coordinate(5,6), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(6,7), ldddd67)): "Connected LDiagonal Error";
+            int[] ldddd76 = {new Coordinate(6,5), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedLDiagonal(new Coordinate(7,6), ldddd76)): "Connected LDiagonal Error";
 
-            Coordinate[] rdddd17 = {new Coordinate(2,6), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(1,7)), rdddd17): "Connected RDiagonal Error";
-            Coordinate[] rdddd26 = {new Coordinate(0,0), new Coordinate(1,7)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(2,6)), rdddd26): "Connected RDiagonal Error";
-            Coordinate[] rdddd56 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(5,6)), rdddd56): "Connected RDiagonal Error";
-            Coordinate[] rdddd65 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(6,5)), rdddd65): "Connected RDiagonal Error";
-            Coordinate[] rdddd67 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(6,7)), rdddd67): "Connected RDiagonal Error";
-            Coordinate[] rdddd76 = {new Coordinate(0,0), new Coordinate(0,0)};
-            assert Coordinate.deepEquals(dGame.findConnectedRDiagonal(new Coordinate(7,6)), rdddd76): "Connected RDiagonal Error";
-
+            int[] rdddd17 = {new Coordinate(2,6), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(1,7), rdddd17)): "Connected RDiagonal Error";
+            int[] rdddd26 = {new Coordinate(0,0), new Coordinate(1,7)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(2,6), rdddd26)): "Connected RDiagonal Error";
+            int[] rdddd56 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(5,6), rdddd56)): "Connected RDiagonal Error";
+            int[] rdddd65 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(6,5), rdddd65)): "Connected RDiagonal Error";
+            int[] rdddd67 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(6,7), rdddd67)): "Connected RDiagonal Error";
+            int[] rdddd76 = {new Coordinate(0,0), new Coordinate(0,0)};
+            assert Arrays.equals(dGame.findConnectedRDiagonal(new Coordinate(7,6), rdddd76)): "Connected RDiagonal Error";
+            /*
             Gameboard sanchitGame = new Gameboard();
-            sanchitGame.addPiece(new Coordinate(0,1), WHITE);
-            sanchitGame.addPiece(new Coordinate(0,2), WHITE);
-            sanchitGame.addPiece(new Coordinate(0,3), WHITE);
-            sanchitGame.addPiece(new Coordinate(0,4), WHITE);
-            sanchitGame.addPiece(new Coordinate(0,5), WHITE);
-            sanchitGame.addPiece(new Coordinate(0,6), WHITE);
+            sanchitGame.addPiece(0,1,WHITE);
+            sanchitGame.addPiece(0,2,WHITE);
+            sanchitGame.addPiece(0,3,WHITE);
+            sanchitGame.addPiece(0,4,WHITE);
+            sanchitGame.addPiece(0,5,WHITE);
+            sanchitGame.addPiece(0,6,WHITE);
             
-            sanchitGame.addPiece(new Coordinate(1,1), WHITE);
-            sanchitGame.addPiece(new Coordinate(2,2), WHITE);
-            sanchitGame.addPiece(new Coordinate(3,3), WHITE);
-            sanchitGame.addPiece(new Coordinate(4,4), WHITE);
-            sanchitGame.addPiece(new Coordinate(5,5), WHITE);
-            sanchitGame.addPiece(new Coordinate(6,6), WHITE);
+            sanchitGame.addPiece(1,1,WHITE);
+            sanchitGame.addPiece(2,2,WHITE);
+            sanchitGame.addPiece(3,3,WHITE);
+            sanchitGame.addPiece(4,4,WHITE);
+            sanchitGame.addPiece(5,5,WHITE);
+            sanchitGame.addPiece(6,6,WHITE);
 
-            sanchitGame.addPiece(new Coordinate(7,1), WHITE);
-            sanchitGame.addPiece(new Coordinate(7,2), WHITE);
-            sanchitGame.addPiece(new Coordinate(7,3), WHITE);
-            sanchitGame.addPiece(new Coordinate(7,4), WHITE);
-            sanchitGame.addPiece(new Coordinate(7,5), WHITE);
-            sanchitGame.addPiece(new Coordinate(7,6), WHITE);
-            sanchitGame.addPiece(new Coordinate(5,7), WHITE);
+            sanchitGame.addPiece(7,1,WHITE);
+            sanchitGame.addPiece(7,2,WHITE);
+            sanchitGame.addPiece(7,3,WHITE);
+            sanchitGame.addPiece(7,4,WHITE);
+            sanchitGame.addPiece(7,5,WHITE);
+            sanchitGame.addPiece(7,6,WHITE);
+            sanchitGame.addPiece(5,7,WHITE);
 
-            //System.out.println(sanchitGame);
-            
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,0), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,1), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,2), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,3), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,4), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,5), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,6), -1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,7), -1) == 1: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,0), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,1), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,2), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,3), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,4), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,5), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,6), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,7), -1) == 2: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,0), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,1), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,2), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,3), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,4), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,5), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,6), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,7), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,0), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,1), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,2), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,3), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,4), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,5), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,6), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,7), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,0), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,1), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,2), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,3), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,4), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,5), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,6), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,7), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,0), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,1), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,2), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,3), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,4), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,5), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,6), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,7), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,0), -1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,1), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,2), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,3), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,4), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,5), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,6), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,7), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,0), -1) == 1: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,1), -1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,2), -1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,3), -1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,4), -1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,5), -1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,6), -1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,7), -1) == 8: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,0), 1) == 1: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,1), 1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,2), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,3), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,4), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,5), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,6), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(0,7), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,0), 1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,1), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,2), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,3), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,4), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,5), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,6), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(1,7), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,0), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,1), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,2), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,3), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,4), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,5), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,6), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(2,7), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,0), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,1), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,2), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,3), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,4), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,5), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,6), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(3,7), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,0), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,1), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,2), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,3), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,4), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,5), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,6), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(4,7), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,0), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,1), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,2), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,3), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,4), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,5), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,6), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(5,7), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,0), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,1), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,2), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,3), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,4), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,5), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,6), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(6,7), 1) == 2: "ERROR (S): getDiagonalLength is wrong";
-
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,0), 1) == 8: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,1), 1) == 7: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,2), 1) == 6: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,3), 1) == 5: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,4), 1) == 4: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,5), 1) == 3: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,6), 1) == 2: "ERROR (S): getDiagonalLength is wrong";
-            assert sanchitGame.getDiagonalLength(new Coordinate(7,7), 1) == 1: "ERROR (S): getDiagonalLength is wrong";   
-            
             System.out.println(sanchitGame);
+            
+            assert sanchitGame.getDiagonalLength(0,0,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,4,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,5,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,6,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,7,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
 
-        //System.out.println(new Coordinate(2,1));
+            assert sanchitGame.getDiagonalLength(1,0,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,1,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,5,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,6,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,7,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(2,0,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,1,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,2,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,5,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,6,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,7,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(3,0,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,1,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,2,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,3,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,6,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,7,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(4,0,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,1,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,2,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,3,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,4,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,6,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,7,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(5,0,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,1,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,2,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,3,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,4,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,5,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,7,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(6,0,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,1,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,2,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,3,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,4,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,5,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,6,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,7,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(7,0,-1) == 1: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,1,-1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,2,-1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,3,-1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,4,-1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,5,-1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,6,-1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,7,-1) == 8: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(0,0,1) == 1: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,1,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,2,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,3,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(0,7,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(1,0,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,1,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,2,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,6,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(1,7,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(2,0,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,1,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,2,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,5,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,6,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(2,7,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(3,0,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,1,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,4,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,5,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,6,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(3,7,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(4,0,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,1,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,3,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,4,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,5,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,6,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(4,7,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(5,0,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,2,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,3,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,4,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,5,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,6,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(5,7,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(6,0,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,1,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,2,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,3,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,4,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,5,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,6,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(6,7,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+
+            assert sanchitGame.getDiagonalLength(7,0,1) == 8: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,1,1) == 7: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,2,1) == 6: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,3,1) == 5: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,4,1) == 4: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,5,1) == 3: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,6,1) == 2: "ERROR (S): getDiagonalLength is wrong";
+            assert sanchitGame.getDiagonalLength(7,7,1) == 1: "ERROR (S): getDiagonalLength is wrong";   
+            
+            int[] a = {-1,0,0,0,0,0,0,-1};
+            int[] b = {-1,2,1,2,1,2,1,-1};
+            int[] c = {-1,0,0,0,0,0,0,-1};
+            int[] d = {-1,2,2,2,2,2,2,-1};
+            int[] e = {-1,2,1,2,1,2,1,-1};
+            int[] f = {1,0,2,0,0};
+            
+            assert Arrays.equals(sanchitGame.getRow(0),a): "ERROR (S): getRow is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(0,0,-1),b): "ERROR (S): getDiagonal is wrong";
+            assert Arrays.equals(sanchitGame.getRow(7),c): "ERROR (S): getRow is wrong";
+            assert Arrays.equals(sanchitGame.getColumn(0),d): "ERROR (S): getColumn is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(2,2,-1),e): "ERROR (S): getDiagonal is wrong";
+            assert Arrays.equals(sanchitGame.getDiagonal(5,5,1),f): "ERROR (S): getDiagonal is wrong";
+
+            System.out.println(sanchitGame);
+            */
 	    System.out.println("All tests passed!");
-        } catch(AgainstRulesException e) {
+        } catch(Exception e) {
             System.out.println(e);
         }
 
