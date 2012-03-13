@@ -22,6 +22,18 @@ public class Gameboard {
 
     public static final int MIN_DEPTH = 6;
 
+    public static final int NORTH = 0;
+    public static final int SOUTH = 1;
+    public static final int EAST = 2;
+    public static final int WEST = 3;
+    public static final int NW = 4;
+    public static final int NE = 5;
+    public static final int SW = 6;
+    public static final int SE = 7;
+    public static final int NULLDIRECTION = -1;
+
+    public static final int[] DIRECTIONS = {NORTH, SOUTH, WEST, EAST, NW, SE, NE, SW, NULLDIRECTION}; //this is the order in which connecting chips are checked.
+
     protected int whiteCount;
     protected int blackCount;
 
@@ -1151,29 +1163,43 @@ public class Gameboard {
      * @return true if the current set of pieces contains a Network, false otherwise
      */
 
-    private boolean containsNetwork(int player) {
+    private boolean containsNetwork(int player) throws InvalidNodeException{
+
+        int[] firstRow = null;
         if (player == BLACKPLAYER) {
-            int[] firstRow = getRow(new Coordinate(0,0));
+            firstRow = getRow(new Coordinate(0,0));
         } else if (player == WHITEPLAYER) {
-            int[] firstRow = getColumn(new Coordinate(0,0));
+            firstRow = getColumn(new Coordinate(0,0));
         } else {return false;} //return false if the player parameter is something crazy
         
-        for (int i = 0; i < topRow.length; i++) {
+        for (int i = 0; i < firstRow.length; i++) {
+
             if((firstRow[i] == BLACK && player == BLACKPLAYER) || (firstRow[i] == WHITE && player == WHITEPLAYER)) {
+                
                 SList parsedCoords = new SList();
-                parsedCoords.insertFront(new Coordinate(0,i));
-                if(containsNetworkHelper(new Coordinate(0,i), parsedCoords, parsedCoords.length(), player) {
+
+                Coordinate eachCoord;
+                if (player == BLACKPLAYER) {
+                    eachCoord = new Coordinate(0, i);
+                } else if (player == WHITEPLAYER) {
+                    eachCoord = new Coordinate(i,0);  
+                } else {return false;} //return false if the player parameter is something crazy
+
+                parsedCoords.insertFront(eachCoord);
+                if(containsNetworkHelper(eachCoord, parsedCoords, player, NULLDIRECTION)) {
                     return true; 
                 }
                 parsedCoords.front().remove();
+
             }
+
         }
             return false;
     }
      /**
-     * containsNetworkHelper() takes three parameters, the current coordinate in the
+     * containsNetworkHelper() takes four parameters, the current coordinate in the
      * line of connected chips, the list of coordinates that have been parsed through already,
-     * and the player that will win if there is a network, and
+     * the player that will win if there is a network, and the direction that the last connection made was in, and
      * returns a recursive call that iterates through every combination of connected chips
      * and checks to see if there is a network.
      *
@@ -1182,7 +1208,7 @@ public class Gameboard {
      * @param player is the player that will win if a network is found
      * @return true if a network has been found, false otherwise.
      */
-    private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player) {
+    private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player, int direction) throws InvalidNodeException{
         /*
         first of all, if the coord were checking is already in the network, there is no
         legal network that will result from having this node again, so return false
@@ -1200,16 +1226,16 @@ public class Gameboard {
         int blackWinYCoord = this.height - 1;
         int whiteWinXCoord = this.width - 1;
 
-        if(parsedCoords.contains(coord)) {
+        if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
             return false;
         }
         if (player == WHITE) {
-            if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoods.length() >= MIN_DEPTH))) {
+            if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 return false; //can't have chips in the home rows
             }
         }
         if (player == BLACK) {
-            if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoods.length() >= MIN_DEPTH))) {
+            if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 return false; //can't have chips in the home rows
             }
         }
@@ -1219,12 +1245,18 @@ public class Gameboard {
         }
 
         Coordinate[] connections = findConnectingChips(coord);
-        parsedCoords.insertBack(coord);
 
         for (int i=0; i<connections.length; i++) {
+
+            if (DIRECTIONS[i] == direction) { //this should work, maybe. if its the first time and is NULLDIRECTION, it never skips. i think.
+                continue;
+            }
+
             if (!connections[i].equals(new Coordinate(0,0))) {
 
-                if (containsNetworkHelper(connections[i], parsedCoords, player)) {
+                 parsedCoords.insertBack(coord);
+
+                if (containsNetworkHelper(connections[i], parsedCoords, player, DIRECTIONS[i])) {
                     return true;
                 }
             }
@@ -2272,9 +2304,103 @@ public class Gameboard {
             
             System.out.println(sanchitGame);
 
-        //System.out.println(new Coordinate(2,1));
-	    System.out.println("All tests passed!");
+            //Noah's tests for containsNetwork and associated functions
+            System.out.println("Testing SList.contains with Integers and Coordinates.");
+
+            SList noah = new SList();
+            noah.insertFront(new Integer(3));
+            noah.insertFront(new Integer(7));
+            noah.insertFront(new Integer(10));
+            noah.insertFront(new Integer(1));
+
+            System.out.println("Got to the first one");
+
+            assert noah.contains(new Integer(3)): "ERROR: contains doesnt work right.";
+            assert noah.contains(new Integer(10)): "ERROR: contains doesnt work right.";
+            assert !noah.contains(new Integer(67)): "ERROR: contains doesnt work right.";
+
+            System.out.println("Got to the second one");
+
+            noah.front().remove();
+
+            assert !noah.contains(new Integer(1)): "ERROR: contains doesnt work right.";
+
+            System.out.println("Got to the third one");
+
+            assert (new Coordinate(0,0)).equals(new Coordinate(0,0)): "Problem with equals!";
+
+            noah = new SList();
+            noah.insertFront(new Coordinate(0, 2));
+            noah.insertFront(new Coordinate(0, 0));
+            noah.insertFront(new Coordinate(3, 7));
+            noah.insertFront(new Coordinate(8, 10));
+
+            System.out.println("Got to the fourth one");
+
+            assert noah.contains(new Coordinate(0, 0)): "Error: contains es no bueno";
+            assert !noah.contains(new Coordinate(1, 1)): "Error: contains es no bueno";
+
+            System.out.println("Testing findConnectingChips in a test Gameboard.");
+
+            Gameboard noahgame = new Gameboard();
+
+            noahgame.addPiece(new Coordinate(6,5), BLACK);
+            noahgame.addPiece(new Coordinate(6,0), BLACK);
+            noahgame.addPiece(new Coordinate(5,5), BLACK);
+            noahgame.addPiece(new Coordinate(3,3), BLACK);
+            noahgame.addPiece(new Coordinate(3,5), BLACK);
+            noahgame.addPiece(new Coordinate(5,7), BLACK);
+
+            System.out.println("The gameboard looks like this:");
+            System.out.println(noahgame);
+            System.out.println();
+
+            Coordinate[] neighbors = noahgame.findConnectingChips(new Coordinate(5, 5));
+
+            System.out.println("Neighbors of 5,5: "+neighbors);
+            
+            assert neighbors.length == 8:"Error: fCC is no bueno";
+            System.out.println("neighbors[0] is: "+neighbors[0]);
+            assert neighbors[0].equals(new Coordinate(3,5)): "Error: fCC no bueno";
+
+            noahgame.addPiece(new Coordinate(4,5), Gameboard.WHITE); 
+            neighbors = noahgame.findConnectingChips(new Coordinate(5, 5));
+
+            System.out.println("Now the gameboard looks like this:");
+            System.out.println(noahgame);
+            System.out.println();
+            System.out.println("Neighbors of 5,5: "+neighbors);
+
+            assert neighbors.length == 8:"Error: fCC is no bueno";
+            assert neighbors[0].equals(new Coordinate(0,0)): "Error: fCC no bueno";
+            assert neighbors[1].equals(new Coordinate(6,5)): "Error: fCC no bueno";
+
+            System.out.println("Testing containsNetwork.");
+
+            assert !noahgame.containsNetwork(WHITEPLAYER): "Error with containsNetwork.";
+            assert noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
+
+            noahgame.addPiece(new Coordinate(7,1), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(4,1), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(6,3), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(5,3), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(3,1), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(1,3), Gameboard.WHITE);
+            noahgame.addPiece(new Coordinate(0,4), Gameboard.WHITE); //not yet, but will break if im right about implementing the turns rule
+
+            assert !noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
+
+            noahgame.addPiece(new Coordinate(0,2), Gameboard.WHITE);
+
+            assert noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
+
+            //end noah tests
+
+            //System.out.println(new Coordinate(2,1));
+	       System.out.println("All tests passed!");
         } catch(AgainstRulesException e) {
+            System.out.println(e);
+        } catch(InvalidNodeException e) {
             System.out.println(e);
         }
 

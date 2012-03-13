@@ -142,6 +142,17 @@ public class SList extends List {
     return result + "]";
   }
 
+  public boolean contains(Object o) throws InvalidNodeException{
+    SListNode node = this.head;
+    while (node.isValidNode()) {
+      if (node.item.equals(o)) {
+        return true;
+      }
+      node = (SListNode)node.next();
+    }
+    return false;
+  }
+
   private static void testInvalidNode(ListNode p) {
     System.out.println("p.isValidNode() should be false: " + p.isValidNode());
     try {
