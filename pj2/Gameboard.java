@@ -17,6 +17,9 @@ public class Gameboard {
     public static final int WHITEPLAYER = 1;
     public static final int BLACKPLAYER = 2;
 
+    public static final int BOARD_WIDTH = 8;
+    public static final int BOARD_HEIGHT = 8;
+
     public static final int MIN_DEPTH = 6;
 
     protected int whiteCount;
@@ -31,8 +34,8 @@ public class Gameboard {
      */
     public Gameboard() {
         //fills all squares with EMPTY
-        this.width = 8;
-        this.height = 8;
+        this.width = BOARD_WIDTH;
+        this.height = BOARD_HEIGHT;
         this.whiteCount = 10;
         this.blackCount = 10;
 
@@ -340,7 +343,7 @@ public class Gameboard {
 
     private int getDiagonalLength(Coordinate c, int direction) {
     //this method uses a formula to compute the number of diagonal chips
-    int len = c.x + c.y + 1;
+        int len = c.x + c.y + 1;
         if(direction == -1){
             len = this.height - c.y + c.x;
             if(len > this.height){
@@ -608,7 +611,7 @@ public class Gameboard {
 
 
     /**
-     * findConnectingChips() takes 1 parameter, the coordinate, and returns a list of square ints 
+     * findConnectingChips() takes 1 parameter, the coordinate, and returns a list of Coordinates
      * that the square is "connected" to.
      *
      * @param Coordinate coord takes in the coordinates of the square
@@ -616,9 +619,17 @@ public class Gameboard {
      * @return a Coordinate containing chips that is connected to given square
      */
 
-    private Coordinate findConnectingChips(Coordinate coord) {
-        Coordinate temp = new Coordinate(0,0);
-        return temp;
+    private Coordinate[] findConnectingChips(Coordinate coord) {
+        Coordinate[] row = findConnectedRow(coord);
+        Coordinate[] col = findConnectedColumn(coord);
+        Coordinate[] ld = findConnectedLDiagonal(coord);
+        Coordinate[] rd = findConnectedRDiagonal(coord);
+        Coordinate[] result = Arrays.copyOf(row, row.length + col.length + ld.length + rd.length);
+        System.arraycopy(col, 0, result, row.length, col.length);
+        System.arraycopy(ld, 0, result, row.length + col.length, ld.length);
+        System.arraycopy(rd, 0, result, row.length + col.length + ld.length, rd.length);
+
+        return result;
     }
 
     /**
@@ -716,7 +727,7 @@ public class Gameboard {
     }
 
     /**
-     * checkSquare(), takes 2 parameters, the coordinates, and a piece, and verifies
+     * checkSquare(), takes 2 parameters, the coordinate and a piece, and verifies
      * that the square is not paired with a coordinate where the piece is not allowed. If the type is INVALID, automatically
      * returns false. An INVALID is not allowed anywhere! If the coordinates is at an INVALID spot, also returns false.
      * 
@@ -1139,52 +1150,88 @@ public class Gameboard {
      *
      * @return true if the current set of pieces contains a Network, false otherwise
      */
-    /*
+
     private boolean containsNetwork(int player) {
         if (player == BLACKPLAYER) {
-            int[] topRow = getRow(new Coordinate(0,0));
-            for (int i = 0; i < topRow.length; i++) {
-                if(topRow[i] == BLACK) {
-                    if(containsNetworkHelper(new Coordinate(0,i), new SList(), 1)) {
-                        return true; 
-                    }               
+            int[] firstRow = getRow(new Coordinate(0,0));
+        } else if (player == WHITEPLAYER) {
+            int[] firstRow = getColumn(new Coordinate(0,0));
+        } else {return false;} //return false if the player parameter is something crazy
+        
+        for (int i = 0; i < topRow.length; i++) {
+            if((firstRow[i] == BLACK && player == BLACKPLAYER) || (firstRow[i] == WHITE && player == WHITEPLAYER)) {
+                SList parsedCoords = new SList();
+                parsedCoords.insertFront(new Coordinate(0,i));
+                if(containsNetworkHelper(new Coordinate(0,i), parsedCoords, parsedCoords.length(), player) {
+                    return true; 
+                }
+                parsedCoords.front().remove();
+            }
+        }
+            return false;
+    }
+     /**
+     * containsNetworkHelper() takes three parameters, the current coordinate in the
+     * line of connected chips, the list of coordinates that have been parsed through already,
+     * and the player that will win if there is a network, and
+     * returns a recursive call that iterates through every combination of connected chips
+     * and checks to see if there is a network.
+     *
+     * @param coord is the current coordinate being parsed
+     * @param parsedCoords is the list of Coordinate objects that have already been parsed
+     * @param player is the player that will win if a network is found
+     * @return true if a network has been found, false otherwise.
+     */
+    private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player) {
+        /*
+        first of all, if the coord were checking is already in the network, there is no
+        legal network that will result from having this node again, so return false
+        right off the bat.
+
+        if the coordinate is in a the starting row and 
+
+        if the MIN_DEPTH has been exceeded and the current coordinate is in the home row,
+        then return true
+
+        otherwise, go through all of the coordinates returned by getConnections. call recursively
+        on each one. and return true if at least one of the recursive calls returns true.
+        */
+
+        int blackWinYCoord = this.height - 1;
+        int whiteWinXCoord = this.width - 1;
+
+        if(parsedCoords.contains(coord)) {
+            return false;
+        }
+        if (player == WHITE) {
+            if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoods.length() >= MIN_DEPTH))) {
+                return false; //can't have chips in the home rows
+            }
+        }
+        if (player == BLACK) {
+            if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoods.length() >= MIN_DEPTH))) {
+                return false; //can't have chips in the home rows
+            }
+        }
+        if (parsedCoords.length() >= MIN_DEPTH - 1 && ((player == WHITEPLAYER && coord.x == whiteWinXCoord) ||
+                                                                (player == BLACKPLAYER && coord.y == blackWinYCoord))) {
+            return true;
+        }
+
+        Coordinate[] connections = findConnectingChips(coord);
+        parsedCoords.insertBack(coord);
+
+        for (int i=0; i<connections.length; i++) {
+            if (!connections[i].equals(new Coordinate(0,0))) {
+
+                if (containsNetworkHelper(connections[i], parsedCoords, player)) {
+                    return true;
                 }
             }
-        } else {
-            return true;
         }
+        
+        return false;
     }
-    */
-
-    //private boolean containsNetworkHelper(Coordinate coord, SList noahsark, int depth) {
-        /*
-        if(noahsark.contains(coord)) {
-            return false;
-        } else {
-            return true;
-        }
-        */
-        //return false;
-    //}
-
-        /*
-        if(chip in network){
-            return false;
-        }
-
-        if(depth < MIN_DEPTH && each getConnections(chip) is in network){ //redundant
-            return false;
-        }
-        if(more than 2 chips in network belong to topRow/leftCol || bottomRow/rightCol){
-            return false;
-        }
-        if(last chip in network is in last row/column){
-            return true;
-        }
-        for each chip in getConnections(chip){
-            cotainsNetworkHelper(chip,network+chip,depth+1);
-        }
-        */
 
     /**
      * isEmptyBoard() takes no parameters, and verifies that there are no pieces on the board. For internal testing only.
