@@ -143,7 +143,7 @@ public class SList extends List {
   }
 
   public boolean contains(Object o) throws InvalidNodeException{
-    SListNode node = this.head;
+    SListNode node = (SListNode)this.head.next();
     while (node.isValidNode()) {
       if (node.item.equals(o)) {
         return true;

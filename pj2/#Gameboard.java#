@@ -32,8 +32,7 @@ public class Gameboard {
     public static final int SE = 7;
     public static final int NULLDIRECTION = -1;
 
-    public static final int[] DIRECTIONS = {WEST, EAST, NORTH, SOUTH, NW, SE, NE, SW, NULLDIRECTION}; //this is the order in which connecting chips are checked.
-    public static final int[] OPPOSITES = {EAST, WEST, SOUTH, NORTH, SE, NW, SW, NE, NULLDIRECTION};
+    public static final int[] DIRECTIONS = {NORTH, SOUTH, WEST, EAST, NW, SE, NE, SW, NULLDIRECTION}; //this is the order in which connecting chips are checked.
 
     protected int whiteCount;
     protected int blackCount;
@@ -321,7 +320,6 @@ public class Gameboard {
         for(int j = 0; j < this.height; j++){
             columnChips[j] = this.board[c.x][j];
         }
-
         return columnChips;
     }
 
@@ -339,7 +337,6 @@ public class Gameboard {
         for(int i = 0; i < this.width; i++){
             rowChips[i] = this.board[i][c.y];
         }
-
         return rowChips;
     }
 
@@ -643,12 +640,6 @@ public class Gameboard {
         System.arraycopy(col, 0, result, row.length, col.length);
         System.arraycopy(ld, 0, result, row.length + col.length, ld.length);
         System.arraycopy(rd, 0, result, row.length + col.length + ld.length, rd.length);
-
-        // System.out.print("FindConnectiongChips has returned with: [");
-        // for (int i=0; i<result.length; i++) {
-            // System.out.print(" "+result[i]);
-        // }
-        // System.out.print(" ]\n");
 
         return result;
     }
@@ -1174,7 +1165,6 @@ public class Gameboard {
 
     private boolean containsNetwork(int player) throws InvalidNodeException{
 
-        // System.out.println("\nContainsNetwork called!");
         int[] firstRow = null;
         if (player == BLACKPLAYER) {
             firstRow = getRow(new Coordinate(0,0));
@@ -1186,18 +1176,14 @@ public class Gameboard {
 
             if((firstRow[i] == BLACK && player == BLACKPLAYER) || (firstRow[i] == WHITE && player == WHITEPLAYER)) {
                 
-                // System.out.println("Chip encountered in the home row!");
                 SList parsedCoords = new SList();
 
                 Coordinate eachCoord;
                 if (player == BLACKPLAYER) {
-                    eachCoord = new Coordinate(i,0);
+                    eachCoord = new Coordinate(0, i);
                 } else if (player == WHITEPLAYER) {
-                    eachCoord = new Coordinate(0,i);  
+                    eachCoord = new Coordinate(i,0);  
                 } else {return false;} //return false if the player parameter is something crazy
-
-                // System.out.println("The chip encountered was at: "+eachCoord);
-                // System.out.println();
 
                 parsedCoords.insertFront(eachCoord);
                 if(containsNetworkHelper(eachCoord, parsedCoords, player, NULLDIRECTION)) {
@@ -1208,20 +1194,18 @@ public class Gameboard {
             }
 
         }
-            // System.out.println("\nAll chips in the home row were exhausted.");
             return false;
     }
      /**
      * containsNetworkHelper() takes four parameters, the current coordinate in the
      * line of connected chips, the list of coordinates that have been parsed through already,
-     * the player that will win if there is a network, the direction that the last connection made was in, and
+     * the player that will win if there is a network, and the direction that the last connection made was in, and
      * returns a recursive call that iterates through every combination of connected chips
      * and checks to see if there is a network.
      *
      * @param coord is the current coordinate being parsed
      * @param parsedCoords is the list of Coordinate objects that have already been parsed
      * @param player is the player that will win if a network is found
-     * @param direction is the direction that the last parsed connection was made in
      * @return true if a network has been found, false otherwise.
      */
     private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player, int direction) throws InvalidNodeException{
@@ -1239,58 +1223,45 @@ public class Gameboard {
         on each one. and return true if at least one of the recursive calls returns true.
         */
 
-        // System.out.println("\ncontainsNetworkHelper called! The coordinate is: "+coord+" and parsedCoords.length() is: "+parsedCoords.length());
-
         int blackWinYCoord = this.height - 1;
         int whiteWinXCoord = this.width - 1;
 
         if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
-            // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-            parsedCoords.back().remove();
             return false;
         }
         if (player == WHITE) {
             if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
-                // System.out.println("Case 2.1 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
         if (player == BLACK) {
             if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
-                // System.out.println("Case 2.2 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
         if (parsedCoords.length() >= MIN_DEPTH - 1 && ((player == WHITEPLAYER && coord.x == whiteWinXCoord) ||
                                                                 (player == BLACKPLAYER && coord.y == blackWinYCoord))) {
-            // System.out.println("Case 3 triggered: looks like its a win!\n");
             return true;
         }
 
         Coordinate[] connections = findConnectingChips(coord);
 
-        // System.out.println("Attempting to parse through remaining connections.");
         for (int i=0; i<connections.length; i++) {
-            // System.out.println("Parsing. DIRECTIONS[i] is: "+DIRECTIONS[i]+" and direction is: "+direction+" and connections[i] is: "+connections[i]);
+
             if (DIRECTIONS[i] == direction) { //this should work, maybe. if its the first time and is NULLDIRECTION, it never skips. i think.
-                // System.out.println("Same direction detected! Ignoring.");
                 continue;
             }
-            if (OPPOSITES[i] == direction) {
-                // System.out.println("Opposite direction detected! Ignoring.");
-                continue;
-            }
+
             if (!connections[i].equals(new Coordinate(0,0))) {
-                // System.out.println("Another connection found!");
-                parsedCoords.insertBack(coord);
+
+                 parsedCoords.insertBack(coord);
+
                 if (containsNetworkHelper(connections[i], parsedCoords, player, DIRECTIONS[i])) {
                     return true;
                 }
             }
         }
-    
+        
         return false;
     }
 
@@ -2342,13 +2313,19 @@ public class Gameboard {
             noah.insertFront(new Integer(10));
             noah.insertFront(new Integer(1));
 
+            System.out.println("Got to the first one");
+
             assert noah.contains(new Integer(3)): "ERROR: contains doesnt work right.";
             assert noah.contains(new Integer(10)): "ERROR: contains doesnt work right.";
             assert !noah.contains(new Integer(67)): "ERROR: contains doesnt work right.";
 
+            System.out.println("Got to the second one");
+
             noah.front().remove();
 
             assert !noah.contains(new Integer(1)): "ERROR: contains doesnt work right.";
+
+            System.out.println("Got to the third one");
 
             assert (new Coordinate(0,0)).equals(new Coordinate(0,0)): "Problem with equals!";
 
@@ -2357,6 +2334,8 @@ public class Gameboard {
             noah.insertFront(new Coordinate(0, 0));
             noah.insertFront(new Coordinate(3, 7));
             noah.insertFront(new Coordinate(8, 10));
+
+            System.out.println("Got to the fourth one");
 
             assert noah.contains(new Coordinate(0, 0)): "Error: contains es no bueno";
             assert !noah.contains(new Coordinate(1, 1)): "Error: contains es no bueno";
@@ -2372,40 +2351,31 @@ public class Gameboard {
             noahgame.addPiece(new Coordinate(3,5), BLACK);
             noahgame.addPiece(new Coordinate(5,7), BLACK);
 
-            //System.out.println("The gameboard looks like this:");
-            //System.out.println(noahgame);
-            //System.out.println();
+            System.out.println("The gameboard looks like this:");
+            System.out.println(noahgame);
+            System.out.println();
 
             Coordinate[] neighbors = noahgame.findConnectingChips(new Coordinate(5, 5));
 
-            // System.out.println("Neighbors of 5,5: "+neighbors);
+            System.out.println("Neighbors of 5,5: "+neighbors);
             
             assert neighbors.length == 8:"Error: fCC is no bueno";
-            // System.out.println("neighbors[0] is: "+neighbors[0]);
+            System.out.println("neighbors[0] is: "+neighbors[0]);
             assert neighbors[0].equals(new Coordinate(3,5)): "Error: fCC no bueno";
-            assert neighbors[1].equals(new Coordinate(6,5)): "Error: fCC no bueno";
-            assert neighbors[2].equals(new Coordinate(0,0)): "Error: fCC no bueno";
-            assert neighbors[3].equals(new Coordinate(5,7)): "Error: fCC no bueno";
-            assert neighbors[4].equals(new Coordinate(3,3)): "Error: fCC no bueno";
-            assert neighbors[5].equals(new Coordinate(0,0)): "Error: fCC no bueno";
-            assert neighbors[6].equals(new Coordinate(0,0)): "Error: fCC no bueno";
-            assert neighbors[7].equals(new Coordinate(0,0)): "Error: fCC no bueno";
 
             noahgame.addPiece(new Coordinate(4,5), Gameboard.WHITE); 
             neighbors = noahgame.findConnectingChips(new Coordinate(5, 5));
 
-            // System.out.println("Now the gameboard looks like this:");
-            // System.out.println(noahgame);
-            // System.out.println();
-            // System.out.println("Neighbors of 5,5: "+neighbors);
+            System.out.println("Now the gameboard looks like this:");
+            System.out.println(noahgame);
+            System.out.println();
+            System.out.println("Neighbors of 5,5: "+neighbors);
 
             assert neighbors.length == 8:"Error: fCC is no bueno";
             assert neighbors[0].equals(new Coordinate(0,0)): "Error: fCC no bueno";
             assert neighbors[1].equals(new Coordinate(6,5)): "Error: fCC no bueno";
 
             System.out.println("Testing containsNetwork.");
-            // System.out.println("The gameboard: ");
-            // System.out.println(noahgame);
 
             assert !noahgame.containsNetwork(WHITEPLAYER): "Error with containsNetwork.";
             assert noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
@@ -2418,93 +2388,11 @@ public class Gameboard {
             noahgame.addPiece(new Coordinate(1,3), Gameboard.WHITE);
             noahgame.addPiece(new Coordinate(0,4), Gameboard.WHITE); //not yet, but will break if im right about implementing the turns rule
 
-            // System.out.println("The board has changed! It is now:");
-            // System.out.println(noahgame);
+            assert !noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
 
-            assert !noahgame.containsNetwork(WHITEPLAYER): "Error with containsNetwork.";
+            noahgame.addPiece(new Coordinate(0,2), Gameboard.WHITE);
 
-            noahgame.addPiece(new Coordinate(1,6), Gameboard.WHITE);
-            noahgame.addPiece(new Coordinate(0,6), Gameboard.WHITE);
-
-            // System.out.println("The board has changed again!! It is now:");
-            // System.out.println(noahgame);
-
-            assert noahgame.containsNetwork(WHITEPLAYER): "Error with containsNetwork.";
-
-            //readme tests
-
-            noahgame = new Gameboard();
-            //60 - 65 - 55 - 33 - 35 - 57, should be legal
-            noahgame.addPiece(new Coordinate(6,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(6,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,7), Gameboard.BLACK);
-
-            assert noahgame.containsNetwork(BLACKPLAYER);
-
-            noahgame = new Gameboard();
-            //20 - 25 - 35 - 13 - 33 - 55 - 57, should be legal
-            noahgame.addPiece(new Coordinate(2,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(2,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(1,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,7), Gameboard.BLACK);
-
-            assert noahgame.containsNetwork(BLACKPLAYER);
-
-            //60 - 20 - 42 - 33 - 35 - 57, should be illegal
-            noahgame = new Gameboard();
-            noahgame.addPiece(new Coordinate(6,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(2,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(4,2), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,7), Gameboard.BLACK);
-
-            // System.out.println("The board has changed! It is now:");
-            // System.out.println(noahgame);
-
-            assert !noahgame.containsNetwork(BLACKPLAYER);
-
-            //20 - 42 - 60 - 65 - 55 - 57, should be illegal
-            noahgame = new Gameboard();
-            noahgame.addPiece(new Coordinate(2,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(4,2), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(6,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(6,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,7), Gameboard.BLACK);
-
-            assert !noahgame.containsNetwork(BLACKPLAYER);
-
-            //20 - 25 - 35 - 33 - 55 - 35 - 57, should be illegal
-            noahgame = new Gameboard();
-            noahgame.addPiece(new Coordinate(2,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(2,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(5,7), Gameboard.BLACK);
-
-            // System.out.println("The board has changed! It is now:");
-            // System.out.println(noahgame);
-
-            assert noahgame.containsNetwork(BLACKPLAYER);
-
-            //60 - 42 - 33 - 35 - 25 - 27, should be illegal
-            noahgame = new Gameboard();
-            noahgame.addPiece(new Coordinate(6,0), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(4,2), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,3), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(3,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(2,5), Gameboard.BLACK);
-            noahgame.addPiece(new Coordinate(2,7), Gameboard.BLACK);
-
-            assert !noahgame.containsNetwork(BLACKPLAYER);
+            assert noahgame.containsNetwork(BLACKPLAYER): "Error with containsNetwork.";
 
             //end noah tests
 

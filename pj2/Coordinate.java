@@ -8,8 +8,9 @@ public class Coordinate {
 		this.y = y;
 	}
 
-	public boolean equals(Coordinate other) {
-		return this.x == other.x && this.y == other.y;
+	public boolean equals(Object other) {
+        Coordinate coord = (Coordinate)other;
+		return this.x == coord.x && this.y == coord.y;
 	}
 
     public static boolean deepEquals(Coordinate[] a, Coordinate[] b) {
