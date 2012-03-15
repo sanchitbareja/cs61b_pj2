@@ -673,7 +673,7 @@ public class Gameboard {
                 whiteCount--;
             }
         } else {
-            //throw new AgainstRulesException("attempt to add " + type + " fails at  (" + x + ", " + y + ")");
+            throw new AgainstRulesException("attempt to add " + type + " fails at  (" + coord.x + ", " + coord.y + ")");
         }
         /*
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
@@ -939,7 +939,7 @@ public class Gameboard {
     }
 
     /**
-     * movePiece() "moves" a piece from one coordinate to another.
+     * movePieces() "moves" a piece from one coordinate to another.
      * More specifically, it takes parameters (Coordinate coord1, Coordinate coord2) and
      * moves a piece on "this" Gameboard from coord1 to coord2.
      *
@@ -962,6 +962,26 @@ public class Gameboard {
                 throw new AgainstRulesException("attempt to move " + getType(coord1) + " from  (" + coord1.x + ", " + coord1.y + ") fails game rules.");
             }
         }
+    }
+
+    //TODO: comment this, bitch!!!
+    public void performMove(Move m, int type) throws AgainstRulesException{
+        if (m.moveKind == Move.STEP) {
+            movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
+        }
+        if (m.moveKind == Move.ADD) {
+            addPiece(new Coordinate(m.x1, m.y1), type);
+        }
+    }
+
+    //TODO: comment this!!!!!!!
+    public void undoMove(Move m) throws AgainstRulesException {
+        if (m.moveKind == Move.STEP) {
+            movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
+        }
+        if (m.moveKind == Move.ADD) {
+            removePiece(new Coordinate(m.x1, m.y1));
+        } 
     }
 
     /**
