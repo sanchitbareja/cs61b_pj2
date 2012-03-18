@@ -8,8 +8,8 @@
  **/
 
 public class SimpleBoard {
-  private final static int DIMENSION = 8;
-  private int[][] grid;
+    private final static int DIMENSION = 8;
+    private int[][] grid;
 
   /**
    *  Invariants:  

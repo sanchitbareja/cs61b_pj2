@@ -1343,6 +1343,7 @@ public class Gameboard {
      */
 
     private double evaluator(int player) {
+        //
         return (Math.random() * 2.0) - 1.0;
     }
 
