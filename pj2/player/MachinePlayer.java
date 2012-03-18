@@ -11,7 +11,7 @@ import list.*;
 public class MachinePlayer extends Player {
 
   private int color;
-  private int serachDepth;
+  private int searchDepth;
   private Gameboard board;
 
   // Creates a machine player with the given color.  Color is either 0 (black)
@@ -34,7 +34,7 @@ public class MachinePlayer extends Player {
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
   
-    return chooseMoveHelper(player , 2, -2);
+    return chooseMoveHelper(colorToSide(this.color) , 2, -2);
   } 
 
   //TODO: comment this
@@ -131,7 +131,17 @@ public class MachinePlayer extends Player {
   // illegal, returns false without modifying the internal state of "this"
   // player.  This method allows your opponents to inform you of their moves.
   public boolean opponentMove(Move m) {
-    return false;
+    if(this.board.isValidMove(m,sideToGameboardColor(oppositeSide(colorToSide(this.color))))){
+      try{
+        int type = sideToGameboardColor(oppositeSide(colorToSide(this.color)));
+        this.board.performMove(m,type);
+        return true;
+      } catch (AgainstRulesException e){
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
   // If the Move m is legal, records the move as a move by "this" player
@@ -140,7 +150,17 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-    return false;
+    if(this.board.isValidMove(m,sideToGameboardColor(colorToSide(this.color)))){
+      try{
+        int type = sideToGameboardColor(colorToSide(this.color));
+        performMove(chooseMove(),type);
+        return true;
+      } catch (AgainstRulesException e){
+        return false;
+      }
+    } else {
+      return false;
+    }
   }
 
 }
