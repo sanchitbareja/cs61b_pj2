@@ -18,7 +18,7 @@ public class MachinePlayer extends Player {
   // or 1 (white).  (White has the first move.)
   public MachinePlayer(int color) {
     this.color = color;
-    this.searchDepth = 5;
+    this.searchDepth = 2;
     this.board = new Gameboard();
   }
 
@@ -35,7 +35,10 @@ public class MachinePlayer extends Player {
   public Move chooseMove() {
     try {
       System.out.println("try: chooseMove()");
-      return chooseMoveHelper(colorToSide(this.color) , 2.0, -2.0, 0).move;
+      System.out.println(this.board);
+      Move m = chooseMoveHelper(colorToSide(this.color) , -2.0, 2.0, 0).move;
+      this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
+      return m;
     } catch (Exception e) {
       System.out.println("catch: chooseMove()");
       System.out.println(e);
@@ -84,11 +87,11 @@ public class MachinePlayer extends Player {
     Best myBest = new Best();
     Best reply;
 
-    System.out.println("Alpha: " + alpha + " Beta: " + beta);
+    //System.out.println("Alpha: " + alpha + " Beta: " + beta);
 
     if (currDepth >= this.searchDepth) {
       myBest.score = board.evaluator();
-      System.out.println("if (currDepth >= this.searchDepth)");
+      //System.out.println("if (currDepth >= this.searchDepth)");
       return myBest;
     }
 
@@ -98,7 +101,7 @@ public class MachinePlayer extends Player {
       } else {
         myBest.score = -1;
       }
-      System.out.println("if (board.containsNetwork(side))");
+      //System.out.println("if (board.containsNetwork(side))");
       return myBest;
     }
 
@@ -110,10 +113,12 @@ public class MachinePlayer extends Player {
 
     SList moves = this.board.listMoves(side);
     SListNode node = (SListNode)moves.front();
+    System.out.println(moves);
     try {
       while (node.isValidNode()) {
         Move currMove = (Move)node.item();
-        System.out.println("performing move" + "currMove Movekind: " + currMove.moveKind + " x1: " + currMove.x1 + " y1: " + currMove.y1 + " x2: " + currMove.x2 + " y2: " + currMove.y2);
+        System.out.println("-------------------");
+        System.out.println(currMove);
         board.performMove(currMove, sideToGameboardColor(side));
 
         reply = chooseMoveHelper(oppositeSide(side), alpha, beta, currDepth + 1);
@@ -130,7 +135,9 @@ public class MachinePlayer extends Player {
           beta = reply.score;
         }
         if (alpha >= beta) {
-          System.out.println("if (alpha >= beta)");
+          //System.out.println("if (alpha >= beta)");
+          Move m = myBest.move;
+          //System.out.println("myBest: Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
           return myBest;
         }
 
@@ -142,7 +149,7 @@ public class MachinePlayer extends Player {
       System.out.println(e);
     }
 
-    System.out.println("return myBest");
+    //System.out.println("return myBest");
     return myBest;
   }
 
@@ -155,6 +162,7 @@ public class MachinePlayer extends Player {
       try{
         int type = sideToGameboardColor(oppositeSide(colorToSide(this.color)));
         this.board.performMove(m,type);
+        System.out.println("Hello!");
         return true;
       } catch (AgainstRulesException e){
         return false;

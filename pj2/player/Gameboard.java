@@ -115,6 +115,17 @@ public class Gameboard {
         return blackCount;
     }
 
+    public int getTypeCount(int type) {
+        if (type == BLACK) {
+            return getBlackCount();
+        }
+        if (type == WHITE) {
+            return getWhiteCount();
+        } else {
+            return -1;
+        }
+    }
+
     /**
      * getNeighbors() takes one parameter, a Coordinate, and returns a 3 x 3 2-D square array
      * of representing squares around the given square.
@@ -979,7 +990,7 @@ public class Gameboard {
     //TODO: comment this, bitch!!!
     public void performMove(Move m, int type) throws AgainstRulesException{
         if (m.moveKind == Move.STEP) {
-            movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
+            movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
         }
         if (m.moveKind == Move.ADD) {
             addPiece(new Coordinate(m.x1, m.y1), type);
@@ -989,7 +1000,7 @@ public class Gameboard {
     //TODO: comment this!!!!!!!
     public void undoMove(Move m) throws AgainstRulesException {
         if (m.moveKind == Move.STEP) {
-            movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
+            movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
         }
         if (m.moveKind == Move.ADD) {
             removePiece(new Coordinate(m.x1, m.y1));
@@ -1009,7 +1020,7 @@ public class Gameboard {
     public boolean isValidMove(Move m, int type) {
         //does not test if moving away the piece allows other
         //player to win WARNING!
-        if(m.moveKind == Move.ADD) {
+        if(m.moveKind == Move.ADD && getTypeCount(type) > 0) {
             try{
                 addPiece(new Coordinate(m.x1,m.y1), type);
                 removePiece(new Coordinate(m.x1, m.y1));
@@ -1019,10 +1030,10 @@ public class Gameboard {
             }
 
         }
-        if(m.moveKind == Move.STEP) {
+        if(m.moveKind == Move.STEP && getTypeCount(type) == 0) {
             try{
+                movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
                 movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
-                movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y2));
                 return true;
             } catch (AgainstRulesException e){
                 return false;
@@ -1111,23 +1122,29 @@ public class Gameboard {
      */
 
     public SList listMoves(int player) throws AgainstRulesException {
+        System.out.println(this);
         SList validMoves = new SList();
 
-
-        //addPiece()
-        for (int j = 0; j < this.height; j++) {
-            for (int i = 0; i < this.width; i++) {
-                if (isValidMove(new Move(i, j), player)) {
-                    validMoves.insertBack(new Move(i,j));
+        if(getTypeCount(player) > 0) {
+            for (int j = 0; j < this.height; j++) {
+                for (int i = 0; i < this.width; i++) {
+                    if (isValidMove(new Move(i, j), player)) {
+                        validMoves.insertBack(new Move(i,j));
+                    }
                 }
             }
         }
-        Coordinate[] piece = listPieces(player);
-        for (int k = 0; k < piece.length; k++) {
-            for (int j = 0; j < this.height; j++) {
-                for (int i = 0; i < this.width; i++) {
-                    if (isValidMove(new Move(piece[k].x, piece[k].y, i, j), player)) {
-                        validMoves.insertBack(new Move(piece[k].x, piece[k].y, i, j));
+        if(getTypeCount(player) == 0) {
+            Coordinate[] piece = listPieces(player);
+            System.out.println("hey fuck you");
+            for (int k = 0; k < piece.length; k++) {
+                for (int j = 0; j < this.height; j++) {
+                    for (int i = 0; i < this.width; i++) {
+                        System.out.println("Outside If!!");
+                        if (isValidMove(new Move(i, j, piece[k].x, piece[k].y), player)) {
+                            System.out.println("GOING IN!!");
+                            validMoves.insertBack(new Move(i, j, piece[k].x, piece[k].y));
+                        }
                     }
                 }
             }
