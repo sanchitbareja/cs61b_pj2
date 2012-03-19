@@ -23,7 +23,7 @@ public class Gameboard {
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
 
-    public static final int MIN_DEPTH = 6;
+    public static final int MIN_DEPTH = 6; //minimum chips to form a network
 
     public static final int NORTH = 0;
     public static final int SOUTH = 1;
@@ -668,7 +668,7 @@ public class Gameboard {
      */
 
     private void addPiece(Coordinate coord, int type) throws AgainstRulesException {
-        if (checkRules(x,y,type)) { //YOU NEED TO TURN THIS ON!
+        if (checkRules(coord,type)) { //YOU NEED TO TURN THIS ON!
         //if (checkRulesExceptCount(coord,type)) { //TURN ON WHEN TESTING
             setType(coord, type);
             if (type == BLACK) {
@@ -678,7 +678,7 @@ public class Gameboard {
                 whiteCount--;
             }
         } else {
-            throw new AgainstRulesException("attempt to add " + type + " fails at  (" + coord.x + ", " + coord.y + ")");
+            throw new AgainstRulesException("attempt to add " + type + " fails at (" + coord.x + ", " + coord.y + ")");
         }
         /*
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
@@ -707,6 +707,13 @@ public class Gameboard {
      */
 
     private boolean checkRules(Coordinate coord, int type) {
+        /*
+        System.out.println("checkDimensions: " + checkDimensions(coord));
+        System.out.println("checkNeighbor: " + checkNeighbors(coord,type));
+        System.out.println("checkSquare: " + checkSquare(coord,type));
+        System.out.println("checkPiece: " + checkPiece(type));
+        System.out.println("checkCount: " + checkCount(type));
+        */
         if (checkCount(type) && ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type)))) {
             return true;
         } else {
