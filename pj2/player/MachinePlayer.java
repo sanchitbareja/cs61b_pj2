@@ -18,7 +18,7 @@ public class MachinePlayer extends Player {
   // or 1 (white).  (White has the first move.)
   public MachinePlayer(int color) {
     this.color = color;
-    this.searchDepth = 2;
+    this.searchDepth = 3;
     this.board = new Gameboard();
   }
 
@@ -34,14 +34,14 @@ public class MachinePlayer extends Player {
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
     try {
-      System.out.println("try: chooseMove()");
-      System.out.println(this.board);
+      //System.out.println("try: chooseMove()");
+      //System.out.println(this.board);
       Move m = chooseMoveHelper(colorToSide(this.color) , -2.0, 2.0, 0).move;
       this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
       return m;
     } catch (Exception e) {
-      System.out.println("catch: chooseMove()");
-      System.out.println(e);
+      //System.out.println("catch: chooseMove()");
+      //System.out.println(e);
       e.printStackTrace();
       return null;
     }
@@ -113,12 +113,12 @@ public class MachinePlayer extends Player {
 
     SList moves = this.board.listMoves(side);
     SListNode node = (SListNode)moves.front();
-    System.out.println(moves);
+    //System.out.println(moves);
     try {
       while (node.isValidNode()) {
         Move currMove = (Move)node.item();
-        System.out.println("-------------------");
-        System.out.println(currMove);
+        //System.out.println("-------------------");
+        //System.out.println(currMove);
         board.performMove(currMove, sideToGameboardColor(side));
 
         reply = chooseMoveHelper(oppositeSide(side), alpha, beta, currDepth + 1);
@@ -162,7 +162,7 @@ public class MachinePlayer extends Player {
       try{
         int type = sideToGameboardColor(oppositeSide(colorToSide(this.color)));
         this.board.performMove(m,type);
-        System.out.println("Hello!");
+        //System.out.println("Hello!");
         return true;
       } catch (AgainstRulesException e){
         return false;
@@ -178,7 +178,7 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-    System.out.println("Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
+    //System.out.println("Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
     if(this.board.isValidMove(m, sideToGameboardColor(colorToSide(this.color)))) {
       try{
         int type = sideToGameboardColor(colorToSide(this.color));

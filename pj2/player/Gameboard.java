@@ -1122,7 +1122,7 @@ public class Gameboard {
      */
 
     public SList listMoves(int player) throws AgainstRulesException {
-        System.out.println(this);
+        //System.out.println(this);
         SList validMoves = new SList();
 
         if(getTypeCount(player) > 0) {
@@ -1136,13 +1136,13 @@ public class Gameboard {
         }
         if(getTypeCount(player) == 0) {
             Coordinate[] piece = listPieces(player);
-            System.out.println("hey fuck you");
+            //System.out.println("hey fuck you");
             for (int k = 0; k < piece.length; k++) {
                 for (int j = 0; j < this.height; j++) {
                     for (int i = 0; i < this.width; i++) {
-                        System.out.println("Outside If!!");
+                        //System.out.println("Outside If!!");
                         if (isValidMove(new Move(i, j, piece[k].x, piece[k].y), player)) {
-                            System.out.println("GOING IN!!");
+                            //System.out.println("GOING IN!!");
                             validMoves.insertBack(new Move(i, j, piece[k].x, piece[k].y));
                         }
                     }
