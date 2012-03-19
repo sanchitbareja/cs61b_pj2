@@ -668,8 +668,8 @@ public class Gameboard {
      */
 
     private void addPiece(Coordinate coord, int type) throws AgainstRulesException {
-        //if (checkRules(x,y,type)) { //YOU NEED TO TURN THIS ON!
-        if (checkRulesExceptCount(coord,type)) {
+        if (checkRules(x,y,type)) { //YOU NEED TO TURN THIS ON!
+        //if (checkRulesExceptCount(coord,type)) { //TURN ON WHEN TESTING
             setType(coord, type);
             if (type == BLACK) {
                 blackCount--;
@@ -1418,7 +1418,7 @@ public class Gameboard {
             table.insert(this, new Double(blackAverage - whiteAverage));
             return blackAverage - whiteAverage;
         } else {
-            return ((Double) table.find(this)).doubleValue();
+            return ((Double) table.find(this).value()).doubleValue();
         }
         //return (Math.random() * 2.0) - 1.0;
     }
@@ -1481,6 +1481,7 @@ public class Gameboard {
         //System.out.println(yuxinGame.evaluator(BLACKPLAYER));
 
         try {
+            /*
 
             //verifying board dimensions
             assert yuxinGame.width == 8: "ERROR (Y): width of gameboard incorrect";
@@ -2445,6 +2446,7 @@ public class Gameboard {
             assert sanchitGame.getDiagonalLength(new Coordinate(7,7), 1) == 1: "ERROR (S): getDiagonalLength is wrong";   
             
             System.out.println(sanchitGame);
+            */
 
             //Noah's tests for containsNetwork and associated functions
             System.out.println("Testing SList.contains with Integers and Coordinates.");
