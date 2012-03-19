@@ -1194,7 +1194,7 @@ public class Gameboard {
      * @return true if the current set of pieces contains a Network, false otherwise
      */
 
-    private boolean containsNetwork(int player) throws InvalidNodeException{
+    public boolean containsNetwork(int player) throws InvalidNodeException{
 
         // System.out.println("\nContainsNetwork called!");
         int[] firstRow = null;
@@ -1388,7 +1388,7 @@ public class Gameboard {
      * for guaranteed loss, and a number in between for boards that are not either.
      */
 
-    private double evaluator(int player) {
+    public double evaluator() {
         /*
             2. ratio of connections for all our pieces vs opponent pieces
             3. average distance between pieces 
