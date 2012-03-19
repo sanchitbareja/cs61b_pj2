@@ -1401,6 +1401,21 @@ public class Gameboard {
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
 
+
+
+    public int hashCode() {
+    // Replace the following line with your solution.
+        int hash = 0;
+        int multiple = 1;
+        for(int j = 0; j < DIMENSION; j++){
+            for(int i = 0; i < DIMENSION; i++){
+                hash += this.board[i][j]*multiple;
+                multiple = multiple*3; //I am hoping I don't over run the int limit 
+            }
+        }
+        return hash;
+    }
+
     /**
      * toString() returns a String representation of the board.
      */
