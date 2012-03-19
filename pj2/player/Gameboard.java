@@ -4,6 +4,7 @@ package player;
 
 import java.util.*;
 //import player.*;
+import dict.*;
 import list.*; 
 
 public class Gameboard {
@@ -42,6 +43,8 @@ public class Gameboard {
 
     protected int width;
     protected int height;
+
+    public HashTableChained table = new HashTableChained(1000);
     
     /**
      * Gameboard constructor takes no parameters, and constructs
@@ -1133,7 +1136,7 @@ public class Gameboard {
      *
      * @return a coordiante containing the pieces of the same type the specified square is connected to.
      */
-
+    
     private Coordinate[][] makeGrid(Coordinate coord) {
         Coordinate[][] grid = new Coordinate[3][3];
         Coordinate[] row = findConnectedRow(coord);
@@ -1163,7 +1166,7 @@ public class Gameboard {
      * @return an array containing the pieces of the same type the specified square is connected to. More specifically, it returns
      * a horizontal version of makeGrid().
      */
-
+    /*
     private Coordinate[] makeHGrid(Coordinate coord) {
         Coordinate[] grid = new Coordinate[9];
         Coordinate[] row = findConnectedRow(coord);
@@ -1183,6 +1186,7 @@ public class Gameboard {
 
         return grid;
     }
+    */
 
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
@@ -1194,7 +1198,7 @@ public class Gameboard {
      * @return true if the current set of pieces contains a Network, false otherwise
      */
 
-    private boolean containsNetwork(int player) throws InvalidNodeException{
+    public boolean containsNetwork(int player) throws InvalidNodeException{
 
         // System.out.println("\nContainsNetwork called!");
         int[] firstRow = null;
@@ -1334,7 +1338,9 @@ public class Gameboard {
         }
         return empty;
     }
+
 /* ============================== EVALUATOR MODULE ===================================*/
+
     private int getMaxScore(Coordinate c){
         return getDiagonal(c, -1).length + getDiagonal(c, 1).length + getRow(c).length + getColumn(c).length;
     }
@@ -1388,18 +1394,50 @@ public class Gameboard {
      * for guaranteed loss, and a number in between for boards that are not either.
      */
 
-    private double evaluator(int player) {
+    public double evaluator() {
         /*
             2. ratio of connections for all our pieces vs opponent pieces
             3. average distance between pieces 
                 -> lower the average distance, lower the probability of being blocked and vice-versa
             4. 
-
         */
-        return (Math.random() * 2.0) - 1.0;
+        if(table.find(this) == null) {
+            double blackSum = 0.0;
+            double whiteSum = 0.0;
+            Coordinate[] blacks = this.listBlacks();
+            Coordinate[] whites = this.listWhites();
+            for(int b = 0; b < blacks.length; b++) {
+                blackSum += getScore(blacks[b]);
+            }
+            for(int w = 0; w < whites.length; w++) {
+                whiteSum += getScore(whites[w]);
+            }
+            double blackAverage = blackSum/blacks.length;
+            double whiteAverage = whiteSum/whites.length;
+
+            table.insert(this, new Double(blackAverage - whiteAverage));
+            return blackAverage - whiteAverage;
+        } else {
+            return ((Double) table.find(this)).doubleValue();
+        }
+        //return (Math.random() * 2.0) - 1.0;
     }
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
+
+    public int hashCode() {
+    // Replace the following line with your solution.
+        int hash = 0;
+        int multiple = 1;
+        for(int j = 0; j < this.width; j++){
+            for(int i = 0; i < this.height; i++){
+                hash += this.board[i][j] * multiple;
+                multiple = multiple * 3; 
+            }
+        }
+        return hash;
+    }
+
 
     /**
      * toString() returns a String representation of the board.
