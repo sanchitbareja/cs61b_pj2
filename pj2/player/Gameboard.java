@@ -1297,20 +1297,20 @@ public class Gameboard {
 
         if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
             // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-            parsedCoords.back().remove();
+            //parsedCoords.back().remove();
             return false;
         }
         if (player == WHITE) {
             if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 // System.out.println("Case 2.1 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
+                //parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
         if (player == BLACK) {
             if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 // System.out.println("Case 2.2 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
+                //parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
@@ -1339,6 +1339,7 @@ public class Gameboard {
                 if (containsNetworkHelper(connections[i], parsedCoords, player, DIRECTIONS[i])) {
                     return true;
                 }
+                parsedCoords.back().remove();
             }
         }
     
