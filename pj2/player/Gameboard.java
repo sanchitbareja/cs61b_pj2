@@ -23,7 +23,7 @@ public class Gameboard {
     public static final int BOARD_WIDTH = 8;
     public static final int BOARD_HEIGHT = 8;
 
-    public static final int MIN_DEPTH = 6;
+    public static final int MIN_DEPTH = 6; //minimum chips to form a network
 
     public static final int NORTH = 0;
     public static final int SOUTH = 1;
@@ -113,6 +113,17 @@ public class Gameboard {
 
     public int getBlackCount() {
         return blackCount;
+    }
+
+    public int getTypeCount(int type) {
+        if (type == BLACK) {
+            return getBlackCount();
+        }
+        if (type == WHITE) {
+            return getWhiteCount();
+        } else {
+            return -1;
+        }
     }
 
     /**
@@ -668,7 +679,7 @@ public class Gameboard {
      */
 
     private void addPiece(Coordinate coord, int type) throws AgainstRulesException {
-        if (checkRules(x,y,type)) { //YOU NEED TO TURN THIS ON!
+        if (checkRules(coord,type)) { //YOU NEED TO TURN THIS ON!
         //if (checkRulesExceptCount(coord,type)) { //TURN ON WHEN TESTING
             setType(coord, type);
             if (type == BLACK) {
@@ -678,7 +689,7 @@ public class Gameboard {
                 whiteCount--;
             }
         } else {
-            throw new AgainstRulesException("attempt to add " + type + " fails at  (" + coord.x + ", " + coord.y + ")");
+            throw new AgainstRulesException("attempt to add " + type + " fails at (" + coord.x + ", " + coord.y + ")");
         }
         /*
         if ((checkDimensions(x,y) && checkPiece(type)) && (checkSquare(x,y,type) && checkNeighbors(x,y,type))) {
@@ -707,6 +718,13 @@ public class Gameboard {
      */
 
     private boolean checkRules(Coordinate coord, int type) {
+        /*
+        System.out.println("checkDimensions: " + checkDimensions(coord));
+        System.out.println("checkNeighbor: " + checkNeighbors(coord,type));
+        System.out.println("checkSquare: " + checkSquare(coord,type));
+        System.out.println("checkPiece: " + checkPiece(type));
+        System.out.println("checkCount: " + checkCount(type));
+        */
         if (checkCount(type) && ((checkDimensions(coord) && checkPiece(type)) && (checkSquare(coord,type) && checkNeighbors(coord,type)))) {
             return true;
         } else {
@@ -972,7 +990,7 @@ public class Gameboard {
     //TODO: comment this, bitch!!!
     public void performMove(Move m, int type) throws AgainstRulesException{
         if (m.moveKind == Move.STEP) {
-            movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
+            movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
         }
         if (m.moveKind == Move.ADD) {
             addPiece(new Coordinate(m.x1, m.y1), type);
@@ -982,11 +1000,11 @@ public class Gameboard {
     //TODO: comment this!!!!!!!
     public void undoMove(Move m) throws AgainstRulesException {
         if (m.moveKind == Move.STEP) {
-            movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
+            movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
         }
         if (m.moveKind == Move.ADD) {
             removePiece(new Coordinate(m.x1, m.y1));
-        }
+        } 
     }
 
     /**
@@ -1002,7 +1020,7 @@ public class Gameboard {
     public boolean isValidMove(Move m, int type) {
         //does not test if moving away the piece allows other
         //player to win WARNING!
-        if(m.moveKind == Move.ADD) {
+        if(m.moveKind == Move.ADD && getTypeCount(type) > 0) {
             try{
                 addPiece(new Coordinate(m.x1,m.y1), type);
                 removePiece(new Coordinate(m.x1, m.y1));
@@ -1012,10 +1030,10 @@ public class Gameboard {
             }
 
         }
-        if(m.moveKind == Move.STEP) {
+        if(m.moveKind == Move.STEP && getTypeCount(type) == 0) {
             try{
+                movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
                 movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
-                movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y2));
                 return true;
             } catch (AgainstRulesException e){
                 return false;
@@ -1104,23 +1122,29 @@ public class Gameboard {
      */
 
     public SList listMoves(int player) throws AgainstRulesException {
+        //System.out.println(this);
         SList validMoves = new SList();
 
-
-        //addPiece()
-        for (int j = 0; j < this.height; j++) {
-            for (int i = 0; i < this.width; i++) {
-                if (isValidMove(new Move(i, j), player)) {
-                    validMoves.insertBack(new Move(i,j));
+        if(getTypeCount(player) > 0) {
+            for (int j = 0; j < this.height; j++) {
+                for (int i = 0; i < this.width; i++) {
+                    if (isValidMove(new Move(i, j), player)) {
+                        validMoves.insertBack(new Move(i,j));
+                    }
                 }
             }
         }
-        Coordinate[] piece = listPieces(player);
-        for (int k = 0; k < piece.length; k++) {
-            for (int j = 0; j < this.height; j++) {
-                for (int i = 0; i < this.width; i++) {
-                    if (isValidMove(new Move(piece[k].x, piece[k].y, i, j), player)) {
-                        validMoves.insertBack(new Move(piece[k].x, piece[k].y, i, j));
+        if(getTypeCount(player) == 0) {
+            Coordinate[] piece = listPieces(player);
+            //System.out.println("hey fuck you");
+            for (int k = 0; k < piece.length; k++) {
+                for (int j = 0; j < this.height; j++) {
+                    for (int i = 0; i < this.width; i++) {
+                        //System.out.println("Outside If!!");
+                        if (isValidMove(new Move(i, j, piece[k].x, piece[k].y), player)) {
+                            //System.out.println("GOING IN!!");
+                            validMoves.insertBack(new Move(i, j, piece[k].x, piece[k].y));
+                        }
                     }
                 }
             }
@@ -1166,7 +1190,7 @@ public class Gameboard {
      * @return an array containing the pieces of the same type the specified square is connected to. More specifically, it returns
      * a horizontal version of makeGrid().
      */
-    /*
+
     private Coordinate[] makeHGrid(Coordinate coord) {
         Coordinate[] grid = new Coordinate[9];
         Coordinate[] row = findConnectedRow(coord);
@@ -1186,7 +1210,6 @@ public class Gameboard {
 
         return grid;
     }
-    */
 
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
@@ -1273,20 +1296,20 @@ public class Gameboard {
 
         if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
             // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-            parsedCoords.back().remove();
+            //parsedCoords.back().remove();
             return false;
         }
         if (player == WHITE) {
             if ((coord.x == 0 && !(parsedCoords.length() == 1))  || (coord.x == whiteWinXCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 // System.out.println("Case 2.1 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
+                //parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
         if (player == BLACK) {
             if ((coord.y == 0 && !(parsedCoords.length() == 1))  || (coord.y == blackWinYCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
                 // System.out.println("Case 2.2 triggered: either two in the home/end row or in the end row with not enough chips!\n");
-                parsedCoords.back().remove();
+                //parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
             }
         }
@@ -1315,6 +1338,7 @@ public class Gameboard {
                 if (containsNetworkHelper(connections[i], parsedCoords, player, DIRECTIONS[i])) {
                     return true;
                 }
+                parsedCoords.back().remove();
             }
         }
     
@@ -1322,7 +1346,12 @@ public class Gameboard {
     }
 
     private boolean containsNetworkOfLength(Coordinate c,int max_depth){
-        return containsNetworkOfLengthHelper(c,new SList(), getType(c),NULLDIRECTION,max_depth);
+        try{
+            return containsNetworkOfLengthHelper(c,new SList(), getType(c),NULLDIRECTION,max_depth);
+        } catch (InvalidNodeException e){
+            //System.out.println(e);
+            return false;
+        }
     }
 
     private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
@@ -1342,10 +1371,14 @@ public class Gameboard {
 
         // System.out.println("\ncontainsNetworkHelper called! The coordinate is: "+coord+" and parsedCoords.length() is: "+parsedCoords.length());
 
-        if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
-            // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-            parsedCoords.back().remove();
-            return false;
+        try{
+            if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
+                // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
+                parsedCoords.back().remove();
+                return false;
+            }
+        } catch (Exception e){
+            //dun do anything
         }
         if (parsedCoords.length() >= max_depth) {
             // System.out.println("Case 3 triggered: looks like its a win!\n");
@@ -1426,17 +1459,151 @@ public class Gameboard {
 
     }
 
-    private double getScore(Coordinate center){
-        int denom = getMaxScore(center);
-        int[][] distances = getDistanceArray(makeGrid(center));
-        int numerator = 0;
-        for(int j = 0; j < 3; j++){
-            for(int i = 0; i<3; i++){
-                numerator += distances[i][j];
+    private int scorePiece(Coordinate c) {
+        if(getType(c) == BLACK) {
+            if(c.y == 0 || c.y == this.height - 1) {
+                return 2;
             }
         }
-        numerator = denom - numerator;
-        return (double)(numerator+0.0)/denom;
+        if(getType(c) == WHITE) {
+            if(c.x == 0 || c.x == this.width - 1) {
+                return 2;
+            }
+        }
+        return 0; 
+    }
+
+    private boolean inCorner(Coordinate c){
+        int chip = getType(c);
+        if(chip == WHITE){
+            if((c.x == 0 && c.y == 1) || (c.x == 0 && c.y == 6) || (c.x == 7 && c.y == 1) || (c.x == 7 && c.y == 6)){
+                return true;
+            }
+        }
+        if(chip == BLACK){
+            if((c.x == 1 && c.y == 0) || (c.x == 6 && c.y == 0) || (c.x == 1 && c.y == 7) || (c.x == 6 && c.y == 7)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int scoreConnections(int player) {
+        try {
+            int sumOfConnections = 0;
+            int homeRow1 = 0;
+            int homeRow2 = 0;
+            Coordinate[] list = listPieces(player);
+            Coordinate[][] friends = new Coordinate[list.length][9];
+
+            for(int i = 0; i < list.length; i++) {
+                friends[i] = makeHGrid(list[i]);
+            }
+
+            for(int i = 0; i < list.length; i++) {
+                if(getType(list[i]) == BLACK) {
+                    if(list[i].y == 0) {
+                        homeRow1++;
+                    }
+                    if(list[i].y == this.height - 1) {
+                        homeRow2++;
+                    }
+                }
+                if(getType(list[i]) == WHITE) {
+                    if(list[i].x == 0) {
+                        homeRow1++;
+                    }
+                    if(list[i].x == this.width - 1) {
+                        homeRow2++;
+                    }
+                }
+            }
+            for(int i = 0; i < list.length; i++){
+                if(inCorner(list[i])){
+                    sumOfConnections -= 20;
+                }
+            }
+
+            if((homeRow1 != 0 && homeRow2 == 0) || (homeRow2 != 0 && homeRow1 == 0)) {
+                sumOfConnections-=2;
+            }
+            if(homeRow1 > homeRow2) {
+                if(((double) homeRow2)/(homeRow1) < .5) {
+                    sumOfConnections-=10;
+                }
+                if(homeRow1 > 2) {
+                    sumOfConnections-=10;
+                } 
+            }
+            if(homeRow1 < homeRow2) {
+                if(((double) homeRow1)/(homeRow2) < .5) {
+                    sumOfConnections-=10;
+                }
+                if(homeRow2 > 2) {
+                    sumOfConnections-=10;
+                } 
+            }
+            for(int j = 0; j < list.length; j++) { 
+                sumOfConnections+=scorePiece(list[j]);
+                for(int k = 0; k < 9; k++) {
+                    if(!friends[j][k].equals(new Coordinate(0,0))){
+                        sumOfConnections+=1;  
+                    }
+                }
+                sumOfConnections--;
+            }
+
+            for(int i = 0; i < list.length; i++) {
+                int numNeighbors = countNeighbors(list[i], getType(list[i]));
+                if(numNeighbors > 0) {
+                    sumOfConnections+=200;
+                }
+            }
+
+            for(int i = 0; i < this.height; i++){
+                int localSum = 0;
+                for(int piece = 0; piece < list.length; piece++){
+                    if(list[piece].y == i){
+                        localSum += 1;
+                    }
+                }
+                if(localSum >= 3){
+                    sumOfConnections += 100;
+                }
+            }
+
+            for(int i = 0; i < this.width; i++){
+                int localSum = 0;
+                for(int piece = 0; piece < list.length; piece++){
+                    if(list[piece].x== i){
+                        localSum += 1;
+                    }
+                }
+                if(localSum >= 3){
+                    sumOfConnections += 100;
+                }
+            }
+
+            return sumOfConnections;
+        } catch (AgainstRulesException e) {
+            System.out.println(e + " at totalColorConnections");
+            return -1;
+        }
+    }
+
+
+    private double getScore(Coordinate center){
+        // int denom = getMaxScore(center);
+        // int[][] distances = getDistanceArray(makeGrid(center));
+        // int numerator = 0;
+        // for(int j = 0; j < 3; j++){
+        //     for(int i = 0; i<3; i++){
+        //         numerator += distances[i][j];
+        //     }
+        // }
+        // numerator = denom - numerator;
+        // return (double)(numerator+0.0)/denom;
+        return 100.0;
     }
 
     /**
@@ -1449,7 +1616,7 @@ public class Gameboard {
      * for guaranteed loss, and a number in between for boards that are not either.
      */
 
-    public double evaluator() {
+    public double evaluator(int currDepth) {
         /*
             2. ratio of connections for all our pieces vs opponent pieces
             3. average distance between pieces 
@@ -1484,20 +1651,20 @@ public class Gameboard {
             if(containsNetworkOfLength(whites[i],5)){
                 System.out.println("White Board with 5 connected chips");
                 System.out.println(this);
-                white_score += 25;
+                white_score += 50;
                 continue;
             }
 
             if(containsNetworkOfLength(whites[i],4)){
                 System.out.println("White Board with 4 connected chips");
                 System.out.println(this);
-                white_score += 20;
+                white_score += 40;
                 continue;
             }
             if(containsNetworkOfLength(whites[i],3)){
                 System.out.println("White Board with 3 connected chips");
                 System.out.println(this);
-                white_score += 15;
+                white_score += 30;
                 continue;
             }
         }
@@ -1505,25 +1672,41 @@ public class Gameboard {
             if(containsNetworkOfLength(blacks[i],5)){
                 System.out.println("Black Board with 5 connected chips");
                 System.out.println(this);
-                black_score += 25;
+                black_score += 50;
                 continue;
             }
 
             if(containsNetworkOfLength(blacks[i],4)){
                 System.out.println("Black Board with 4 connected chips");
                 System.out.println(this);
-                black_score += 20;
+                black_score += 40;
                 continue;
             }
             if(containsNetworkOfLength(blacks[i],3)){
                 System.out.println("Black Board with 3 connected chips");
                 System.out.println(this);
-                black_score += 15;
+                black_score += 30;
                 continue;
             }
         }
-        return (double)black_score - white_score;
 
+        try {
+            if(containsNetwork(WHITE)){
+                return -1000000000;
+            }
+            if(containsNetwork(BLACK)){
+                return 1000000000;
+            }
+
+            white_score += scoreConnections(WHITEPLAYER);
+            black_score += scoreConnections(BLACKPLAYER);
+            //System.out.println("white: " + whites + "||" + "black: " + blacks);
+            return (double)black_score - white_score;
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return 0.0;
+        }
     }
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
