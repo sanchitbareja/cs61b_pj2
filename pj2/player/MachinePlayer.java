@@ -18,7 +18,7 @@ public class MachinePlayer extends Player {
   // or 1 (white).  (White has the first move.)
   public MachinePlayer(int color) {
     this.color = color;
-    this.searchDepth = 2;
+    this.searchDepth = 3;
     this.board = new Gameboard();
   }
 
@@ -36,7 +36,7 @@ public class MachinePlayer extends Player {
     try {
       //System.out.println("try: chooseMove()");
 
-      Move m = chooseMoveHelper(colorToSide(this.color) , -2.0, 2.0, 0).move;
+      Move m = chooseMoveHelper(colorToSide(this.color) , -2000000000, 2000000000, 0).move;
       this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
       //System.out.println(this.board);
       //System.out.println(m);
@@ -89,11 +89,12 @@ public class MachinePlayer extends Player {
     Best myBest = new Best();
     Best reply;
 
-    //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+
 
     if (currDepth >= this.searchDepth) {
-      myBest.score = board.evaluator();
+      myBest.score = board.evaluator(currDepth);
       // System.out.println("if (currDepth >= this.searchDepth)");
+      System.out.println("Alpha: " + alpha + " Beta: " + beta);
       return myBest;
     }
 
@@ -101,15 +102,16 @@ public class MachinePlayer extends Player {
       //System.out.println("Search Depth: " + currDepth);
       if (side == Gameboard.BLACKPLAYER) {
         //System.out.println("myBest = 1");
-        myBest.score = 1;
+        myBest.score = 1000000000;
       } else {
-        myBest.score = -1;
+        myBest.score = -1000000000;
         //System.out.println("myBest = -1");
       }
       // System.out.println("!!Search Depth: " + currDepth);
       // System.out.println("if (board.containsNetwork(side)) FUCK YOU YOU'RE BECOMING SELF AWARE!!!");
       //System.out.println("The Final Move: ");
       //System.out.println(myBest.move);
+      System.out.println("Alpha: " + alpha + " Beta: " + beta);
       return myBest;
     }
 
@@ -144,9 +146,10 @@ public class MachinePlayer extends Player {
           beta = reply.score;
         }
         if (alpha >= beta) {
-          // System.out.println("if (alpha >= beta)");
+          System.out.println("if (alpha >= beta)");
           Move m = myBest.move;
           //System.out.println("myBest: Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
+          System.out.println("Alpha: " + alpha + " Beta: " + beta);
           return myBest;
         }
 
@@ -159,6 +162,7 @@ public class MachinePlayer extends Player {
     }
 
     // System.out.println("return myBest (last)");
+    System.out.println("Alpha: " + alpha + " Beta: " + beta);
     return myBest;
   }
 

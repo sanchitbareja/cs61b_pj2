@@ -1190,7 +1190,7 @@ public class Gameboard {
      * @return an array containing the pieces of the same type the specified square is connected to. More specifically, it returns
      * a horizontal version of makeGrid().
      */
-    /*
+
     private Coordinate[] makeHGrid(Coordinate coord) {
         Coordinate[] grid = new Coordinate[9];
         Coordinate[] row = findConnectedRow(coord);
@@ -1210,7 +1210,6 @@ public class Gameboard {
 
         return grid;
     }
-    */
 
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
@@ -1396,17 +1395,151 @@ public class Gameboard {
 
     }
 
-    private double getScore(Coordinate center){
-        int denom = getMaxScore(center);
-        int[][] distances = getDistanceArray(makeGrid(center));
-        int numerator = 0;
-        for(int j = 0; j < 3; j++){
-            for(int i = 0; i<3; i++){
-                numerator += distances[i][j];
+    private int scorePiece(Coordinate c) {
+        if(getType(c) == BLACK) {
+            if(c.y == 0 || c.y == this.height - 1) {
+                return 2;
             }
         }
-        numerator = denom - numerator;
-        return (double)(numerator+0.0)/denom;
+        if(getType(c) == WHITE) {
+            if(c.x == 0 || c.x == this.width - 1) {
+                return 2;
+            }
+        }
+        return 0; 
+    }
+
+    private boolean inCorner(Coordinate c){
+        int chip = getType(c);
+        if(chip == WHITE){
+            if((c.x == 0 && c.y == 1) || (c.x == 0 && c.y == 6) || (c.x == 7 && c.y == 1) || (c.x == 7 && c.y == 6)){
+                return true;
+            }
+        }
+        if(chip == BLACK){
+            if((c.x == 1 && c.y == 0) || (c.x == 6 && c.y == 0) || (c.x == 1 && c.y == 7) || (c.x == 6 && c.y == 7)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int scoreConnections(int player) {
+        try {
+            int sumOfConnections = 0;
+            int homeRow1 = 0;
+            int homeRow2 = 0;
+            Coordinate[] list = listPieces(player);
+            Coordinate[][] friends = new Coordinate[list.length][9];
+
+            for(int i = 0; i < list.length; i++) {
+                friends[i] = makeHGrid(list[i]);
+            }
+
+            for(int i = 0; i < list.length; i++) {
+                if(getType(list[i]) == BLACK) {
+                    if(list[i].y == 0) {
+                        homeRow1++;
+                    }
+                    if(list[i].y == this.height - 1) {
+                        homeRow2++;
+                    }
+                }
+                if(getType(list[i]) == WHITE) {
+                    if(list[i].x == 0) {
+                        homeRow1++;
+                    }
+                    if(list[i].x == this.width - 1) {
+                        homeRow2++;
+                    }
+                }
+            }
+            for(int i = 0; i < list.length; i++){
+                if(inCorner(list[i])){
+                    sumOfConnections -= 20;
+                }
+            }
+
+            if((homeRow1 != 0 && homeRow2 == 0) || (homeRow2 != 0 && homeRow1 == 0)) {
+                sumOfConnections-=2;
+            }
+            if(homeRow1 > homeRow2) {
+                if(((double) homeRow2)/(homeRow1) < .5) {
+                    sumOfConnections-=10;
+                }
+                if(homeRow1 > 2) {
+                    sumOfConnections-=10;
+                } 
+            }
+            if(homeRow1 < homeRow2) {
+                if(((double) homeRow1)/(homeRow2) < .5) {
+                    sumOfConnections-=10;
+                }
+                if(homeRow2 > 2) {
+                    sumOfConnections-=10;
+                } 
+            }
+            for(int j = 0; j < list.length; j++) { 
+                sumOfConnections+=scorePiece(list[j]);
+                for(int k = 0; k < 9; k++) {
+                    if(!friends[j][k].equals(new Coordinate(0,0))){
+                        sumOfConnections+=1;  
+                    }
+                }
+                sumOfConnections--;
+            }
+
+            for(int i = 0; i < list.length; i++) {
+                int numNeighbors = countNeighbors(list[i], getType(list[i]));
+                if(numNeighbors > 0) {
+                    sumOfConnections+=200;
+                }
+            }
+
+            for(int i = 0; i < this.height; i++){
+                int localSum = 0;
+                for(int piece = 0; piece < list.length; piece++){
+                    if(list[piece].y == i){
+                        localSum += 1;
+                    }
+                }
+                if(localSum >= 3){
+                    sumOfConnections += 100;
+                }
+            }
+
+            for(int i = 0; i < this.width; i++){
+                int localSum = 0;
+                for(int piece = 0; piece < list.length; piece++){
+                    if(list[piece].x== i){
+                        localSum += 1;
+                    }
+                }
+                if(localSum >= 3){
+                    sumOfConnections += 100;
+                }
+            }
+
+            return sumOfConnections;
+        } catch (AgainstRulesException e) {
+            System.out.println(e + " at totalColorConnections");
+            return -1;
+        }
+    }
+
+
+    private double getScore(Coordinate center){
+        // int denom = getMaxScore(center);
+        // int[][] distances = getDistanceArray(makeGrid(center));
+        // int numerator = 0;
+        // for(int j = 0; j < 3; j++){
+        //     for(int i = 0; i<3; i++){
+        //         numerator += distances[i][j];
+        //     }
+        // }
+        // numerator = denom - numerator;
+        // return (double)(numerator+0.0)/denom;
+        return 100.0;
     }
 
     /**
@@ -1419,14 +1552,32 @@ public class Gameboard {
      * for guaranteed loss, and a number in between for boards that are not either.
      */
 
-    public double evaluator() {
+    public double evaluator(int currDepth) {
         /*
             2. ratio of connections for all our pieces vs opponent pieces
             3. average distance between pieces 
                 -> lower the average distance, lower the probability of being blocked and vice-versa
             4. 
         */
-        if(table.find(this) == null) {
+        try {
+            if(containsNetwork(WHITE)){
+                return -1000000000;
+            }
+            if(containsNetwork(BLACK)){
+                return 1000000000;
+            }
+
+            int whites = scoreConnections(WHITEPLAYER);
+            int blacks = scoreConnections(BLACKPLAYER);
+            //System.out.println("white: " + whites + "||" + "black: " + blacks);
+            return ((double) (blacks - whites));
+        }
+        catch (Exception e) {
+            System.out.println(e);
+            return 0.0;
+        }
+
+        /*if(table.find(this) == null) {
             double blackSum = 0.0;
             double whiteSum = 0.0;
             Coordinate[] blacks = this.listBlacks();
@@ -1444,7 +1595,7 @@ public class Gameboard {
             return blackAverage - whiteAverage;
         } else {
             return ((Double) table.find(this).value()).doubleValue();
-        }
+        }*/
         //return (Math.random() * 2.0) - 1.0;
     }
 
