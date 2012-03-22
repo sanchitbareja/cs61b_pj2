@@ -33,8 +33,13 @@ public class MachinePlayer extends Player {
   // Returns a new move by "this" player.  Internally records the move (updates
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
-  
-    return chooseMoveHelper(colorToSide(this.color) , 2, -2);
+    try {
+      return chooseMoveHelper(colorToSide(this.color) , 2.0, -2.0, Gameboard.MIN_DEPTH).move;
+    } catch (Exception e) {
+      System.out.println(e);
+      e.printStackTrace();
+      return null;
+    }
   } 
 
   //TODO: comment this
@@ -70,52 +75,59 @@ public class MachinePlayer extends Player {
   //TODO: FIX THIS SO IT WORKS.
   //implement Best class
   //also write comments lololol
+  //side is WHITEPLAYER or BLACKPLAYER
   //and a shit ton of test code because this shit will break in 40 different places if you try to run it
-  public Move chooseMoveHelper(int side, double alpha, double beta, double myScore, double replyScore, int currDepth) {
+  public Best chooseMoveHelper(int side, double alpha, double beta, int currDepth) throws AgainstRulesException, InvalidNodeException{
 
-    Move myBest = new Move();
-    Move reply;
+    Best myBest = new Best();
+    Best reply;
 
     if (currDepth >= this.searchDepth) {
-      myScore = board.evaluate(side);
-    }
-
-    if (board.containsNetwork(side)) {
+      myBest.score = board.evaluator();
       return myBest;
     }
 
-    if (colorToSide(this.color) != side) { //its the opponent's turn, i think
-      myScore = alpha;
+    if (board.containsNetwork(side)) {
+      if (side == Gameboard.BLACKPLAYER) {
+        myBest.score = 1;
+      } else {
+        myBest.score = -1;
+      }
+      return myBest;
+    }
+
+    if (colorToSide(this.color) == side) { //its the opponent's turn, i think
+      myBest.score = alpha;
     } else {
-      myScore = beta;
+      myBest.score = beta;
     }
 
     SList moves = this.board.listMoves(side);
-    SListNode node = moves.front();
+    SListNode node = (SListNode)moves.front();
     try {
       while (node.isValidNode()) {
         Move currMove = (Move)node.item();
 
         board.performMove(currMove, sideToGameboardColor(side));
 
-        reply = chooseMoveHelper(oppositeSide(side), alpha, beta);
+        reply = chooseMoveHelper(oppositeSide(side), alpha, beta, currDepth + 1);
 
-        board.undoMove(currMove, sideToGameboardColor(side));
+        board.undoMove(currMove);
 
-        if (colorToSide(this.color) != side && (replyScore > myScore)) {
-          myBest = currMove;
-          myScore = replyScore;
-          alpha = replyScore;
-        } else if (colorToSide(this.color) == side && replyScore < myScore) {
-          myBest = currMove;
-          myScore = replyScore;
-          beta = replyScore;
+        if (colorToSide(this.color) == side && (reply.score > myBest.score)) {
+          myBest.move = currMove;
+          myBest.score = reply.score;
+          alpha = reply.score;
+        } else if (colorToSide(this.color) != side && reply.score < myBest.score) {
+          myBest.move = currMove;
+          myBest.score = reply.score;
+          beta = reply.score;
         }
-        if (alpha > beta) {
+        if (alpha >= beta) {
           return myBest;
         }
 
-        node = node.next();
+        node = (SListNode)node.next();
       }
     } catch (AgainstRulesException e) {
       System.out.println(e);
@@ -150,10 +162,10 @@ public class MachinePlayer extends Player {
   // player.  This method is used to help set up "Network problems" for your
   // player to solve.
   public boolean forceMove(Move m) {
-    if(this.board.isValidMove(m,sideToGameboardColor(colorToSide(this.color)))){
+    if(this.board.isValidMove(m, sideToGameboardColor(colorToSide(this.color)))) {
       try{
         int type = sideToGameboardColor(colorToSide(this.color));
-        performMove(chooseMove(),type);
+        board.performMove(m,type);
         return true;
       } catch (AgainstRulesException e){
         return false;

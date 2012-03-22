@@ -986,7 +986,7 @@ public class Gameboard {
         }
         if (m.moveKind == Move.ADD) {
             removePiece(new Coordinate(m.x1, m.y1));
-        }
+        } 
     }
 
     /**
@@ -1321,61 +1321,6 @@ public class Gameboard {
         return false;
     }
 
-    private boolean containsNetworkOfLength(Coordinate c,int max_depth){
-        return containsNetworkOfLengthHelper(c,new SList(), getType(c),NULLDIRECTION,max_depth);
-    }
-
-    private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
-        /*
-        first of all, if the coord were checking is already in the network, there is no
-        legal network that will result from having this node again, so return false
-        right off the bat.
-
-        if the coordinate is in a the starting row and 
-
-        if the MIN_DEPTH has been exceeded and the current coordinate is in the home row,
-        then return true
-
-        otherwise, go through all of the coordinates returned by getConnections. call recursively
-        on each one. and return true if at least one of the recursive calls returns true.
-        */
-
-        // System.out.println("\ncontainsNetworkHelper called! The coordinate is: "+coord+" and parsedCoords.length() is: "+parsedCoords.length());
-
-        if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
-            // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-            parsedCoords.back().remove();
-            return false;
-        }
-        if (parsedCoords.length() >= max_depth) {
-            // System.out.println("Case 3 triggered: looks like its a win!\n");
-            return true;
-        }
-
-        Coordinate[] connections = findConnectingChips(coord);
-
-        // System.out.println("Attempting to parse through remaining connections.");
-        for (int i=0; i<connections.length; i++) {
-            // System.out.println("Parsing. DIRECTIONS[i] is: "+DIRECTIONS[i]+" and direction is: "+direction+" and connections[i] is: "+connections[i]);
-            if (DIRECTIONS[i] == direction) { //this should work, maybe. if its the first time and is NULLDIRECTION, it never skips. i think.
-                // System.out.println("Same direction detected! Ignoring.");
-                continue;
-            }
-            if (OPPOSITES[i] == direction) {
-                // System.out.println("Opposite direction detected! Ignoring.");
-                continue;
-            }
-            if (!connections[i].equals(new Coordinate(0,0))) {
-                // System.out.println("Another connection found!");
-                parsedCoords.insertBack(coord);
-                if (containsNetworkHelper(connections[i], parsedCoords, player, DIRECTIONS[i])) {
-                    return true;
-                }
-            }
-        }    
-        return false;
-    }
-
     /**
      * isEmptyBoard() takes no parameters, and verifies that there are no pieces on the board. For internal testing only.
      *
@@ -1456,92 +1401,59 @@ public class Gameboard {
                 -> lower the average distance, lower the probability of being blocked and vice-versa
             4. 
         */
-        // if(table.find(this) == null) {
-        //     double blackSum = 0.0;
-        //     double whiteSum = 0.0;
-        //     Coordinate[] blacks = this.listBlacks();
-        //     Coordinate[] whites = this.listWhites();
-        //     for(int b = 0; b < blacks.length; b++) {
-        //         blackSum += getScore(blacks[b]);
-        //     }
-        //     for(int w = 0; w < whites.length; w++) {
-        //         whiteSum += getScore(whites[w]);
-        //     }
-        //     double blackAverage = blackSum/blacks.length;
-        //     double whiteAverage = whiteSum/whites.length;
+        if(table.find(this) == null) {
+            double blackSum = 0.0;
+            double whiteSum = 0.0;
+            Coordinate[] blacks = this.listBlacks();
+            Coordinate[] whites = this.listWhites();
+            for(int b = 0; b < blacks.length; b++) {
+                blackSum += getScore(blacks[b]);
+            }
+            for(int w = 0; w < whites.length; w++) {
+                whiteSum += getScore(whites[w]);
+            }
+            double blackAverage = blackSum/blacks.length;
+            double whiteAverage = whiteSum/whites.length;
 
-        //     table.insert(this, new Double(blackAverage - whiteAverage));
-        //     return blackAverage - whiteAverage;
-        // } else {
-        //     return ((Double) table.find(this).value()).doubleValue();
-        // }            
-        // return (Math.random() * 2.0) - 1.0;
-        int white_score = 0;
-        int black_score = 0;
-        Coordinate[] whites = listWhites();
-        Coordinate[] blacks = listBlacks();
-        for(int i = 0; i < whites.length; i++){
-            if(containsNetworkOfLength(whites[i],5)){
-                System.out.println("White Board with 5 connected chips");
-                System.out.println(this);
-                white_score += 25;
-                continue;
-            }
-
-            if(containsNetworkOfLength(whites[i],4)){
-                System.out.println("White Board with 4 connected chips");
-                System.out.println(this);
-                white_score += 20;
-                continue;
-            }
-            if(containsNetworkOfLength(whites[i],3)){
-                System.out.println("White Board with 3 connected chips");
-                System.out.println(this);
-                white_score += 15;
-                continue;
-            }
+            table.insert(this, new Double(blackAverage - whiteAverage));
+            return blackAverage - whiteAverage;
+        } else {
+            return ((Double) table.find(this).value()).doubleValue();
         }
-        for(int i = 0; i < blacks.length; i++){
-            if(containsNetworkOfLength(blacks[i],5)){
-                System.out.println("Black Board with 5 connected chips");
-                System.out.println(this);
-                black_score += 25;
-                continue;
-            }
-
-            if(containsNetworkOfLength(blacks[i],4)){
-                System.out.println("Black Board with 4 connected chips");
-                System.out.println(this);
-                black_score += 20;
-                continue;
-            }
-            if(containsNetworkOfLength(blacks[i],3)){
-                System.out.println("Black Board with 3 connected chips");
-                System.out.println(this);
-                black_score += 15;
-                continue;
-            }
-        }
-        return (double)black_score - white_score;
-
+        //return (Math.random() * 2.0) - 1.0;
     }
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
 
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 37cba1d42b4cbdac937cb7ed8735991c237cb214
     public int hashCode() {
     // Replace the following line with your solution.
         int hash = 0;
         int multiple = 1;
+<<<<<<< HEAD
+        for(int j = 0; j < DIMENSION; j++){
+            for(int i = 0; i < DIMENSION; i++){
+                hash += this.board[i][j]*multiple;
+                multiple = multiple*3; //I am hoping I don't over run the int limit 
+=======
         for(int j = 0; j < this.width; j++){
             for(int i = 0; i < this.height; i++){
                 hash += this.board[i][j] * multiple;
                 multiple = multiple * 3; 
+>>>>>>> 37cba1d42b4cbdac937cb7ed8735991c237cb214
             }
         }
         return hash;
     }
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> 37cba1d42b4cbdac937cb7ed8735991c237cb214
     /**
      * toString() returns a String representation of the board.
      */
