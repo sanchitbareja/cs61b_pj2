@@ -84,7 +84,6 @@ public class SList extends List {
     }
     size++;
   }
-
   /**
    *  front() returns the node at the front of this SList.  If the SList is
    *  empty, return an "invalid" node--a node with the property that any

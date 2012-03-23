@@ -171,7 +171,7 @@ public class MachinePlayer extends Player {
 
     SList moves = this.board.listMoves(side);
     SListNode node = (SListNode)moves.front();
-    // System.out.println(moves);
+    //System.out.println(moves);
     try {
       while (node.isValidNode()) {
         Move currMove = (Move)node.item();

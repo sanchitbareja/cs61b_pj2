@@ -1129,7 +1129,11 @@ public class Gameboard {
                 for (int i = 0; i < this.height; i++) {
                     for (int j = 0; j < this.width; j++) {
                         if (isValidMove(new Move(i, j), player)) {
-                            validMoves.insertBack(new Move(i,j));
+                            if(Math.random() >= 0.5){
+                                validMoves.insertFront(new Move(i,j));
+                            } else {
+                                validMoves.insertBack(new Move(i,j));
+                            }
                         }
                     }
                 }
@@ -1143,7 +1147,11 @@ public class Gameboard {
                             //System.out.println("Outside If!!");
                             if (isValidMove(new Move(i, j, piece[k].x, piece[k].y), player)) {
                                 //System.out.println("GOING IN!!");
-                                validMoves.insertBack(new Move(i, j, piece[k].x, piece[k].y));
+                                if(Math.random() >= 0.5){
+                                    validMoves.insertFront(new Move(i,j,piece[k].x, piece[k].y));
+                                } else {
+                                    validMoves.insertBack(new Move(i,j,piece[k].x, piece[k].y));
+                                }
                             }
                         }
                     }
@@ -1154,7 +1162,11 @@ public class Gameboard {
                 for (int j = 0; j < this.height; j++) {
                     for (int i = 0; i < this.width; i++) {
                         if (isValidMove(new Move(i, j), player)) {
-                            validMoves.insertBack(new Move(i,j));
+                            if(Math.random() >= 0.5){
+                                validMoves.insertFront(new Move(i,j));
+                            } else {
+                                validMoves.insertBack(new Move(i,j));
+                            }
                         }
                     }
                 }
@@ -1168,7 +1180,11 @@ public class Gameboard {
                             //System.out.println("Outside If!!");
                             if (isValidMove(new Move(i, j, piece[k].x, piece[k].y), player)) {
                                 //System.out.println("GOING IN!!");
-                                validMoves.insertBack(new Move(i, j, piece[k].x, piece[k].y));
+                                if(Math.random() >= 0.5){
+                                    validMoves.insertFront(new Move(i,j,piece[k].x, piece[k].y));
+                                } else {
+                                    validMoves.insertBack(new Move(i,j,piece[k].x, piece[k].y));
+                                }
                             }
                         }
                     }
@@ -1721,7 +1737,7 @@ public class Gameboard {
     /*=============================== END OF YUXIN ZHU STUFF ===============================*/
 
 
-    public int scoreBlocks(Coordinate[] list, int bonus) {
+    public int scoreBlocks(Coordinate[] list) {
         Coordinate[][] friends = new Coordinate[list.length][9];
         for(int i = 0; i < list.length; i++) {
             friends[i] = spyMakeHGrid(list[i]);
@@ -1731,7 +1747,7 @@ public class Gameboard {
             for(int k = 0; k < 4; k++) {
                 if(getType(friends[i][k]) == opponentPiece(list[i])) {
                     if(getType(friends[i][k]) == getType(friends[i][8-k])) {
-                        score+=bonus; 
+                        score+=50; 
                     }
                 } 
             }
@@ -1769,7 +1785,7 @@ public class Gameboard {
         return false;
     }
 
-    private int awardForMaximizingConnections(Coordinate[] list,Coordinate[][] friends){
+    private int awardForMaximisingConnections(Coordinate[] list,Coordinate[][] friends){
         // award for maximising connections      
         int sumOfConnections = 0;      
         for(int j = 0; j < list.length; j++) { 
@@ -1801,24 +1817,24 @@ public class Gameboard {
 
         //punish if too there is nothing in one of the homerows
         if(!(homeRow1 == 0 && homeRow2 == 0) || !((homeRow1 != 0 && homeRow2 == 0) || (homeRow2 != 0 && homeRow1 == 0))) {
-            sumOfConnections+=20;
+            sumOfConnections+=5;
         }
 
         //award if ratio of piece in the home rows is larger than .5
         if(homeRow1 > homeRow2) {
             if(((double) homeRow2)/(homeRow1) > .5) {
-                sumOfConnections+=20;
+                sumOfConnections+=10;
             }
-            if(homeRow1 <= 2 && homeRow2 <= 2) {
-                sumOfConnections+=20;
+            if(homeRow1 <= 2) {
+                sumOfConnections+=10;
             } 
         }
         if(homeRow1 < homeRow2) {
             if(((double) homeRow1)/(homeRow2) > .5) {
-                sumOfConnections+=20;
+                sumOfConnections+=10;
             }
-            if(homeRow1 <= 2 && homeRow2 <= 2) {
-                sumOfConnections+=20;
+            if(homeRow2 <= 2) {
+                sumOfConnections+=10;
             } 
         }
         return sumOfConnections;
@@ -1841,7 +1857,7 @@ public class Gameboard {
         for(int i = 0; i < list.length; i++) {
             int numNeighbors = countNeighbors(list[i], getType(list[i]));
             if(numNeighbors == 0) {
-                sumOfConnections+=10;
+                sumOfConnections+=5;
             }
         }
         return sumOfConnections;
@@ -1893,7 +1909,7 @@ public class Gameboard {
         /* end of initialization */
 
         /* Add up scores from different strategies */
-        sumOfConnections += awardForMaximizingConnections(list,friends);
+        sumOfConnections += awardForMaximisingConnections(list,friends);
         sumOfConnections += awardHomeRow(list);
         sumOfConnections += awardInCorner(list);
         sumOfConnections += awardPiecesNotNeighbors(list);
@@ -1915,7 +1931,7 @@ public class Gameboard {
         /* end of initialization */
 
         /* Add up scores from different strategies */
-        sumOfConnections += awardForMaximizingConnections(list,friends);
+        sumOfConnections += awardForMaximisingConnections(list,friends);
         sumOfConnections += awardHomeRow(list);
         sumOfConnections += awardInCorner(list);
         sumOfConnections += awardPiecesNotNeighbors(list);
@@ -1967,13 +1983,10 @@ public class Gameboard {
         int black_score = 0;
         Coordinate[] whites = listWhites();
         Coordinate[] blacks = listBlacks();
-        int networkB = 0;
-        int networkW = 0; 
         for(int i = 0; i < whites.length; i++){
             if(containsNetworkOfLength(whites[i],5)){
                 //System.out.println("White Board with 5 connected chips");
                 //System.out.println(this);
-                //networkW+=20;
                 white_score += 20;
                 //continue;
             }
@@ -1981,30 +1994,25 @@ public class Gameboard {
             if(containsNetworkOfLength(whites[i],4)){
                 //System.out.println("White Board with 4 connected chips");
                 //System.out.println(this);
-                //networkW+=20;
                 white_score += 10;
                 //continue;
             }
             if(containsNetworkOfLength(whites[i],3)){
                 //System.out.println("White Board with 3 connected chips");
                 //System.out.println(this);
-                //networkW+=20;
                 white_score += 5;
                 //continue;
             }
         }
         for(int i = 0; i < blacks.length; i++){
             if(containsNetworkOfLength(blacks[i],5)){
-                //networkB+=20;
                 black_score += 20;
             }
 
             if(containsNetworkOfLength(blacks[i],4)){
-                //networkB+=20;
                 black_score += 10;
             }
             if(containsNetworkOfLength(blacks[i],3)){
-                //networkB+=20;
                 black_score += 5;
             }
         }
@@ -2012,8 +2020,8 @@ public class Gameboard {
         white_score += scoreConnectionsWhites(whites);
         black_score += scoreConnectionsBlacks(blacks);
 
-        white_score += scoreBlocks(whites, 50);
-        black_score += scoreBlocks(blacks, 50);
+        white_score += scoreBlocks(whites);
+        black_score += scoreBlocks(blacks);
 
         try {
             if(containsNetwork(WHITE)){
