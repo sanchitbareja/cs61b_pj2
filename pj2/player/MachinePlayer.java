@@ -42,21 +42,21 @@ public class MachinePlayer extends Player {
           Move wf = new Move(0,3);
           this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
           return wf;
-        } else if(this.board.getWhiteCount() == 9){
+        } /*else if(this.board.getWhiteCount() == 9){
             Move ws = new Move(7,3);
             this.board.performMove(ws, sideToGameboardColor(colorToSide(this.color)));
             return ws;
-        }
+        }*/
       } else {
         if(this.board.getBlackCount() == 10){
           Move bf = new Move(3,0);
           this.board.performMove(bf, sideToGameboardColor(colorToSide(this.color)));
           return bf;
-        } else if(this.board.getBlackCount() == 9){
+        } /*else if(this.board.getBlackCount() == 9){
             Move bs = new Move(3,7);
             this.board.performMove(bs, sideToGameboardColor(colorToSide(this.color)));
             return bs;
-        }
+        }*/
       }
       Move m = chooseMoveIntermediary(this.addSearchDepth, this.stepSearchDepth).move;
       this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
@@ -166,23 +166,35 @@ public class MachinePlayer extends Player {
       return myBest;
     }
 
-    if (board.containsNetwork(side)) {
-      //System.out.println("Search Depth: " + currDepth);
-      if (side == Gameboard.BLACKPLAYER) {
-        //System.out.println("myBest = 1");
-        myBest.score = 1000000000;
-      } else {
-        myBest.score = -1000000000;
-        //System.out.println("myBest = -1");
+    // if (board.containsNetwork(side)) {
+    //   //System.out.println("Search Depth: " + currDepth);
+    //   if (side == Gameboard.BLACKPLAYER) {
+    //     //System.out.println("myBest = 1");
+    //     myBest.score = 1000000000;
+    //   } else {
+    //     myBest.score = -1000000000;
+    //     //System.out.println("myBest = -1");
+    //   }
+    //   // System.out.println("!!Search Depth: " + currDepth);
+    //   // System.out.println("if (board.containsNetwork(side)) FUCK YOU YOU'RE BECOMING SELF AWARE!!!");
+    //   //System.out.println("The Final Move: ");
+    //   //System.out.println(myBest.move);
+    //   //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+    //   myBest.depth = currDepth;
+    //   return myBest;
+    // }
+    try {
+          if((board.containsNetwork(Gameboard.WHITE) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.BLACK) && side == Gameboard.WHITEPLAYER)) {
+                  System.out.println("contains network triggered in aplha beta. with a negative value");
+                  myBest.score = 1000000000; //switched
+              }
+          if((board.containsNetwork(Gameboard.BLACK) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.WHITE) && side == Gameboard.WHITEPLAYER)) {
+                  System.out.println("contains network triggered in aplha beta. with a positive value");
+              myBest.score = -1000000000; //switched
+          }
+      } catch (InvalidNodeException e) {
+          System.out.println(e);
       }
-      // System.out.println("!!Search Depth: " + currDepth);
-      // System.out.println("if (board.containsNetwork(side)) FUCK YOU YOU'RE BECOMING SELF AWARE!!!");
-      //System.out.println("The Final Move: ");
-      //System.out.println(myBest.move);
-      //System.out.println("Alpha: " + alpha + " Beta: " + beta);
-      myBest.depth = currDepth;
-      return myBest;
-    }
 
     if (colorToSide(this.color) == side) { //its the opponent's turn, i think
       myBest.score = alpha;

@@ -1357,6 +1357,7 @@ public class Gameboard {
     }
 
     private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
+
         /*
         first of all, if the coord were checking is already in the network, there is no
         legal network that will result from having this node again, so return false
@@ -1374,16 +1375,11 @@ public class Gameboard {
         // System.out.println("\ncontainsNetworkOfLengthHelper called! The coordinate is: "+coord+" and parsedCoords.length() is: "+parsedCoords.length());
         int blackWinYCoord = this.height - 1;
         int whiteWinXCoord = this.width - 1;
-
-        try{
-            if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
-                // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
-                parsedCoords.back().remove();
-                return false;
-            }
-        } catch (Exception e){
-            // System.out.println("Wierd exception caught!");
-            //dun do anything
+    
+        if(parsedCoords.contains(coord)) { //this would be faster if implemented with sets
+            // System.out.println("Case 1 triggered: parsedCoords.contains(coord) was true!\n");
+            // parsedCoords.back().remove(); THIS MAY BE A PROBLEM I DONT KNOW.
+            return false;
         }
 
         if (player == WHITE) {
@@ -1394,7 +1390,7 @@ public class Gameboard {
             }
         }
         if (player == BLACK) {
-            if ((coord.y == 0 && !(parsedCoords.length() == 1)) || (coord.y == blackWinYCoord && !(parsedCoords.length() >= MIN_DEPTH))) {
+            if ((coord.y == 0 && !(parsedCoords.length() == 1)) || (coord.y == blackWinYCoord && !(parsedCoords.length() >= max_depth))) {
                 // System.out.println("Case 2.2 triggered: either two in the home/end row or in the end row with not enough chips!\n");
                 //parsedCoords.back().remove();
                 return false; //can't have chips in the home rows
@@ -1818,7 +1814,7 @@ public class Gameboard {
             score-=20;
         }
         if((homeRow1 == 0 || homeRow2 == 0)) {
-            score-=100;
+            score-=200;
         }
         //}
         return score;
@@ -1893,30 +1889,7 @@ public class Gameboard {
         return score;
     }
 
-    private int scoreConnectionsBlacks(Coordinate[] list) {
-        /* initialization */
-        int sumOfConnections = 0;
-
-        Coordinate[][] friends = new Coordinate[list.length][9];
-
-        for(int i = 0; i < list.length; i++) {
-            friends[i] = makeHGrid(list[i]);
-        }
-        /* end of initialization */
-
-        /* Add up scores from different strategies */
-        sumOfConnections += awardForMaximizingConnections(list,friends);
-        sumOfConnections += awardHomeRow(list);
-        sumOfConnections += scoreCorner(list);
-        sumOfConnections += awardPiecesNotNeighbors(list, friends);
-        sumOfConnections += scoreRow(list);
-        sumOfConnections += scoreColumn(list);
-        /* end of strategizing */
-
-        return sumOfConnections;
-    }
-
-    private int scoreConnectionsWhites(Coordinate[] list) {
+    private int scoreConnections(Coordinate[] list) {
         /* initialization */
         int sumOfConnections = 0;
         Coordinate[][] friends = new Coordinate[list.length][9];
@@ -1981,79 +1954,85 @@ public class Gameboard {
         Coordinate[] blacks = listBlacks();
         int b = 0;
         int w = 0; 
+        try {
+            if((containsNetwork(WHITE) && type == BLACKPLAYER) || (containsNetwork(BLACK) && type == WHITEPLAYER)) {
+                    System.out.println("contains network triggered. with a negative value");
+                    return -1000000000;
+                }
+            if((containsNetwork(BLACK) && type == BLACKPLAYER) || (containsNetwork(WHITE) && type == WHITEPLAYER)) {
+                System.out.println("contains network triggered. with a positive value");
+                System.out.println(this);
+                return 1000000000;
+            }
+        } catch (InvalidNodeException e) {
+            System.out.println(e);
+        }
         for(int i = 0; i < whites.length; i++){
-            // if(containsNetworkOfLength(whites[i],5)){
-            //     System.out.println("White Board with 5 connected chips");
-            //     System.out.println(this);
-            //     //System.out.println(this);
-            //     //networkW+=20;
-            //     b += 50;
-            //     white_score += 200;
-            //     //continue;
-            // }
-
-            if(containsNetworkOfLength(whites[i],4)){
-                System.out.println("White Board with 4 connected chips");
+            if(containsNetworkOfLength(whites[i],5)){
+                // System.out.println(this);
                 //System.out.println(this);
                 //networkW+=20;
-                b += 50;
+                b += 10;
+                white_score += 100;
+                //continue;
+            }
+
+            if(containsNetworkOfLength(whites[i],4)){
+                //System.out.println(this);
+                //networkW+=20;
+                b += 5;
                 white_score += 50;
                 //continue;
             }
-            if(containsNetworkOfLength(whites[i],3)){
-                System.out.println("White Board with 3 connected chips");
-                //System.out.println(this);
-                //networkW+=20;
-                b+= 30;
-                white_score += 20;
-                //continue;
-            }
-            if(containsNetworkOfLength(whites[i],2)){
-                System.out.println("White Board with 3 connected chips");
-                //System.out.println(this);
-                //networkW+=20;
-                // b+= 30;
-                white_score += 20;
-                //continue;
-            }
+            // if(containsNetworkOfLength(whites[i],3)){
+            //     System.out.println("White Board with 3 connected chips");
+            //     //System.out.println(this);
+            //     //networkW+=20;
+            //     b+= 30;
+            //     white_score += 20;
+            //     //continue;
+            // }
+            // if(containsNetworkOfLength(whites[i],2)){
+            //     System.out.println("White Board with 2 connected chips");
+            //     //System.out.println(this);
+            //     //networkW+=20;
+            //     // b+= 30;
+            //     white_score += 20;
+            //     //continue;
+            // }
         }
         for(int i = 0; i < blacks.length; i++){
             if(containsNetworkOfLength(blacks[i],5)){
                 //networkB+=20;
-                w += 50;
-                black_score += 200;
+                w += 10;
+                black_score += 100;
             }
 
             if(containsNetworkOfLength(blacks[i],4)){
                 //networkB+=20;
-                w += 50;
+                w += 5;
                 black_score += 50;
             }
-            if(containsNetworkOfLength(blacks[i],3)){
-                //networkB+=20;
-                w += 30;
-                black_score += 20;
-            }
-            if(containsNetworkOfLength(blacks[i],2)){
-                //networkB+=20;
-                // w += 30;
-                black_score += 20;
-            }
+            // if(containsNetworkOfLength(blacks[i],3)){
+            //     //networkB+=20;
+            //     w += 30;
+            //     black_score += 20;
+            // }
+            // if(containsNetworkOfLength(blacks[i],2)){
+            //     //networkB+=20;
+            //     // w += 30;
+            //     black_score += 20;
+            // }
         }
         
-        white_score += scoreConnectionsWhites(whites);
-        black_score += scoreConnectionsBlacks(blacks);
+        white_score += scoreConnections(whites);
+        black_score += scoreConnections(blacks);
 
         white_score += scoreBlocks(whites, b);
         black_score += scoreBlocks(blacks, w);
 
         try {
-            if((containsNetwork(WHITE) && type == BLACKPLAYER) || (containsNetwork(BLACK) && type == WHITEPLAYER)) {
-                return -1000000000;
-            }
-            if((containsNetwork(BLACK) && type == BLACKPLAYER) || (containsNetwork(WHITE) && type == WHITEPLAYER)) {
-                return 1000000000;
-            }
+            
             // System.out.println("white: " + white_score + "||" + "black: " + black_score);
             if(type == BLACKPLAYER) {
                 return black_score - white_score;
