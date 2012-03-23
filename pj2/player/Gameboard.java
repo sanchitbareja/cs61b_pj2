@@ -1811,7 +1811,7 @@ public class Gameboard {
             //     score+=30;
             // }
         if((homeRow1 > 2 || homeRow2 > 2)) {
-            score-=20;
+            score-=200;
         }
         if((homeRow1 == 0 || homeRow2 == 0)) {
             score-=200;
@@ -1956,12 +1956,12 @@ public class Gameboard {
         int w = 0; 
         try {
             if((containsNetwork(WHITE) && type == BLACKPLAYER) || (containsNetwork(BLACK) && type == WHITEPLAYER)) {
-                    System.out.println("contains network triggered. with a negative value");
+                    // System.out.println("contains network triggered. with a negative value");
                     return -1000000000;
                 }
             if((containsNetwork(BLACK) && type == BLACKPLAYER) || (containsNetwork(WHITE) && type == WHITEPLAYER)) {
-                System.out.println("contains network triggered. with a positive value");
-                System.out.println(this);
+                // System.out.println("contains network triggered. with a positive value");
+                // System.out.println(this);
                 return 1000000000;
             }
         } catch (InvalidNodeException e) {

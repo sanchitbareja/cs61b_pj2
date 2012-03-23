@@ -74,39 +74,39 @@ public class MachinePlayer extends Player {
       Best best1 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 0, 0);
 
       if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best1.score == 1000000000) {
-        System.out.println("Depth searched to: "+0);
+        // System.out.println("Depth searched to: "+0);
         return best1;
       } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best1.score == -1000000000) {
-        System.out.println("Depth searched to: "+0);
+        // System.out.println("Depth searched to: "+0);
         return best1;
       }
 
       Best best2 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 1, 1);
       if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best2.score == 1000000000) {
-        System.out.println("Depth searched to: 1,1");
+        // System.out.println("Depth searched to: 1,1");
         return best2;
       } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best2.score == -1000000000) {
-        System.out.println("Depth searched to: 1,1");
+        // System.out.println("Depth searched to: 1,1");
         return best2;
       }
       Best best3 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 2, 2);
       if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best3.score == 1000000000) {
-        System.out.println("Depth searched to: 2,2");
+        // System.out.println("Depth searched to: 2,2");
         return best3;
       } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best3.score == -1000000000) {
-        System.out.println("Depth searched to: 2,2");
+        // System.out.println("Depth searched to: 2,2");
         return best3;
       }
       Best best4 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 3, 2);
       if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best4.score == 1000000000) {
-        System.out.println("Depth searched to: 3,2");
+        // System.out.println("Depth searched to: 3,2");
         return best4;
       } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best4.score == -1000000000) {
-        System.out.println("Depth searched to: 3,2");
+        // System.out.println("Depth searched to: 3,2");
         return best4;
       }
       Best best5 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 4, 2);
-      System.out.println("Depth searched to: 4,2");
+      // System.out.println("Depth searched to: 4,2");
       return best5;
     
   }
@@ -185,11 +185,11 @@ public class MachinePlayer extends Player {
     // }
     try {
           if((board.containsNetwork(Gameboard.WHITE) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.BLACK) && side == Gameboard.WHITEPLAYER)) {
-                  System.out.println("contains network triggered in aplha beta. with a negative value");
+                  // System.out.println("contains network triggered in aplha beta. with a negative value");
                   myBest.score = 1000000000; //switched
               }
           if((board.containsNetwork(Gameboard.BLACK) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.WHITE) && side == Gameboard.WHITEPLAYER)) {
-                  System.out.println("contains network triggered in aplha beta. with a positive value");
+                  // System.out.println("contains network triggered in aplha beta. with a positive value");
               myBest.score = -1000000000; //switched
           }
       } catch (InvalidNodeException e) {
