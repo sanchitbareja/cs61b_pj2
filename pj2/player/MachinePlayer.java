@@ -11,14 +11,16 @@ import list.*;
 public class MachinePlayer extends Player {
 
   private int color;
-  private int searchDepth;
+  private int addSearchDepth;
+  private int stepSearchDepth;
   private Gameboard board;
 
   // Creates a machine player with the given color.  Color is either 0 (black)
   // or 1 (white).  (White has the first move.)
   public MachinePlayer(int color) {
     this.color = color;
-    this.searchDepth = 3;
+    this.stepSearchDepth = 2;
+    this.addSearchDepth = 4;
     this.board = new Gameboard();
   }
 
@@ -26,7 +28,8 @@ public class MachinePlayer extends Player {
   // either 0 (black) or 1 (white).  (White has the first move.)
   public MachinePlayer(int color, int searchDepth) {
     this.color = color;
-    this.searchDepth = searchDepth;
+    this.stepSearchDepth = searchDepth;
+    this.addSearchDepth = searchDepth;
     this.board = new Gameboard();
   }
 
@@ -89,9 +92,14 @@ public class MachinePlayer extends Player {
     Best myBest = new Best();
     Best reply;
 
+    int pieceCount;
+    if (sideToGameboardColor(side) == Gameboard.BLACK) {
+      pieceCount = board.getBlackCount();
+    } else {
+      pieceCount = board.getWhiteCount();
+    }
 
-
-    if (currDepth >= this.searchDepth) {
+    if ((pieceCount > 0 && currDepth >= this.addSearchDepth) || (pieceCount == 0 && currDepth >= this.stepSearchDepth)) {
       myBest.score = board.evaluator(currDepth);
       // System.out.println("if (currDepth >= this.searchDepth)");
       //System.out.println("Alpha: " + alpha + " Beta: " + beta);
