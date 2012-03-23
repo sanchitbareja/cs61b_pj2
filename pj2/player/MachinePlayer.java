@@ -37,6 +37,27 @@ public class MachinePlayer extends Player {
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
     try {
+      if(colorToSide(this.color) == Gameboard.WHITEPLAYER){
+        if(this.board.getWhiteCount() == 10){
+          Move wf = new Move(0,3);
+          this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+          return wf;
+        } else if(this.board.getWhiteCount() == 9){
+            Move ws = new Move(7,3);
+            this.board.performMove(ws, sideToGameboardColor(colorToSide(this.color)));
+            return ws;
+        }
+      } else {
+        if(this.board.getBlackCount() == 10){
+          Move bf = new Move(3,0);
+          this.board.performMove(bf, sideToGameboardColor(colorToSide(this.color)));
+          return bf;
+        } else if(this.board.getBlackCount() == 9){
+            Move bs = new Move(3,7);
+            this.board.performMove(bs, sideToGameboardColor(colorToSide(this.color)));
+            return bs;
+        }
+      }
       Move m = chooseMoveIntermediary(this.addSearchDepth, this.stepSearchDepth).move;
       this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
       return m;
@@ -138,7 +159,7 @@ public class MachinePlayer extends Player {
     }
 
     if ((pieceCount > 0 && currDepth >= maxAddDepth) || (pieceCount == 0 && currDepth >= maxStepDepth)) {
-      myBest.score = board.evaluator(currDepth);
+      myBest.score = board.evaluator(side);
       myBest.depth = currDepth;
       // System.out.println("if (currDepth >= this.searchDepth)");
       //System.out.println("Alpha: " + alpha + " Beta: " + beta);
