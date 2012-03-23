@@ -1649,44 +1649,56 @@ public class Gameboard {
         Coordinate[] blacks = listBlacks();
         for(int i = 0; i < whites.length; i++){
             if(containsNetworkOfLength(whites[i],5)){
-                System.out.println("White Board with 5 connected chips");
-                System.out.println(this);
-                white_score += 50;
-                continue;
+                //System.out.println("White Board with 5 connected chips");
+                //System.out.println(this);
+                white_score += 100;
+                //continue;
             }
 
             if(containsNetworkOfLength(whites[i],4)){
-                System.out.println("White Board with 4 connected chips");
-                System.out.println(this);
-                white_score += 40;
-                continue;
+                //System.out.println("White Board with 4 connected chips");
+                //System.out.println(this);
+                white_score += 10;
+                //continue;
             }
             if(containsNetworkOfLength(whites[i],3)){
-                System.out.println("White Board with 3 connected chips");
-                System.out.println(this);
-                white_score += 30;
-                continue;
+                //System.out.println("White Board with 3 connected chips");
+                //System.out.println(this);
+                white_score += 2;
+                //continue;
+            }
+            if(containsNetworkOfLength(whites[i],2)){
+                //System.out.println("White Board with 2 connected chips");
+                //System.out.println(this);
+                white_score += 1;
+                //continue;
             }
         }
         for(int i = 0; i < blacks.length; i++){
             if(containsNetworkOfLength(blacks[i],5)){
-                System.out.println("Black Board with 5 connected chips");
-                System.out.println(this);
-                black_score += 50;
-                continue;
+                //System.out.println("Black Board with 5 connected chips");
+                //System.out.println(this);
+                black_score += 100;
+                //continue;
             }
 
             if(containsNetworkOfLength(blacks[i],4)){
-                System.out.println("Black Board with 4 connected chips");
-                System.out.println(this);
-                black_score += 40;
-                continue;
+                //System.out.println("Black Board with 4 connected chips");
+                //System.out.println(this);
+                black_score += 10;
+                //continue;
             }
             if(containsNetworkOfLength(blacks[i],3)){
-                System.out.println("Black Board with 3 connected chips");
-                System.out.println(this);
-                black_score += 30;
-                continue;
+                //System.out.println("Black Board with 3 connected chips");
+                //System.out.println(this);
+                black_score += 2;
+                //continue;
+            }
+            if(containsNetworkOfLength(blacks[i],2)){
+                //System.out.println("Black Board with 2 connected chips");
+                //System.out.println(this);
+                black_score += 1;
+                //continue;
             }
         }
 
