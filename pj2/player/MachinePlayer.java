@@ -38,11 +38,42 @@ public class MachinePlayer extends Player {
   public Move chooseMove() {
     try {
       if(colorToSide(this.color) == Gameboard.WHITEPLAYER){
+        // if(this.board.getWhiteCount() == 4){
+        //   Move wf = new Move(6,5);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
+        // if(this.board.getWhiteCount() == 5){
+        //   Move wf = new Move(0,2);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
+        // if(this.board.getWhiteCount() == 6){
+        //   Move wf = new Move(6,1);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
+        // if(this.board.getWhiteCount() == 7){
+        //   Move wf = new Move(3,2);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
+        // if(this.board.getWhiteCount() == 8){
+        //   Move wf = new Move(1,3);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
+        // if(this.board.getWhiteCount() == 9){
+        //   Move wf = new Move(5,3);
+        //   this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
+        //   return wf;
+        // }
         if(this.board.getWhiteCount() == 10){
           Move wf = new Move(0,3);
           this.board.performMove(wf, sideToGameboardColor(colorToSide(this.color)));
           return wf;
-        } /*else if(this.board.getWhiteCount() == 9){
+        }
+        /*else if(this.board.getWhiteCount() == 9){
             Move ws = new Move(7,3);
             this.board.performMove(ws, sideToGameboardColor(colorToSide(this.color)));
             return ws;
@@ -58,9 +89,10 @@ public class MachinePlayer extends Player {
             return bs;
         }*/
       }
-      Move m = chooseMoveIntermediary(this.addSearchDepth, this.stepSearchDepth).move;
-      this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
-      return m;
+      Best m = chooseMoveIntermediary(this.addSearchDepth, this.stepSearchDepth);
+      //System.out.println("Score of move chose: "+m.score);
+      this.board.performMove(m.move, sideToGameboardColor(colorToSide(this.color)));
+      return m.move;
     } catch (Exception e) {
       //System.out.println("catch: chooseMove()");
       System.out.println(e);
@@ -203,32 +235,20 @@ public class MachinePlayer extends Player {
       //System.out.println("Alpha: " + alpha + " Beta: " + beta);
       return myBest;
     }
-
-    // if (board.containsNetwork(side)) {
-    //   //System.out.println("Search Depth: " + currDepth);
-    //   if (side == Gameboard.BLACKPLAYER) {
-    //     //System.out.println("myBest = 1");
-    //     myBest.score = 1000000000;
-    //   } else {
-    //     myBest.score = -1000000000;
-    //     //System.out.println("myBest = -1");
-    //   }
-    //   // System.out.println("!!Search Depth: " + currDepth);
-    //   // System.out.println("if (board.containsNetwork(side)) FUCK YOU YOU'RE BECOMING SELF AWARE!!!");
-    //   //System.out.println("The Final Move: ");
-    //   //System.out.println(myBest.move);
-    //   //System.out.println("Alpha: " + alpha + " Beta: " + beta);
-    //   myBest.depth = currDepth;
-    //   return myBest;
-    // }
     try {
           if((board.containsNetwork(Gameboard.WHITE) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.BLACK) && side == Gameboard.WHITEPLAYER)) {
                   // System.out.println("contains network triggered in aplha beta. with a negative value");
+                  // System.out.println(this.board);
+                  // System.out.println("Alpha: " + alpha + " Beta: " + beta);
+                  alpha = 1000000000;
                   myBest.score = 1000000000; //switched
               }
           if((board.containsNetwork(Gameboard.BLACK) && side == Gameboard.BLACKPLAYER) || (board.containsNetwork(Gameboard.WHITE) && side == Gameboard.WHITEPLAYER)) {
                   // System.out.println("contains network triggered in aplha beta. with a positive value");
-              myBest.score = -1000000000; //switched
+                  // System.out.println(this.board);
+                  // System.out.println("Alpha: " + alpha + " Beta: " + beta);
+                  beta = -1000000000;
+                  myBest.score = -1000000000; //switched
           }
       } catch (InvalidNodeException e) {
           System.out.println(e);
@@ -266,9 +286,9 @@ public class MachinePlayer extends Player {
         }
         if (alpha >= beta) {
           //System.out.println("if (alpha >= beta)");
-          Move m = myBest.move;
+          //Move m = myBest.move;
           //System.out.println("myBest: Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
-          //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+          // System.out.println("Alpha: " + alpha + " Beta: " + beta);
           myBest.depth = currDepth;
           return myBest;
         }
@@ -282,7 +302,7 @@ public class MachinePlayer extends Player {
     }
 
     // System.out.println("return myBest (last)");
-    //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+    // System.out.println("Alpha: " + alpha + " Beta: " + beta);
     myBest.depth = currDepth;
     return myBest;
   }
@@ -326,5 +346,4 @@ public class MachinePlayer extends Player {
       return false;
     }
   }
-
 }

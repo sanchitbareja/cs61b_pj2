@@ -20,24 +20,156 @@ instructor.
 ===============================================================================
 Does your program compile without errors?
 
+** Yes, our program compiles without errors.
 
 Have you tested your program on the machines in the Soda CS 61B lab?
 
+** Yes, we have tested the program on the machines in the Soda CS61B lab. They compile/run without error.
 
 Did you successfully implement game tree search?  Did you successfully
 implement alpha-beta pruning?  Are there any limitations on it?  What is the
 default number of search levels set by the one-parameter MachinePlayer
 constructor?
 
+** 
 
 Describe your board evaluation function in some detail.
 
+** Our evaluation function can be called on a Gameboard, and takes one parameter, a player type, and returns
+a number in the range of -10e9 to 10e9. A score of 10e9 represents that the "type" player has a guaranteed
+win, and we show this by finding a network in its current arrangement of pieces. A score of -10e9 represents
+that the "type" player has a guaranteed loss, and we show this by finding a network in the current arrangement
+of opponent pieces.
+
+Alternatively, if there is no network for either side, we call a set of method which returns a score based
+on the arrangement and interrelation between pieces on the board of "type." We sum these respective pieces
+and return take the difference between the scores of both players, and return an adjusted value based on 
+the "type" A negative score represents a losing board for "type," a positive score represents a winning board for "type." Below are the method documentations for the various sub-methods we used for the evaluation function. For the sake of clarity, helper methods are not presented here.
+
+1) **Finding a Complete, Game Winning Network**
+    /**
+     * containsNetwork() takes one parameter, the type of the current "player", and
+     * returns whether or not a network could be established with the "player"'s
+     * pieces on "this" Gameboard. This is a full network, as opposed to another method which finds only
+     * a partial network. A full network is a game winning set of continuous connections from
+     * one side of the board to another.
+     *
+     * @param player is the type of the player in consideration
+     *
+     * @return true if the current set of pieces contains a Network, false otherwise
+     */
+
+2) **Finding an Advantageous, Incomplete Network (Meta-Network)**
+
+    /**
+     * containsNetworkOfLength() takes two parameters, a coordinate and a length, and
+     * returns whether or not a network of that length could be established with pieces of the same type
+     * on "this" Gameboard. The network does not have to be a full network, it simply has to start
+     * on one side of the board and contain at most a "max_depth"-number of continuous connections, denoted
+     * meta-network as opposed to a full complete, game-winning network. 
+     *
+     * @param c is the starting coordinate
+     * @param max_depth is the length of a network to look for
+     *
+     * @return true if the current set of pieces contains a Network of that length, false otherwise
+     */
+
+3) **Blocking Opponent Pieces**
+
+    /**
+    * scoreBlocks() takes two parameters, list and bonus (see below), and returns a score
+    * based on the value of blocking opponent pieces (ie. a piece between two opponent pieces).
+    *
+    * @param c is the coordinate to use as a base
+    *
+    * @return an array of oppositely colored pieces located around c
+    */
+
+4) **Rewarding for Establishing Home Row Presence**
+
+    /**
+    * scorePiece() takes in one parameter, a Coordinate, and returns a score based on whether the piece
+    * is in the home row of the respective type.
+    *
+    * @param c the Coordinate of a piece
+    *
+    * @return a score judged based on whether the piece's position (namely the home row) is favorable
+    */
+
+5) **Counting the Number of Overall Connections (Generally)**
+
+    /**
+    * awardForMaximizingConnections() takes two parameters, a list and friends (see below), and returns
+    * scores based on the general number of connections each piece has. 
+    *
+    * @param list a Coordinate array containing all the pieces on a given board
+    * @param friends a two dimensional Coordinate containing each piece and (makeHGrid), it's connections
+    *
+    * @return an integer value points based on the general number of connections each piece has
+    */
+
+6) **Checks If There Are Two Many, or Two Few Pieces in the Home Row**
+
+    /**
+    * awardHomeRow() takes one parameter, a list (see below), and returns a score based on judging whether
+    * there are too little or too many pieces in its respective home rows
+    *
+    * @param list a one dimensional Coordinate array containing the pieces on the board
+    *
+    * @return an integer score depending on whether the number of pieces in each home row is favorable or otherwise
+    */
+
+7) **Discourages Putting Pieces in the Corners of Home Rows**
+
+    /**
+    * scoreCorner() takes one parameter, list (see below), and returns a score which reflects pieces which 
+    * are in the corner of the board. 
+    *
+    * @param c the Coordinate of the piece
+    *
+    * @return an integer score based on whether the pieces on the board are in the list. Corner pieces are less favorable, and are reflected in the points.
+    */
+
+8) Makes Sure There Are Not Too Many Pieces in a Row or Column**
+
+    /**
+    * scoreRow() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same row.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given row
+    */
+
+    /**
+    * scoreColumn() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same column.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given column
+    */
+
+9) Rewards Pieces for Not Having Too many Neighbors 
+
+    /**
+    * awardPiecesNotNeighbors, takes two parameters, a list and friends (see below), and returns a score
+    * which reflects the inherently negative value of having too many neighbors.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether the given piece has neighbors orthogonally or diagonally on the board.
+    */
 
 Does your MachinePlayer use any special method of choosing the first few moves?
+
+Yes, the first move is always a deterministic position in the home row, and is done without any calculations
+on the value of the respective position.
 
 
 Is there anything else the graders should know to help them read your project?
 
+No.
 
 
 Describe the classes, modules, and interfaces you designed before and while you
@@ -62,35 +194,41 @@ sure to modify this file to reflect these changes before you submit your
 project.  Your design of classes and interfaces with be worth about 10% of your
 grade.
 
-List of classes:
+List of Classes:
 
 MachinePlayer.java
 Player.java
 Move.java
 
 Gameboard.java
-Square.java
-Evaluator.java
+Best.java
+Coordinate.java
+
+List of Packages: 
+
+/dict (from Homework 6)
+/list (from homework 5)
 
 Modules:
 1. Determine whether a move is valid (Implemented by Yuxin)
 A method in the Gameboard class called isValidMove will take a Move
-object as a parameter and check agaist a variety of things, including
+object, and a type and check agaist a variety of things, including
 whether there is already a piece placed in the intended move position,
 whether the intended coordinate is legal, and whether the player
 making the move is allowed to add more pieces using methods of the
-Square and Gameboard classes. Methods:
-	a. public boolean isValidMove(Move m) //Gameboard class
+Gameboard class.
 
     /**
-     * isValidMove() checks if "move" can be legally made based on the game rules.
+     * isValidMove() takes two parameter, and checks if "move" 
+     * can be legally made based on the game rules.
      * 
      * @param m is the move in question.
+     * @param type is the type of the piece involved in the move
      *
      * @return true if the move can be legally made, false otherwise.
      */
 
-    public boolean isvalidMove(Move m) {
+    public boolean isValidMove(Move m, int type) {
     }
 
 2. Generating a list of all valid moves (Implemented by Noah)
@@ -100,11 +238,10 @@ return a list of Move objects that represent all possible moves for
 the player of that color to make. This includes using the isValidMove
 module to check whether a move is valid while iterating through a list
 of all positions on the board.
-	a. public Move[] listMoves(int player) //Gameboard class
 
     /**
      * listMoves() takes one parameter, the type of the current player, and 
-     * returns an array of all possible moves.
+     * returns an array of all possible valid moves.
      *
      * @param player is the type of the player in consideration
      *
@@ -112,118 +249,467 @@ of all positions on the board.
      * "this" Gameboard.
      */
 
-    public Move[] listMoves(int player) {
+    public SList listMoves(int player) throws AgainstRulesException {
     }
 
 
-3. Finding chips that form connections with a chip
+3. Finding pieces that form connections with a pieces
 (Implemented by Sanchit)
-A function called findConnectedChips in the Square class will use the
-position of the Square (stored internally), find the Square objects
-that represent connections of "this" Square, and return an array of
+A function called findConnectedChips in the Gameboard class will use the
+position of the Coordinate (stored internally), find the Coordinate objects
+that represent connections of "this" Coordinate, and return an array of
 them. This will make use of the getRow, getColumn, getDiagonal, and
-getDiagonalLength methods in Square.
-	a. public Square[] findConnectedChips //Square class
+getDiagonalLength methods.
 
     /**
-     * findConnectingChips() returns a list of square objects 
-     * that "this" Square is "connected" to.
+     * getColumn() takes one parameter, a Coordinate, and returns an array of square ints
+     * in the same row as the coordinate.
      *
-     * @return a Square[] containing chips that "this" Square is connected to
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return an int[] containing squares in the same row as int x.
      */
 
-    public Square[] findConnectingChips() {
+    private int[] getColumn(Coordinate c) {
     }
 
     /**
-     * getRow() takes no parameters, and returns an array of square objects
-     * in the same row as "this" Square.
+     * getRow() takes 1 parameter, a Coordinate, and returns an array of square ints
+     * in the same column as the y.
      *
-     * @return a Square[] containing squares in the same row as "this" Square.
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return an int[] containing squares in the same column as int y.
      */
 
-    public Square[] getRow() {
+    private int[] getRow(Coordinate c) {
     }
 
     /**
-     * getColumn takes no parameters, and returns an array of square objects
-     * in the same column as "this" Square.
+     * getDiagonalLength() takes two parameters, a Coordinate, the direction , and returns
+     * and integer representing the number of squares in the same diagonal
+     * as the square regardless of direction.
      *
-     * @return a Square[] containing squares in the same row as "this" Square.
-     */
-
-    public Square[] getColumn() {
-    }
-
-    /**
-     * getDiagonalLength() takes no parameters, and returns an integer
-     * representing the number of valid square objects in the same diagonal
-     * as "this" regardless of direction.
+     * @param Coordinate c, representing the coordinate of the square
+     * @param direction is an integer representing the direction of the diagonal to
+     * return. More specifically, a -1 represents a northwest-southeast diagonal, 
+     * and a 1 represents a northeast-southwest diagonal
      *
      * @return an integer representing the length of the diagonal
      */
 
-    public getDiagonalLength() {
+    private int getDiagonalLength(Coordinate c, int direction) {
     }
 
     /**
-     * getDiagonal() takes one parameter, a direction, and returns
-     * an array of square objects in the same diagonal as "this"
-     * Square.
+     * getDiagonal() takes two parameters, the Coordinate object, a direction, and returns
+     * an array of square objects in the same diagonal as the square
      *
+     * @param Coordinate c, representing the coordinate of the square
      * @param direction is an integer representing the direction of the diagonal to
      * return. More specifically, a -1 represents a northwest-southeast diagonal, 
      * and a 1 represents a northeast-southwest diagonal.
      *
-     * @return a Square[] containing squares in the same diagonal as "this" Square.
+     * @return an int[] containing squares in the same diagonal as the square.
      */
 
-    public Square[] getDiagonal(int direction) {
+    private int[] getDiagonal(Coordinate c, int direction) {
+    }
+
+    /**
+     * findConnectedLDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the left diagonal.
+     *
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return a Coordinate[] containing "connected" squares of the same type in the left diagonal
+     */
+
+    private Coordinate[] findConnectedLDiagonal(Coordinate c) {
+    }
+
+    /**
+     * findConnectedRDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the right diagonal.
+     *
+     * @param Coordinate c representing the coordinate of the square
+     *
+     * @return a Coordinate[] containing "connected" squares of the same type in the right diagonal
+     */
+
+    private Coordinate[] findConnectedRDiagonal(Coordinate c) {
+    }
+
+    /**
+     * findConnectedRow() takes one parameter, the Coordinate, and returns a list of connected squares of the same type in the same row.
+     *
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return a Coordinate[] containing "connected" squares of the same type in the same row
+     */
+
+    private Coordinate[] findConnectedRow(Coordinate c) {
+    }
+
+    /**
+     * findConnectedColumn(new Coordinate() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the same column.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the same column.
+     */
+
+    private Coordinate[] findConnectedColumn(Coordinate c) {
+    }
+
+
+    /**
+     * findConnectingChips() takes 1 parameter, the coordinate, and returns a list of Coordinates
+     * that the square is "connected" to.
+     *
+     * @param Coordinate coord takes in the coordinates of the square
+     *
+     * @return a Coordinate containing chips that is connected to given square
+     */
+
+    private Coordinate[] findConnectingChips(Coordinate coord) {
     }
 
 
 4. Determining whether a player has a network in the gameboard
-(Implemented by Sanchit)
-A fuction in the gameboard class called containsNetwork will iterate
+(Implemented by Noah)
+A fuction in the Gameboard class called containsNetwork will iterate
 through the connections of the chips of a certain player in "this"
-gameboard and decide if the player has a complete network. Multiple
-helper functions will probably need to be added to this module.
-	a. public boolean containsNetwork(int player) //Gameboard class
+gameboard and decide if the player has a complete network. This module depends on
+multiple helper functions to work.
 
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
      * returns whether or not a network could be established with the "player"'s
-     * pieces on "this" Gameboard
+     * pieces on "this" Gameboard. This is a full network, as opposed to another method which finds only
+     * a partial network. A full network is a game winning set of continuous connections from
+     * one side of the board to another.
      *
      * @param player is the type of the player in consideration
      *
      * @return true if the current set of pieces contains a Network, false otherwise
      */
 
-    public boolean containsNetwork(int player) {
+    public boolean containsNetwork(int player) throws InvalidNodeException{
+    }
+
+     /**
+     * containsNetworkHelper() takes four parameters, the current coordinate in the
+     * line of connected chips, the list of coordinates that have been parsed through already,
+     * the player that will win if there is a network, the direction that the last connection made was in, and
+     * returns a recursive call that iterates through every combination of connected chips
+     * and checks to see if there is a network.
+     *
+     * @param coord is the current coordinate being parsed
+     * @param parsedCoords is the list of Coordinate objects that have already been parsed
+     * @param player is the player that will win if a network is found
+     * @param direction is the direction that the last parsed connection was made in
+     *
+     * @return true if a network has been found, false otherwise.
+     */
+    private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player, int direction) throws InvalidNodeException{
+    }
+
+    /**
+     * containsNetworkOfLength() takes two parameters, a coordinate and a length, and
+     * returns whether or not a network of that length could be established with pieces of the same type
+     * on "this" Gameboard. The network does not have to be a full network, it simply has to start
+     * on one side of the board and contain at most a "max_depth"-number of continuous connections, denoted
+     * meta-network as opposed to a full complete, game-winning network. 
+     *
+     * @param c is the starting coordinate
+     * @param max_depth is the length of a network to look for
+     *
+     * @return true if the current set of pieces contains a Network of that length, false otherwise
+     */
+    private boolean containsNetworkOfLength(Coordinate c, int max_depth){
+    }
+
+    /**
+    * containsNetworkOfLengthHelper is a helper function for containsNetworkOfLength that takes
+    * a coordinate, that is currently being parsed, an SList of coordinates that have been parsed
+    * already, a player that the network belongs to, a direction that is the opposite of that towards
+    * the most recently parsed coordinate, and the maximum depth to parse coordinates to, and returns
+    * whether or not there is a network of length max_depth for the player in "this" gameboard.
+    *
+    * @param coord is the current coordinate
+    * @param parsedCoords is the list of coordinates that havfe been parsed
+    * @param player is the player were are checking for
+    * @param direction is the direction that the parsing is currently headed in
+    * @param max_depth is the maximum number of coordinates to parse
+    *
+    * @return true if there is a meta-network of langth max_depth, false otherwise
+    */
+    private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
     }
 
 5. Computing the evaluation function for a board/minimax algorithm
-(Implemented by Noah)
-A static function called evaluate in the Evaluator class will take a
+(Implemented by Yuxin)
+A function called evaluator in the Gameboard class will take a
 gameboard as a parameter and perform an algorithmic analysis which
-will include an minimax algorithm with alpha-beta pruning. This will
-probably need a multitude of helper methods.
-	a. public static int evaluate(Gameboard g) //Evaluator class
+will include an minimax algorithm with alpha-beta pruning. This depends on multiple
+helper methods. The evaluator method also contains a Hash function which helps in memoization of Gameboard scores.
 
-public class Evaluator {
+    /**
+    * opponentPiece takes in a coordinate and returns the opposite piece type of that
+    * coordinate.
+    *
+    * @param c is the coordinate
+    * @return the opposite piece type.
+    */
+    public int opponentPiece(Coordinate c) {
+    }
 
-    /**evaluate() takes one parameter, Gameboard g, and assigns a value between 
-     * -1 and 1 to g using a variation of the mini-max alpha-beta pruning algorithm.
+    /** 
+    * opponentType does the same thing as opponentPiece, but with player types instead of
+    * piece types.
+    *
+    * @param type is the player type
+    * @return the opposing type
+    */
+    public int opponentType(int type) {
+    }
+
+    /**
+     * findConnectedLDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the left diagonal.
      *
-     *  @param g is a Gameboard, which is evaluated
+     * @param Coordinate c, representing the coordinate of the square
      *
-     *  @return an int between -1 and 1
+     * @return a Coordinate[] containing "connected" squares of the same type in the left diagonal
      */
 
-    public static int evaluate(Gameboard g) {
-        return 1;
+    private Coordinate[] spyFindConnectedLDiagonal(Coordinate c) {
     }
-}
+
+    /**
+     * findConnectedRDiagonal() takes one parameter, a Coordinate, and returns a list of connected squares of the same type in the right diagonal.
+     *
+     * @param Coordinate c representing the coordinate of the square
+     *
+     * @return a Coordinate[] containing "connected" squares of the same type in the right diagonal
+     */
+
+    private Coordinate[] spyFindConnectedRDiagonal(Coordinate c) {
+    }
+
+    /**
+     * findConnectedRow() takes one parameter, the Coordinate, and returns a list of connected squares of the same type in the same row.
+     *
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return a Coordinate[] containing "connected" squares of the same type in the same row
+     */
+
+    private Coordinate[] spyFindConnectedRow(Coordinate c) {
+    }
+
+    /**
+     * findConnectedColumn(new Coordinate() takes 2 parameters, the coordinates, and returns a list of connected squares of the same type in the same column.
+     *
+     * @param x the x-coordinate of the square
+     * @param y the y-coordinate of the square
+     *
+     * @return a int[] containing "connected" squares of the same type in the same column.
+     */
+
+    private Coordinate[] spyFindConnectedColumn(Coordinate c) {
+    }
+
+    /**
+    * spyMakeHGrid() is a corollary to makeHGrid in that it does the same thing but with the
+    * opposite type of pieces.
+    *
+    * @param c is the coordinate to use as a base
+    * @return an array of oppositely colored pieces located around c
+    */
+    private Coordinate[] spyMakeHGrid(Coordinate c) {
+    }
+
+    /**
+    * scoreBlocks() takes two parameters, list and bonus (see below), and returns a score
+    * based on the value of blocking opponent pieces (ie. a piece between two opponent pieces).
+    *
+    * @param c is the coordinate to use as a base
+    *
+    * @return an array of oppositely colored pieces located around c
+    */
+    private int scoreBlocks(Coordinate[] list, int bonus) {
+    }
+
+    /*=============================== END OF scoreBlocks submodule ===============================*/
+
+    /**
+    * scorePiece() takes in one parameter, a Coordinate, and returns a score based on whether the piece
+    * is in the home row of the respective type.
+    *
+    * @param c the Coordinate of a piece
+    *
+    * @return a score judged based on whether the piece's position (namely the home row) is favorable
+    */
+    private int scorePiece(Coordinate c) {
+    }
+
+    /**
+    * inCorner() takes in one parameter, a Coordinate, and if the piece is in the "corner" of its respective
+    * home row
+    *
+    * @param c the Coordinate of the piece
+    *
+    * @return true if the piece is of type WHITE in (0,1),(0,6),(7,1),(7,6),
+    * or of type BLACK and in (1,0),(6,0),(1,7),(6,7), false otherwise.
+    */
+    private boolean inCorner(Coordinate c){
+    }
+
+    /**
+    * awardForMaximizingConnections() takes two parameters, a list and friends (see below), and returns
+    * scores based on the general number of connections each piece has. 
+    *
+    * @param list a Coordinate array containing all the pieces on a given board
+    * @param friends a two dimensional Coordinate containing each piece and (makeHGrid), it's connections
+    *
+    * @return an integer value points based on the general number of connections each piece has
+    */
+    private int awardForMaximizingConnections(Coordinate[] list,Coordinate[][] friends){
+    }
+
+    /**
+    * awardHomeRow() takes one parameter, a list (see below), and returns a score based on judging whether
+    * there are too little or too many pieces in its respective home rows
+    *
+    * @param list a one dimensional Coordinate array containing the pieces on the board
+    *
+    * @return an integer score depending on whether the number of pieces in each home row is favorable or otherwise
+    */
+    private int awardHomeRow(Coordinate[] list){
+    }
+
+    /**
+    * scoreCorner() takes one parameter, list (see below), and returns a score which reflects pieces which 
+    * are in the corner of the board. 
+    *
+    * @param c the Coordinate of the piece
+    *
+    * @return an integer score based on whether the pieces on the board are in the list. Corner pieces are less favorable, and are reflected in the points.
+    */
+    private int scoreCorner(Coordinate[] list){
+    }
+
+    /**
+    * awardPiecesNotNeighbors, takes two parameters, a list and friends (see below), and returns a score
+    * which reflects the inherently negative value of having too many neighbors.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether the given piece has neighbors.
+    */
+
+    private int awardPiecesNotNeighbors(Coordinate[] list){
+
+
+    /**
+    * scoreRow() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same row.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given row
+    */
+    private int scoreRow(Coordinate[] list){
+    }
+    /**
+    * scoreColumn() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same column.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given column
+    */
+    private int scoreColumn(Coordinate[] list){
+    }
+
+    /**
+    * scoreConnections takes in a list of all the pieces of one color on "this" gameboard
+    * and assigns a score to their configuration to be used with alpha-beta pruning.
+    *
+    * @param the list of coordinates of a single color
+    *
+    * @return the score assigned to it
+    */
+    private int scoreConnections(Coordinate[] list) {
+    }
+
+    /**
+     * evaluator takes in one parameters, a type of player, and evaluates the this.Gameboard based
+     * on the chances of winning for the player.
+     *
+     * @param type the side of the player, whether BLACK or WHITE
+     *
+     * @return an double representing the chances of winning for the player, a score of 10E9 for guaranteed win, -10E9
+     * for guaranteed loss, and a number in between for boards that are not either. The numbers is reflective of the
+     * numeric score returned from the different strategies detailed above.
+     */
+
+    public double evaluator(int type) {
+    }
+
+6. Computing Game tree
+In MachinePlayer we implement the mini-max algorithm game tree with alpha-beta pruning as mentioned in lecture.
+This module returns the best possible move (as determined by our algorithm). To do this, we created
+a new class called Best, which contains a Move and its score, similar to what was shown
+in lecture. We implemented different search depths for ADD and STEP Moves. We scanned through the different layers of the Game Tree, to favor wins which 
+require less moves. This increases search time, but returns a more effective move, which wins the game
+more quickly. The documentation is as follows: 
+
+  /**
+  * chooseMove() takes no parameters, and returns the best possible move, in context, by calling
+  * chooseMoveIntermediary(), which in turn calls chooseMoveHelper(), where the recursive mini-max
+  * algorithm is implemented. Here, we mainly call other functions, to initialize the process of 
+  * the game tree search.
+  *
+  * @return the best possible Move, the move with the highest associated score, in the context of the game
+  */
+  public Move chooseMove() {
+  }
+
+  /**
+  * chooseMoveIntermediary is a helper function of chooseMove which takes in a maximum depth for 
+  * step and add operations and performs the game tree search implemented in chooseMoveHelper for
+  * each depth, up to five levels. The benefit of this is that the game tree is able to determine
+  * whether a move is available in one turn rather than, say, four turns, and select the sooner
+  * win.
+  * 
+  * @param maxAddDepth is the maximum number of levels to search to while adding pieces
+  * @paran maxStepDepth is the maximum number of levels to search to while stepping pieces
+  * @return a Best object that is returned from the game three data structure.
+  */
+  public Best chooseMoveIntermediary(int maxAddDepth, int maxStepDepth) throws InvalidNodeException, AgainstRulesException {
+  }
+
+  /**
+  * chooseMoveHelper takes in a current side, values of alpha and beta for alpha-beta pruning
+  * analysis, the depth that the game tree search that it defines is currently searching, and
+  * the maximum depths that it should search for each kind of move. It returns a Best object
+  * which represents the best score and move that the side initially passed to it can take.
+  * 
+  * @param side the side currently being evaluated
+  * @param alpha the alpha value for alpha-beta pruning
+  * @param beta the beta value for alpha-beta pruning
+  * @param currDepth the level of depth in the game tree that is currently being searched
+  * @param maddAddDepth the maximum depth to search with add moves
+  * @param maxStepDepth the maximum depth to search with step moves
+  * @return the Best representing the machine's best move
+  */
+  public Best chooseMoveHelper(int side, double alpha, double beta, int currDepth, int maxAddDepth, int maxStepDepth) throws AgainstRulesException, InvalidNodeException{
+  }
+
+
+
+
+
 
 

@@ -167,6 +167,39 @@ public class Gameboard {
         }
         return toReturn; 
     }
+
+    /**
+     * getHNeighbors() takes one parameter, a Coordinate, and returns a horizontal, one dimensional array
+     * of Coordinates which represents its neighbors
+     *
+     * @param Coordinate c, representing the coordinate of the square
+     *
+     * @return an array of length eight containing a piece's neighbors, the piece itself is INVALID, and if there
+     * are no neighbors, the Coordinate is (0,0).
+     */
+
+    private int[] getHNeighbors(Coordinate c) {
+        int toReturn[] = new int[8];
+        if(c.x >= 0 && c.x<= this.width-1 && c.y >= 0 && c.y <= this.width-1){
+            //int toReturn[][] = new int[3][3];
+            toReturn[0] = get00(c);
+            toReturn[1] = get01(c);
+            toReturn[2] = get02(c);
+            toReturn[3] = get10(c);
+            toReturn[4] = INVALID;
+            toReturn[5] = get12(c);
+            toReturn[6] = get20(c);
+            toReturn[7] = get21(c);
+            toReturn[8] = get22(c);
+        } else {
+            System.out.println("Invalid Coordinate given in getNeighbors x: "+ c.x + " y: " + c.y + " .");
+            //int toReturn[][] = new int[3][3];
+            for(int i = 0; i < 9; i++){
+                toReturn[i] = INVALID;
+            }
+        }
+        return toReturn; 
+    }
     
     //helper methods for getNeighbors - getXY correspond to the neighbors in the corresponding direction. i.e. get12 is the the connected chip below it.
     private int get00(Coordinate c){
@@ -238,7 +271,7 @@ public class Gameboard {
      * of the square.
      *
      * @param Coordinate c, representing the coordinate of the square
-     *
+     *getH
      * @return type of the square, a 0 represents EMPTY, a 1 represents WHITE,
      * a 2 represents BLACK.
      */
@@ -892,7 +925,7 @@ public class Gameboard {
      * @param Coordinate coord takes the coordinates of a square
      * @param type the type of the square we are inspecting
      *
-     * @return a coordiante, containing the coordinates of first neighbor on the this.Gameboard.
+     * @return a coordinate, containing the coordinates of first neighbor on the this.Gameboard.
      */
 
     private Coordinate locateNeighbors(Coordinate coord, int type) {
@@ -971,7 +1004,6 @@ public class Gameboard {
      * movePieces() "moves" a piece from one coordinate to another.
      * More specifically, it takes parameters (Coordinate coord1, Coordinate coord2) and
      * moves a piece on "this" Gameboard from coord1 to coord2.
-     *
      *
      * @param Coordinate coord1 takes the coordinates of the first square
      * @param Coordinate coord2 takes the coordinates of the second square
@@ -1230,7 +1262,9 @@ public class Gameboard {
     /**
      * containsNetwork() takes one parameter, the type of the current "player", and
      * returns whether or not a network could be established with the "player"'s
-     * pieces on "this" Gameboard
+     * pieces on "this" Gameboard. This is a full network, as opposed to another method which finds only
+     * a partial network. A full network is a game winning set of continuous connections from
+     * one side of the board to another.
      *
      * @param player is the type of the player in consideration
      *
@@ -1276,6 +1310,7 @@ public class Gameboard {
             // System.out.println("\nAll chips in the home row were exhausted.");
             return false;
     }
+
      /**
      * containsNetworkHelper() takes four parameters, the current coordinate in the
      * line of connected chips, the list of coordinates that have been parsed through already,
@@ -1287,9 +1322,9 @@ public class Gameboard {
      * @param parsedCoords is the list of Coordinate objects that have already been parsed
      * @param player is the player that will win if a network is found
      * @param direction is the direction that the last parsed connection was made in
+     *
      * @return true if a network has been found, false otherwise.
      */
-
     private boolean containsNetworkHelper(Coordinate coord, SList parsedCoords, int player, int direction) throws InvalidNodeException{
         /*
         first of all, if the coord were checking is already in the network, there is no
@@ -1364,15 +1399,16 @@ public class Gameboard {
     /**
      * containsNetworkOfLength() takes two parameters, a coordinate and a length, and
      * returns whether or not a network of that length could be established with pieces of the same type
-     * on "this" Gameboard
+     * on "this" Gameboard. The network does not have to be a full network, it simply has to start
+     * on one side of the board and contain at most a "max_depth"-number of continuous connections, denoted
+     * meta-network as opposed to a full complete, game-winning network. 
      *
      * @param c is the starting coordinate
      * @param max_depth is the length of a network to look for
      *
      * @return true if the current set of pieces contains a Network of that length, false otherwise
      */
-
-    private boolean containsNetworkOfLength(Coordinate c,int max_depth){
+    private boolean containsNetworkOfLength(Coordinate c, int max_depth){
         try{
             SList a = new SList();
             a.insertFront(c);
@@ -1396,7 +1432,8 @@ public class Gameboard {
     * @param player is the player were are checking for
     * @param direction is the direction that the parsing is currently headed in
     * @param max_depth is the maximum number of coordinates to parse
-    * @return true if there is a network of langth max_depth, false otherwise
+    *
+    * @return true if there is a meta-network of langth max_depth, false otherwise
     */
     private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
 
@@ -1729,7 +1766,7 @@ public class Gameboard {
     }
 
     /**
-    * spyMakeHGrid is a corollary to makeHGrid in that it does the same thing but with the
+    * spyMakeHGrid() is a corollary to makeHGrid in that it does the same thing but with the
     * opposite type of pieces.
     *
     * @param c is the coordinate to use as a base
@@ -1755,27 +1792,63 @@ public class Gameboard {
         return grid;
     }
 
-    public int scoreBlocks(Coordinate[] list, int bonus) {
-        Coordinate[][] friends = new Coordinate[list.length][9];
+    /**
+    * scoreBlocks() takes two parameters, list and bonus (see below), and returns a score
+    * based on the value of blocking opponent pieces (ie. a piece between two opponent pieces).
+    *
+    * @param c is the coordinate to use as a base
+    *
+    * @return an array of oppositely colored pieces located around c
+    */
+    private int scoreBlocks(Coordinate[] list, int bonus) {
+        Coordinate[][] enemies = new Coordinate[list.length][9];
         for(int i = 0; i < list.length; i++) {
-            friends[i] = spyMakeHGrid(list[i]);
+            enemies[i] = spyMakeHGrid(list[i]); //connections of the opposite type
         }
-        int blocks = 0;
+        int homeBlocks = 0;
+        int betweenBlocks = 0;
         for(int i = 0; i < list.length; i++) {
             for(int k = 0; k < 4; k++) {
-                if(getType(friends[i][k]) == opponentPiece(list[i])) {
-                    if(getType(friends[i][k]) == getType(friends[i][8-k])) {
-                        blocks++;
+                if(getType(enemies[i][k]) == opponentPiece(list[i])) {
+                    if(getType(enemies[i][k]) == getType(enemies[i][8-k])) {
+                        betweenBlocks++;
                     }
                 } 
             }
         }
-        return bonus * blocks;
+
+        //Further increase the score if one of the pieces being blocked is in the home row
+        for(int i = 0; i < list.length; i++) {
+            for(int k = 0; k < 4; k++) {
+                if(getType(enemies[i][k]) == opponentPiece(list[i])) {
+                    if(getType(enemies[i][k]) == getType(enemies[i][8-k])) {
+                        if(getType(enemies[i][k]) == WHITE) {
+                            if((enemies[i][k].x == 0) || (enemies[i][k].x == this.width - 1)) {
+                                homeBlocks++;
+                            }
+                        }
+                        if(getType(enemies[i][k]) == BLACK) {
+                            if((enemies[i][k].y == 0) || (enemies[i][k].y == this.height - 1)) {
+                                homeBlocks++;
+                            }
+                        }
+                    }
+                } 
+            }
+        }
+        return (bonus * betweenBlocks) + (bonus * homeBlocks);
     }
 
     /*=============================== END OF scoreBlocks submodule ===============================*/
 
-    //scores a piece based on it's coordinate. if it is in the home rows, it is awarded extra points
+    /**
+    * scorePiece() takes in one parameter, a Coordinate, and returns a score based on whether the piece
+    * is in the home row of the respective type.
+    *
+    * @param c the Coordinate of a piece
+    *
+    * @return a score judged based on whether the piece's position (namely the home row) is favorable
+    */
     private int scorePiece(Coordinate c) {
         if(getType(c) == BLACK) {
             if(c.y == 0 || c.y == this.height - 1) {
@@ -1790,7 +1863,15 @@ public class Gameboard {
         return 0; 
     }
 
-    //checks if white is in (0,1),(0,6),(7,1),(7,6) or if black is in (1,0),(6,0),(1,7),(6,7) 
+    /**
+    * inCorner() takes in one parameter, a Coordinate, and if the piece is in the "corner" of its respective
+    * home row
+    *
+    * @param c the Coordinate of the piece
+    *
+    * @return true if the piece is of type WHITE in (0,1),(0,6),(7,1),(7,6),
+    * or of type BLACK and in (1,0),(6,0),(1,7),(6,7), false otherwise.
+    */
     private boolean inCorner(Coordinate c){
         int chip = getType(c);
         if(chip == WHITE){
@@ -1806,7 +1887,15 @@ public class Gameboard {
         return false;
     }
 
-    //pieces where connections are maximized should be awarded
+    /**
+    * awardForMaximizingConnections() takes two parameters, a list and friends (see below), and returns
+    * scores based on the general number of connections each piece has. 
+    *
+    * @param list a Coordinate array containing all the pieces on a given board
+    * @param friends a two dimensional Coordinate containing each piece and (makeHGrid), it's connections
+    *
+    * @return an integer value points based on the general number of connections each piece has
+    */
     private int awardForMaximizingConnections(Coordinate[] list,Coordinate[][] friends){
         // award for maximising connections      
         int sumOfConnections = 0;      
@@ -1822,7 +1911,14 @@ public class Gameboard {
         return sumOfConnections;
     }
 
-    //pieces that are in the home row should be given more weight although after more than 2 pieces, it is useless.
+    /**
+    * awardHomeRow() takes one parameter, a list (see below), and returns a score based on judging whether
+    * there are too little or too many pieces in its respective home rows
+    *
+    * @param list a one dimensional Coordinate array containing the pieces on the board
+    *
+    * @return an integer score depending on whether the number of pieces in each home row is favorable or otherwise
+    */
     private int awardHomeRow(Coordinate[] list){
         int homeRow1 = 0;
         int homeRow2 = 0;
@@ -1851,30 +1947,6 @@ public class Gameboard {
             }
         }
 
-        //punish if too there is nothing in one of the homerows
-        // if(!(homeRow1 == 0 && homeRow2 == 0) || !((homeRow1 != 0 && homeRow2 == 0) || (homeRow2 != 0 && homeRow1 == 0))) {
-        //     score+=20;
-        // }
-
-        //award if ratio of piece in the home rows is larger than .5
-        // if(homeRow1  homeRow2) {
-        //     // if(((double) homeRow2)/(homeRow1) > .75) {
-        //     //     score+=10;
-        //     // }
-        //     if((homeRow1 <= 2 && homeRow2 <= 2) && (homeRow1 > 0 && homeRow2 > 0)) {
-        //         score+=30;
-        //     }
-        //     if((homeRow1 > 2 || homeRow2 > 2)) {
-        //         score-=30;
-        //     }
-        // }
-        // if(homeRow1 <= homeRow2) {
-        //     // if(((double) homeRow1)/(homeRow2) > .75) {
-        //     //     score+=10;
-        //     // }
-            // if((homeRow1 <= 2 && homeRow2 <= 2) && (homeRow1 > 0 && homeRow2 > 0)) {
-            //     score+=30;
-            // }
         if((homeRow1 > 2 || homeRow2 > 2)) {
             score-=200;
         }
@@ -1885,7 +1957,14 @@ public class Gameboard {
         return score;
     }
 
-    //punish if piece is in a corner spot
+    /**
+    * scoreCorner() takes one parameter, list (see below), and returns a score which reflects pieces which 
+    * are in the corner of the board. 
+    *
+    * @param c the Coordinate of the piece
+    *
+    * @return an integer score based on whether the pieces on the board are in the list. Corner pieces are less favorable, and are reflected in the points.
+    */
     private int scoreCorner(Coordinate[] list){
         int score = 0;
         for(int i = 0; i < list.length; i++){
@@ -1896,31 +1975,38 @@ public class Gameboard {
         return score;
     }
 
-    //punish pieces that are neighbors to each other - rationale is that they are minimizing future connections
-    private int awardPiecesNotNeighbors(Coordinate[] list, Coordinate[][] friends){
-        int score = 0;
+    /**
+    * awardPiecesNotNeighbors, takes two parameters, a list and friends (see below), and returns a score
+    * which reflects the inherently negative value of having too many neighbors.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether the given piece has neighbors.
+    */
+
+    private int awardPiecesNotNeighbors(Coordinate[] list){
+        int sumOfConnections = 0;
         //award if pieces are not together
         for(int i = 0; i < list.length; i++) {
-            // int numNeighbors = countNeighbors(list[i], getType(list[i]));
-            for(int j = 0; j < 9; j++) {
-                if(getType(friends[i][j]) == getType(list[i])) {
-                    if((j == 1 || j == 3) || (j == 5 || j == 7)) {
-                        score -=20;
-                    }
-                    if((j == 0 || j == 2) || (j == 6 || j == 8)) {
-                        score -=10;
-                    }
-                }
+            int numNeighbors = countNeighbors(list[i], getType(list[i]));
+            if(numNeighbors == 0) {
+                sumOfConnections+=5;
             }
         }
-        return score;
+        return sumOfConnections;
     }
 
 
-    //punish pieces that cluster in a single row
+    /**
+    * scoreRow() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same row.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given row
+    */
     private int scoreRow(Coordinate[] list){
         int score = 0;
-        //award if not too many pieces in a row
         for(int i = 0; i < this.height; i++){
             int localSum = 0;
             for(int piece = 0; piece < list.length; piece++){
@@ -1937,11 +2023,16 @@ public class Gameboard {
         }
         return score;
     }
-
-    //punish columns that cluster in a single column
+    /**
+    * scoreColumn() takes one parameter, list (see below), and returns a score based on the number of pieces
+    * on the board which are in the same column.
+    *
+    * @param list a one dimensional array containing the pieces on the board
+    *
+    * @return an integer score based on whether there are three pieces or more in a given column
+    */
     private int scoreColumn(Coordinate[] list){
         int score = 0;
-        //award if not too many pieces in a col
         for(int i = 0; i < this.width; i++){
             int localSum = 0;
             for(int piece = 0; piece < list.length; piece++){
@@ -1964,6 +2055,7 @@ public class Gameboard {
     * and assigns a score to their configuration to be used with alpha-beta pruning.
     *
     * @param the list of coordinates of a single color
+    *
     * @return the score assigned to it
     */
     private int scoreConnections(Coordinate[] list) {
@@ -1980,7 +2072,7 @@ public class Gameboard {
         sumOfConnections += awardForMaximizingConnections(list,friends);
         sumOfConnections += awardHomeRow(list);
         sumOfConnections += scoreCorner(list);
-        sumOfConnections += awardPiecesNotNeighbors(list, friends);
+        sumOfConnections += awardPiecesNotNeighbors(list);
         sumOfConnections += scoreRow(list);
         sumOfConnections += scoreColumn(list);
         /* end of strategizing */
@@ -1989,144 +2081,104 @@ public class Gameboard {
     }
 
     /**
-     * evaluator takes in two parameters, a player, and evaluates the this.Gameboard based
+     * evaluator takes in one parameters, a type of player, and evaluates the this.Gameboard based
      * on the chances of winning for the player.
      *
-     * @param player the player on the board to be evaluated
+     * @param type the side of the player, whether BLACK or WHITE
      *
-     * @return an double representing the chances of winning for the player, 1 for guaranteed win, -1
-     * for guaranteed loss, and a number in between for boards that are not either.
+     * @return an double representing the chances of winning for the player, a score of 10E9 for guaranteed win, -10E9
+     * for guaranteed loss, and a number in between for boards that are not either. The numbers is reflective of the
+     * numeric score returned from the different strategies detailed above.
      */
 
     public double evaluator(int type) {
-        /*
-            2. ratio of connections for all our pieces vs opponent pieces
-            3. average distance between pieces 
-                -> lower the average distance, lower the probability of being blocked and vice-versa
-            4. 
-        */
-        // if(table.find(this) == null) {
-        //     double blackSum = 0.0;
-        //     double whiteSum = 0.0;
-        //     Coordinate[] blacks = this.listBlacks();
-        //     Coordinate[] whites = this.listWhites();
-        //     for(int b = 0; b < blacks.length; b++) {
-        //         blackSum += getScore(blacks[b]);
-        //     }
-        //     for(int w = 0; w < whites.length; w++) {
-        //         whiteSum += getScore(whites[w]);
-        //     }
-        //     double blackAverage = blackSum/blacks.length;
-        //     double whiteAverage = whiteSum/whites.length;
-
-        //     table.insert(this, new Double(blackAverage - whiteAverage));
-        //     return blackAverage - whiteAverage;
-        // } else {
-        //     return ((Double) table.find(this).value()).doubleValue();
-        // }            
-        // return (Math.random() * 2.0) - 1.0;
-        int white_score = 0;
-        int black_score = 0;
-        Coordinate[] whites = listWhites();
-        Coordinate[] blacks = listBlacks();
-        int b = 0;
-        int w = 0; 
-        try {
-            if((containsNetwork(WHITE) && type == BLACKPLAYER) || (containsNetwork(BLACK) && type == WHITEPLAYER)) {
-                    // System.out.println("contains network triggered. with a negative value");
-                    return -1000000000;
+        Entry oldVal = table.find(this);
+        if(oldVal == null) {
+            int white_score = 0;
+            int black_score = 0;
+            Coordinate[] whites = listWhites();
+            Coordinate[] blacks = listBlacks();
+            int b = 0;
+            int w = 0; 
+            try {
+                if((containsNetwork(WHITE) && type == BLACKPLAYER) || (containsNetwork(BLACK) && type == WHITEPLAYER)) {
+                        // System.out.println("contains network triggered. with a negative value");
+                        return -1000000000;
+                    }
+                if((containsNetwork(BLACK) && type == BLACKPLAYER) || (containsNetwork(WHITE) && type == WHITEPLAYER)) {
+                    // System.out.println("contains network triggered. with a positive value");
+                    // System.out.println(this);
+                    return 1000000000;
                 }
-            if((containsNetwork(BLACK) && type == BLACKPLAYER) || (containsNetwork(WHITE) && type == WHITEPLAYER)) {
-                // System.out.println("contains network triggered. with a positive value");
-                // System.out.println(this);
-                return 1000000000;
+            } catch (InvalidNodeException e) {
+                System.out.println(e);
             }
-        } catch (InvalidNodeException e) {
-            System.out.println(e);
-        }
-        for(int i = 0; i < whites.length; i++){
-            if(containsNetworkOfLength(whites[i],5)){
-                // System.out.println(this);
-                //System.out.println(this);
-                //networkW+=20;
-                b += 10;
-                white_score += 100;
-                //continue;
-            }
+            for(int i = 0; i < whites.length; i++){
+                if(containsNetworkOfLength(whites[i],5)){
+                    // System.out.println(this);
+                    //System.out.println(this);
+                    //networkW+=20;
+                    b += 10;
+                    white_score += 100;
+                    //continue;
+                }
 
-            if(containsNetworkOfLength(whites[i],4)){
-                //System.out.println(this);
-                //networkW+=20;
-                b += 5;
-                white_score += 50;
-                //continue;
+                if(containsNetworkOfLength(whites[i],4)){
+                    //System.out.println(this);
+                    //networkW+=20;
+                    b += 5;
+                    white_score += 50;
+                    //continue;
+                }
             }
-            // if(containsNetworkOfLength(whites[i],3)){
-            //     System.out.println("White Board with 3 connected chips");
-            //     //System.out.println(this);
-            //     //networkW+=20;
-            //     b+= 30;
-            //     white_score += 20;
-            //     //continue;
-            // }
-            // if(containsNetworkOfLength(whites[i],2)){
-            //     System.out.println("White Board with 2 connected chips");
-            //     //System.out.println(this);
-            //     //networkW+=20;
-            //     // b+= 30;
-            //     white_score += 20;
-            //     //continue;
-            // }
-        }
-        for(int i = 0; i < blacks.length; i++){
-            if(containsNetworkOfLength(blacks[i],5)){
-                //networkB+=20;
-                w += 10;
-                black_score += 100;
+            for(int i = 0; i < blacks.length; i++){
+                if(containsNetworkOfLength(blacks[i],5)){
+                    //networkB+=20;
+                    w += 10;
+                    black_score += 100;
+                }
+
+                if(containsNetworkOfLength(blacks[i],4)){
+                    //networkB+=20;
+                    w += 5;
+                    black_score += 50;
+                }
             }
-
-            if(containsNetworkOfLength(blacks[i],4)){
-                //networkB+=20;
-                w += 5;
-                black_score += 50;
-            }
-            // if(containsNetworkOfLength(blacks[i],3)){
-            //     //networkB+=20;
-            //     w += 30;
-            //     black_score += 20;
-            // }
-            // if(containsNetworkOfLength(blacks[i],2)){
-            //     //networkB+=20;
-            //     // w += 30;
-            //     black_score += 20;
-            // }
-        }
-        
-        white_score += scoreConnections(whites);
-        black_score += scoreConnections(blacks);
-
-        white_score += scoreBlocks(whites, b);
-        black_score += scoreBlocks(blacks, w);
-
-        try {
             
-            // System.out.println("white: " + white_score + "||" + "black: " + black_score);
-            if(type == BLACKPLAYER) {
-                return black_score - white_score;
-            } else {
-                return white_score - black_score;
+            white_score += scoreConnections(whites);
+            black_score += scoreConnections(blacks);
+
+            white_score += scoreBlocks(whites, b);
+            black_score += scoreBlocks(blacks, w);
+            table.insert(this, black_score - white_score);
+
+            try {
+                // System.out.println("white: " + white_score + "||" + "black: " + black_score);
+                if(type == BLACKPLAYER) {
+                    return black_score - white_score;
+                } else {
+                    return white_score - black_score;
+                }
+            }
+            catch (Exception e) {
+                System.out.println(e);
+                return 0.0;
             }
         }
-        catch (Exception e) {
-            System.out.println(e);
-            return 0.0;
+        else {
+            if(type == BLACKPLAYER) {
+                return ((Integer) oldVal.value()).intValue();
+            } else {
+                return ((-1.0) * ((Integer) oldVal.value()).intValue());
+            }
         }
     }
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
 
     /**
-    * hashCode returns a unique hashcode for "this" gameboard.
+    * hashCode() returns a unique hashcode for "this" gameboard.
+    *
     * @return the hashcode
     */
     public int hashCode() {
@@ -2145,6 +2197,8 @@ public class Gameboard {
 
     /**
      * toString() returns a String representation of the board.
+     *
+     * @return a String, a graphical representation of the Gameboard
      */
     public String toString() {
         String current = "      0    1    2    3    4    5    6    7  " + "\n" + "   -----------------------------------------";
