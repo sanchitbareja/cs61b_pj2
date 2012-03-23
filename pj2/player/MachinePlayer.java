@@ -69,6 +69,17 @@ public class MachinePlayer extends Player {
     }
   }
 
+  /**
+  * chooseMoveIntermediary is a helper function of chooseMove which takes in a maximum depth for 
+  * step and add operations and performs the game tree search implemented in chooseMoveHelper for
+  * each depth, up to five levels. The benefit of this is that the game tree is able to determine
+  * whether a move is available in one turn rather than, say, four turns, and select the sooner
+  * win.
+  * 
+  * @param maxAddDepth is the maximum number of levels to search to while adding pieces
+  * @paran maxStepDepth is the maximum number of levels to search to while stepping pieces
+  * @return a Best object that is returned from the game three data structure.
+  */
   public Best chooseMoveIntermediary(int maxAddDepth, int maxStepDepth) throws InvalidNodeException, AgainstRulesException {
     //System.out.println("try: chooseMove()");
       Best best1 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 0, 0);
@@ -111,7 +122,13 @@ public class MachinePlayer extends Player {
     
   }
 
-  //TODO: comment this
+  /**
+  * colorToside takes in a color, white or black, given by the MachinePlayer class and converts it to
+  * the analogous Gameboard.BLACKPLAYER or Gameboard.WHITEPLAYER for consistency.
+  * 
+  * @param color the color, an int
+  * @return the side as definied in Gameboard.java
+  */
   private int colorToSide(int color) {
     int player;
     if (color == 1) {
@@ -123,7 +140,12 @@ public class MachinePlayer extends Player {
     return player;
   }
 
-  //TODO: comment this!
+  /**
+  * oppositeSide takes a side as defined in Gameboard.java and returns the opposing side.
+  * 
+  * @param side is the side, an int
+  * @return the opposing side, also an int
+  */
   private int oppositeSide(int side) {
     if (side == Gameboard.WHITEPLAYER) {
       return Gameboard.BLACKPLAYER;
@@ -132,7 +154,14 @@ public class MachinePlayer extends Player {
     }
   }
 
-  //TODO: comment this!
+  /**
+  * sideToGameboardColor takes in a side of play as defined in Gameboard and returns the
+  * color as defined in Gameboard that corresponds to it. This is a helper function for
+  * chooseMoveHelper.
+  *
+  * @param side the side
+  * @return the corresponding color, and int.
+  */
   private int sideToGameboardColor(int side) {
     if (side == Gameboard.BLACKPLAYER) {
       return Gameboard.BLACK;
@@ -141,11 +170,20 @@ public class MachinePlayer extends Player {
     }
   }
 
-  //TODO: FIX THIS SO IT WORKS.
-  //implement Best class
-  //also write comments lololol
-  //side is WHITEPLAYER or BLACKPLAYER
-  //and a shit ton of test code because this shit will break in 40 different places if you try to run it
+  /**
+  * chooseMoveHelper takes in a current side, values of alpha and beta for alpha-beta pruning
+  * analysis, the depth that the game tree search that it defines is currently searching, and
+  * the maximum depths that it should search for each kind of move. It returns a Best object
+  * which represents the best score and move that the side initially passed to it can take.
+  * 
+  * @param side the side currently being evaluated
+  * @param alpha the alpha value for alpha-beta pruning
+  * @param beta the beta value for alpha-beta pruning
+  * @param currDepth the level of depth in the game tree that is currently being searched
+  * @param maddAddDepth the maximum depth to search with add moves
+  * @param maxStepDepth the maximum depth to search with step moves
+  * @return the Best representing the machine's best move
+  */
   public Best chooseMoveHelper(int side, double alpha, double beta, int currDepth, int maxAddDepth, int maxStepDepth) throws AgainstRulesException, InvalidNodeException{
 
     Best myBest = new Best();

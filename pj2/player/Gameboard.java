@@ -115,6 +115,12 @@ public class Gameboard {
         return blackCount;
     }
 
+    /**
+    * getTypeCount takes a type and returns the number of pieces of that type that are remaining
+    * in their owners' hands.
+    * @param type is the type of piece, BLACK or WHITE
+    * @return the number of pieces of that type yet to be put down
+    */
     public int getTypeCount(int type) {
         if (type == BLACK) {
             return getBlackCount();
@@ -987,7 +993,13 @@ public class Gameboard {
         }
     }
 
-    //TODO: comment this, bitch!!!
+    /**
+    * performMove takes two parameters, a move and a type of piece, and performs the
+    * the given move on "this" gameboard.
+    * 
+    * @param m the move to be performed
+    * @param type the type playing the move
+    */
     public void performMove(Move m, int type) throws AgainstRulesException{
         if (m.moveKind == Move.STEP) {
             movePieces(new Coordinate(m.x2, m.y2), new Coordinate(m.x1, m.y1));
@@ -997,7 +1009,12 @@ public class Gameboard {
         }
     }
 
-    //TODO: comment this!!!!!!!
+    /**
+    * undoMove takes one parameter, a move, and undoes the
+    * the given move on "this" gameboard.
+    * 
+    * @param m the move to be performed
+    */
     public void undoMove(Move m) throws AgainstRulesException {
         if (m.moveKind == Move.STEP) {
             movePieces(new Coordinate(m.x1, m.y1), new Coordinate(m.x2, m.y2));
@@ -1344,6 +1361,17 @@ public class Gameboard {
         return false;
     }
 
+    /**
+     * containsNetworkOfLength() takes two parameters, a coordinate and a length, and
+     * returns whether or not a network of that length could be established with pieces of the same type
+     * on "this" Gameboard
+     *
+     * @param c is the starting coordinate
+     * @param max_depth is the length of a network to look for
+     *
+     * @return true if the current set of pieces contains a Network of that length, false otherwise
+     */
+
     private boolean containsNetworkOfLength(Coordinate c,int max_depth){
         try{
             SList a = new SList();
@@ -1356,6 +1384,20 @@ public class Gameboard {
         }
     }
 
+    /**
+    * containsNetworkOfLengthHelper is a helper function for containsNetworkOfLength that takes
+    * a coordinate, that is currently being parsed, an SList of coordinates that have been parsed
+    * already, a player that the network belongs to, a direction that is the opposite of that towards
+    * the most recently parsed coordinate, and the maximum depth to parse coordinates to, and returns
+    * whether or not there is a network of length max_depth for the player in "this" gameboard.
+    *
+    * @param coord is the current coordinate
+    * @param parsedCoords is the list of coordinates that havfe been parsed
+    * @param player is the player were are checking for
+    * @param direction is the direction that the parsing is currently headed in
+    * @param max_depth is the maximum number of coordinates to parse
+    * @return true if there is a network of langth max_depth, false otherwise
+    */
     private boolean containsNetworkOfLengthHelper(Coordinate coord, SList parsedCoords, int player, int direction, int max_depth) throws InvalidNodeException{
 
         /*
@@ -1452,6 +1494,13 @@ public class Gameboard {
     //                        scoreBlocks() Module                       //
     //********************************************************************/
 
+    /**
+    * opponentPiece takes in a coordinate and returns the opposite piece type of that
+    * coordinate.
+    *
+    * @param c is the coordinate
+    * @return the opposite piece type.
+    */
     public int opponentPiece(Coordinate c) {
         if(getType(c) == BLACK) {
             return WHITE;
@@ -1463,6 +1512,13 @@ public class Gameboard {
         }
     }
 
+    /** 
+    * opponentType does the same thing as opponentPiece, but with player types instead of
+    * piece types.
+    *
+    * @param type is the player type
+    * @return the opposing type
+    */
     public int opponentType(int type) {
         if(type == BLACK) {
             return WHITE;
@@ -1672,6 +1728,13 @@ public class Gameboard {
         return connectedChips;
     }
 
+    /**
+    * spyMakeHGrid is a corollary to makeHGrid in that it does the same thing but with the
+    * opposite type of pieces.
+    *
+    * @param c is the coordinate to use as a base
+    * @return an array of oppositely colored pieces located around c
+    */
     private Coordinate[] spyMakeHGrid(Coordinate c) {
         Coordinate[] grid = new Coordinate[9];
         Coordinate[] row = spyFindConnectedRow(c);
@@ -1694,7 +1757,7 @@ public class Gameboard {
 
     /*=============================== END OF YUXIN ZHU STUFF ===============================*/
 
-
+    //helper functions for scoreConnections
     public int scoreBlocks(Coordinate[] list, int bonus) {
         Coordinate[][] friends = new Coordinate[list.length][9];
         for(int i = 0; i < list.length; i++) {
@@ -1889,6 +1952,13 @@ public class Gameboard {
         return score;
     }
 
+    /**
+    * scoreConnections takes in a list of all the pieces of one color on "this" gameboard
+    * and assigns a score to their configuration to be used with alpha-beta pruning.
+    *
+    * @param the list of coordinates of a single color
+    * @return the score assigned to it
+    */
     private int scoreConnections(Coordinate[] list) {
         /* initialization */
         int sumOfConnections = 0;
@@ -2048,6 +2118,10 @@ public class Gameboard {
 
 /* ==============================  END OF EVALUATOR MODULE =============================*/
 
+    /**
+    * hashCode returns a unique hashcode for "this" gameboard.
+    * @return the hashcode
+    */
     public int hashCode() {
     // Replace the following line with your solution.
         int hash = 0;
