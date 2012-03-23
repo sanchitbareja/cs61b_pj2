@@ -37,12 +37,8 @@ public class MachinePlayer extends Player {
   // the internal game board) as a move by "this" player.
   public Move chooseMove() {
     try {
-      //System.out.println("try: chooseMove()");
-
-      Move m = chooseMoveHelper(colorToSide(this.color) , -2000000000, 2000000000, 0).move;
+      Move m = chooseMoveIntermediary(this.addSearchDepth, this.stepSearchDepth).move;
       this.board.performMove(m, sideToGameboardColor(colorToSide(this.color)));
-      //System.out.println(this.board);
-      //System.out.println(m);
       return m;
     } catch (Exception e) {
       //System.out.println("catch: chooseMove()");
@@ -50,7 +46,49 @@ public class MachinePlayer extends Player {
       e.printStackTrace();
       return null;
     }
-  } 
+  }
+
+  public Best chooseMoveIntermediary(int maxAddDepth, int maxStepDepth) throws InvalidNodeException, AgainstRulesException {
+    //System.out.println("try: chooseMove()");
+      Best best1 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 0, 0);
+
+      if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best1.score == 1000000000) {
+        System.out.println("Depth searched to: "+0);
+        return best1;
+      } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best1.score == -1000000000) {
+        System.out.println("Depth searched to: "+0);
+        return best1;
+      }
+
+      Best best2 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 1, 1);
+      if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best2.score == 1000000000) {
+        System.out.println("Depth searched to: 1,1");
+        return best2;
+      } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best2.score == -1000000000) {
+        System.out.println("Depth searched to: 1,1");
+        return best2;
+      }
+      Best best3 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 2, 2);
+      if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best3.score == 1000000000) {
+        System.out.println("Depth searched to: 2,2");
+        return best3;
+      } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best3.score == -1000000000) {
+        System.out.println("Depth searched to: 2,2");
+        return best3;
+      }
+      Best best4 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 3, 2);
+      if (colorToSide(this.color) == Gameboard.BLACKPLAYER && best4.score == 1000000000) {
+        System.out.println("Depth searched to: 3,2");
+        return best4;
+      } else if (colorToSide(this.color) == Gameboard.WHITEPLAYER && best4.score == -1000000000) {
+        System.out.println("Depth searched to: 3,2");
+        return best4;
+      }
+      Best best5 = chooseMoveHelper(colorToSide(this.color), -2000000000, 2000000000, 0, 4, 2);
+      System.out.println("Depth searched to: 4,2");
+      return best5;
+    
+  }
 
   //TODO: comment this
   private int colorToSide(int color) {
@@ -87,7 +125,7 @@ public class MachinePlayer extends Player {
   //also write comments lololol
   //side is WHITEPLAYER or BLACKPLAYER
   //and a shit ton of test code because this shit will break in 40 different places if you try to run it
-  public Best chooseMoveHelper(int side, double alpha, double beta, int currDepth) throws AgainstRulesException, InvalidNodeException{
+  public Best chooseMoveHelper(int side, double alpha, double beta, int currDepth, int maxAddDepth, int maxStepDepth) throws AgainstRulesException, InvalidNodeException{
 
     Best myBest = new Best();
     Best reply;
@@ -99,8 +137,9 @@ public class MachinePlayer extends Player {
       pieceCount = board.getWhiteCount();
     }
 
-    if ((pieceCount > 0 && currDepth >= this.addSearchDepth) || (pieceCount == 0 && currDepth >= this.stepSearchDepth)) {
+    if ((pieceCount > 0 && currDepth >= maxAddDepth) || (pieceCount == 0 && currDepth >= maxStepDepth)) {
       myBest.score = board.evaluator(currDepth);
+      myBest.depth = currDepth;
       // System.out.println("if (currDepth >= this.searchDepth)");
       //System.out.println("Alpha: " + alpha + " Beta: " + beta);
       return myBest;
@@ -120,6 +159,7 @@ public class MachinePlayer extends Player {
       //System.out.println("The Final Move: ");
       //System.out.println(myBest.move);
       //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+      myBest.depth = currDepth;
       return myBest;
     }
 
@@ -140,7 +180,7 @@ public class MachinePlayer extends Player {
         // System.out.println("-------------------------------------------");
         board.performMove(currMove, sideToGameboardColor(side));
 
-        reply = chooseMoveHelper(oppositeSide(side), alpha, beta, currDepth + 1);
+        reply = chooseMoveHelper(oppositeSide(side), alpha, beta, currDepth + 1, maxAddDepth, maxStepDepth);
 
         board.undoMove(currMove);
 
@@ -158,6 +198,7 @@ public class MachinePlayer extends Player {
           Move m = myBest.move;
           //System.out.println("myBest: Movekind: " + m.moveKind + " x1: " + m.x1 + " y1: " + m.y1 + " x2: " + m.x2 + " y2: " + m.y2);
           //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+          myBest.depth = currDepth;
           return myBest;
         }
 
@@ -171,6 +212,7 @@ public class MachinePlayer extends Player {
 
     // System.out.println("return myBest (last)");
     //System.out.println("Alpha: " + alpha + " Beta: " + beta);
+    myBest.depth = currDepth;
     return myBest;
   }
 
